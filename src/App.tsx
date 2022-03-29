@@ -1,10 +1,16 @@
 import './App.css';
 
+import { Layout } from 'components/ui';
+import { Route, Routes } from 'react-router-dom';
+import { NoteApp } from 'pages';
+
 const App = () => {
   return (
-    <div>
-      <h1 className='text-emerald-600 text-2xl'>Notember</h1>
-    </div>
+    <Layout>
+      <Routes>
+        <Route path='/' element={<NoteApp />} />
+      </Routes>
+    </Layout>
   );
 };
 
