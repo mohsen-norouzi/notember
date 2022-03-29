@@ -1,0 +1,29 @@
+query GetNotes {
+  notes {
+    data {
+      id
+      attributes {
+        title
+        description
+        updatedAt
+        checklist {
+          data {
+            id
+            attributes {
+              title
+              checked
+            }
+          }
+        }
+        users {
+          data {
+            id
+            attributes {
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+}
