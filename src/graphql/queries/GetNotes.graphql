@@ -23,6 +23,16 @@ query GetNotes {
             }
           }
         }
+        labels {
+          data {
+            id
+            attributes {
+              title
+              color
+              icon
+            }
+          }
+        }
       }
     }
   }

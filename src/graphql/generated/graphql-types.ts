@@ -160,7 +160,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = Checklist | I18NLocale | Note | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Checklist | I18NLocale | Label | Note | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -267,9 +267,73 @@ export type JsonFilterInput = {
   startsWith?: InputMaybe<Scalars['JSON']>;
 };
 
+export type Label = {
+  __typename?: 'Label';
+  color?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  icon?: Maybe<Scalars['String']>;
+  notes?: Maybe<NoteRelationResponseCollection>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  title: Scalars['String'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type LabelNotesArgs = {
+  filters?: InputMaybe<NoteFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type LabelEntity = {
+  __typename?: 'LabelEntity';
+  attributes?: Maybe<Label>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type LabelEntityResponse = {
+  __typename?: 'LabelEntityResponse';
+  data?: Maybe<LabelEntity>;
+};
+
+export type LabelEntityResponseCollection = {
+  __typename?: 'LabelEntityResponseCollection';
+  data: Array<LabelEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type LabelFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<LabelFiltersInput>>>;
+  color?: InputMaybe<StringFilterInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  icon?: InputMaybe<StringFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  not?: InputMaybe<LabelFiltersInput>;
+  notes?: InputMaybe<NoteFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<LabelFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type LabelInput = {
+  color?: InputMaybe<Scalars['String']>;
+  icon?: InputMaybe<Scalars['String']>;
+  notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type LabelRelationResponseCollection = {
+  __typename?: 'LabelRelationResponseCollection';
+  data: Array<LabelEntity>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createChecklist?: Maybe<ChecklistEntityResponse>;
+  createLabel?: Maybe<LabelEntityResponse>;
   createNote?: Maybe<NoteEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
   /** Create a new role */
@@ -277,6 +341,7 @@ export type Mutation = {
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteChecklist?: Maybe<ChecklistEntityResponse>;
+  deleteLabel?: Maybe<LabelEntityResponse>;
   deleteNote?: Maybe<NoteEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   /** Delete an existing role */
@@ -296,6 +361,7 @@ export type Mutation = {
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   updateChecklist?: Maybe<ChecklistEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
+  updateLabel?: Maybe<LabelEntityResponse>;
   updateNote?: Maybe<NoteEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
   /** Update an existing role */
@@ -308,6 +374,11 @@ export type Mutation = {
 
 export type MutationCreateChecklistArgs = {
   data: ChecklistInput;
+};
+
+
+export type MutationCreateLabelArgs = {
+  data: LabelInput;
 };
 
 
@@ -332,6 +403,11 @@ export type MutationCreateUsersPermissionsUserArgs = {
 
 
 export type MutationDeleteChecklistArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteLabelArgs = {
   id: Scalars['ID'];
 };
 
@@ -408,6 +484,12 @@ export type MutationUpdateFileInfoArgs = {
 };
 
 
+export type MutationUpdateLabelArgs = {
+  data: LabelInput;
+  id: Scalars['ID'];
+};
+
+
 export type MutationUpdateNoteArgs = {
   data: NoteInput;
   id: Scalars['ID'];
@@ -445,6 +527,7 @@ export type Note = {
   checklist?: Maybe<ChecklistRelationResponseCollection>;
   createdAt?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
+  labels?: Maybe<LabelRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -454,6 +537,14 @@ export type Note = {
 
 export type NoteChecklistArgs = {
   filters?: InputMaybe<ChecklistFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type NoteLabelsArgs = {
+  filters?: InputMaybe<LabelFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -489,6 +580,7 @@ export type NoteFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
+  labels?: InputMaybe<LabelFiltersInput>;
   not?: InputMaybe<NoteFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<NoteFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
@@ -500,6 +592,7 @@ export type NoteFiltersInput = {
 export type NoteInput = {
   checklist?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   description?: InputMaybe<Scalars['String']>;
+  labels?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   title?: InputMaybe<Scalars['String']>;
   users?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -536,6 +629,8 @@ export type Query = {
   checklists?: Maybe<ChecklistEntityResponseCollection>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
+  label?: Maybe<LabelEntityResponse>;
+  labels?: Maybe<LabelEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
   note?: Maybe<NoteEntityResponse>;
   notes?: Maybe<NoteEntityResponseCollection>;
@@ -569,6 +664,19 @@ export type QueryI18NLocaleArgs = {
 export type QueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QueryLabelArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryLabelsArgs = {
+  filters?: InputMaybe<LabelFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
@@ -952,12 +1060,45 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'LabelEntityResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null }> } | null };
+
 export type GetNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: { __typename?: 'ChecklistRelationResponseCollection', data: Array<{ __typename?: 'ChecklistEntity', id?: string | null, attributes?: { __typename?: 'Checklist', title: string, checked?: boolean | null } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null } | null }> } | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: { __typename?: 'ChecklistRelationResponseCollection', data: Array<{ __typename?: 'ChecklistEntity', id?: string | null, attributes?: { __typename?: 'Checklist', title: string, checked?: boolean | null } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null, labels?: { __typename?: 'LabelRelationResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null }> } | null } | null }> } | null };
 
 
+export const GetLabelsDocument = `
+    query GetLabels {
+  labels {
+    data {
+      id
+      attributes {
+        title
+        color
+        icon
+      }
+    }
+  }
+}
+    `;
+export const useGetLabelsQuery = <
+      TData = GetLabelsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetLabelsQueryVariables,
+      options?: UseQueryOptions<GetLabelsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetLabelsQuery, TError, TData>(
+      variables === undefined ? ['GetLabels'] : ['GetLabels', variables],
+      fetcher<GetLabelsQuery, GetLabelsQueryVariables>(client, GetLabelsDocument, variables, headers),
+      options
+    );
 export const GetNotesDocument = `
     query GetNotes {
   notes {
@@ -981,6 +1122,16 @@ export const GetNotesDocument = `
             id
             attributes {
               username
+            }
+          }
+        }
+        labels {
+          data {
+            id
+            attributes {
+              title
+              color
+              icon
             }
           }
         }
