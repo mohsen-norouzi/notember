@@ -1,5 +1,4 @@
-import { LabelList } from 'components/label';
-import { NoteList } from 'components/note';
+import { LabelList, NoteList } from 'components';
 
 export const NoteApp = () => {
   return (

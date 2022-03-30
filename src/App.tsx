@@ -1,10 +1,10 @@
 import './App.css';
 
-import { Layout } from 'components/ui';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { NoteApp } from 'pages';
+import { Layout } from 'components';
 
 const queryClient = new QueryClient({
   defaultOptions: {
