@@ -1,3 +1,4 @@
+# Write your query or mutation here
 query GetNotes {
   notes {
     data {
@@ -20,16 +21,7 @@ query GetNotes {
             id
             attributes {
               username
-            }
-          }
-        }
-        labels {
-          data {
-            id
-            attributes {
-              title
-              color
-              icon
+              email
             }
           }
         }
