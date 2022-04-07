@@ -14,10 +14,10 @@ export const NoteList = () => {
   console.log('notes', data);
 
   return (
-    <ul>
+    <div>
       {data?.notes?.data.map((note) => (
         <NoteItem key={note.id} note={note} />
       ))}
-    </ul>
+    </div>
   );
 };

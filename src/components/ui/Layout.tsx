@@ -1,12 +1,10 @@
-import { Box } from '@mui/system';
+import { Container } from '@mui/material';
 import { FC } from 'react';
-import { AppbarLayout } from './AppbarLayout';
 
 export const Layout: FC = (props) => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppbarLayout />
+    <Container maxWidth='xl' className='bg-gray-100 h-screen p-5'>
       {props.children}
-    </Box>
+    </Container>
   );
 };

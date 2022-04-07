@@ -12,7 +12,7 @@ export const NoteItem: FC<NoteItemProps> = ({ note }) => {
   const { title, description, image } = note.attributes;
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: 345, borderRadius: '0.5rem' }}>
       {image && (
         <CardMedia
           component='img'

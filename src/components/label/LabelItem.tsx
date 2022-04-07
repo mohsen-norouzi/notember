@@ -1,23 +1,25 @@
-import { Icon } from '@mui/material';
-import { LabelEntity } from 'graphql/generated/graphql-types';
+import Icon from '@mui/material/Icon';
 import { FC } from 'react';
 
 type LabelItemProps = {
-  label: LabelEntity;
+  title?: string;
+  icon: string;
+  color?: string | undefined | null;
 };
 
-export const LabelItem: FC<LabelItemProps> = ({ label }) => {
-  if (!label.attributes) return null;
-
-  const { title, icon, color } = label.attributes;
-
+export const LabelItem: FC<LabelItemProps> = ({ title, icon, color }) => {
   return (
-    <li className='flex'>
-      <Icon fontSize='small' style={{ color: color || '#2E2E2E' }}>
+    <div className='flex items-center cursor-pointer hover:bg-gray-100 rounded-md transition-all'>
+      <Icon
+        color='action'
+        fontSize='small'
+        style={{ color: color! }}
+        className='m-2 material-icons-outlined'
+      >
         {icon}
       </Icon>
 
-      <p>{title}</p>
-    </li>
+      <p className='flex-2 p-2 text-gray-600 text-sm'>{title}</p>
+    </div>
   );
 };
