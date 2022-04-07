@@ -527,6 +527,7 @@ export type Note = {
   checklist?: Maybe<ChecklistRelationResponseCollection>;
   createdAt?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
+  image?: Maybe<UploadFileEntityResponse>;
   labels?: Maybe<LabelRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   title: Scalars['String'];
@@ -592,6 +593,7 @@ export type NoteFiltersInput = {
 export type NoteInput = {
   checklist?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   description?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['ID']>;
   labels?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   title?: InputMaybe<Scalars['String']>;
@@ -1068,7 +1070,7 @@ export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'La
 export type GetNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: { __typename?: 'ChecklistRelationResponseCollection', data: Array<{ __typename?: 'ChecklistEntity', id?: string | null, attributes?: { __typename?: 'Checklist', title: string, checked?: boolean | null } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number } | null } | null } | null, checklist?: { __typename?: 'ChecklistRelationResponseCollection', data: Array<{ __typename?: 'ChecklistEntity', id?: string | null, attributes?: { __typename?: 'Checklist', title: string, checked?: boolean | null } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
 
 
 export const GetLabelsDocument = `
@@ -1108,6 +1110,19 @@ export const GetNotesDocument = `
         title
         description
         updatedAt
+        image {
+          data {
+            id
+            attributes {
+              name
+              url
+              hash
+              mime
+              provider
+              size
+            }
+          }
+        }
         checklist {
           data {
             id

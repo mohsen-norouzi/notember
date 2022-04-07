@@ -1,4 +1,3 @@
-# Write your query or mutation here
 query GetNotes {
   notes {
     data {
@@ -7,6 +6,19 @@ query GetNotes {
         title
         description
         updatedAt
+        image {
+          data {
+            id
+            attributes {
+              name
+              url
+              hash
+              mime
+              provider
+              size
+            }
+          }
+        }
         checklist {
           data {
             id

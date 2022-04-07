@@ -3,11 +3,11 @@ import { LabelList, NoteList } from 'components';
 export const NoteApp = () => {
   return (
     <div className='flex'>
-      <div>
+      <div className='flex-shrink'>
         <LabelList />
       </div>
 
-      <div className='flex-1'>
+      <div className='flex-auto'>
         <NoteList />
       </div>
     </div>
