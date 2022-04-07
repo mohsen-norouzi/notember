@@ -1,4 +1,4 @@
-import { LabelList, NoteList } from 'components';
+import { LabelList, NewNote, NoteList } from 'components';
 
 export const NoteApp = () => {
   return (
@@ -7,7 +7,8 @@ export const NoteApp = () => {
         <LabelList />
       </div>
 
-      <div className='flex flex-auto'>
+      <div className='flex flex-col flex-auto space-y-5'>
+        <NewNote />
         <NoteList />
       </div>
     </div>
