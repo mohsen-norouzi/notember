@@ -15,7 +15,7 @@ export const LabelList = () => {
   console.log('labels', data);
 
   return (
-    <div className='bg-white rounded-2xl py-4 shadow w-60 px-2'>
+    <div className='bg-white rounded-2xl py-4 shadow w-60 px-2 h-min'>
       <LabelItem key='notes' title='Notes' icon='label_outlined' />
       <LabelItem key='reminders' title='Reminders' icon='notifications_active' />
       <Divider style={{ margin: '0.75rem 0' }} />
