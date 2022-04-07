@@ -20,9 +20,7 @@ export const LabelList = () => {
       <LabelItem key='reminders' title='Reminders' icon='notifications_active' />
       <Divider style={{ margin: '0.75rem 0' }} />
 
-      <div className='flex mx-4 items-center'>
-        <p className='flex-2 p-2 text-gray-600'>Labels</p>
-      </div>
+      <p className='flex-2 p-2 text-gray-600 text-sm'>Labels</p>
 
       {data?.labels?.data.map(({ id, attributes }) => (
         <LabelItem
