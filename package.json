@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@mui/lab": "^5.0.0-alpha.76",
     "@mui/material": "^5.5.3",
     "graphql": "^16.3.0",
     "graphql-request": "^4.2.0",
