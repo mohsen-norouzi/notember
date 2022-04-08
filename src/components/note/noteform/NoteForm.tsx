@@ -1,6 +1,26 @@
+import { FC, useState } from 'react';
 import { Button, Icon, IconButton, TextField, Tooltip } from '@mui/material';
+import { NoteCheckList } from './checklist';
+import { Checklist } from 'graphql/generated/graphql-types';
 
-export const NoteForm = () => {
+type NoteFormProps = {
+  onCreate: () => void;
+};
+
+export const NoteForm: FC<NoteFormProps> = (props) => {
+  const [showChecklist, setShowCheckList] = useState(false);
+  const [checklist, setChecklist] = useState<Checklist[]>([]);
+
+  const onSubmitHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    props.onCreate();
+  };
+
+  const onChecklistChangeHandler = (value: Checklist[]) => {
+    setChecklist(value);
+    // console.log(value)
+  };
+
   return (
     <>
       <TextField
@@ -17,6 +37,7 @@ export const NoteForm = () => {
           }
         }}
       />
+
       <TextField
         variant='outlined'
         size='small'
@@ -32,10 +53,14 @@ export const NoteForm = () => {
         rows={4}
       />
 
+      {showChecklist && (
+        <NoteCheckList checklist={checklist} onChecklistChange={onChecklistChangeHandler} />
+      )}
+
       <div className='flex flex-auto justify-between items-center bg-white rounded-b-2xl p-2 px-3'>
         <div className='flex items-center'>
           <Tooltip title='Add checklist' placement='bottom'>
-            <IconButton>
+            <IconButton onClick={() => setShowCheckList(!showChecklist)}>
               <Icon className='material-icons-outlined'>playlist_add_check</Icon>
             </IconButton>
           </Tooltip>
@@ -46,6 +71,7 @@ export const NoteForm = () => {
           variant='contained'
           color='primary'
           size='small'
+          onClick={onSubmitHandler}
           sx={{
             borderRadius: '15px',
             border: 'none',

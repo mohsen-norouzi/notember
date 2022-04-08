@@ -50,7 +50,7 @@ export type BooleanFilterInput = {
 
 export type Checklist = {
   __typename?: 'Checklist';
-  checked?: Maybe<Scalars['Boolean']>;
+  checked: Scalars['Boolean'];
   checklist?: Maybe<ChecklistRelationResponseCollection>;
   createdAt?: Maybe<Scalars['DateTime']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
@@ -1070,7 +1070,7 @@ export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'La
 export type GetNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number } | null } | null } | null, checklist?: { __typename?: 'ChecklistRelationResponseCollection', data: Array<{ __typename?: 'ChecklistEntity', id?: string | null, attributes?: { __typename?: 'Checklist', title: string, checked?: boolean | null } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number } | null } | null } | null, checklist?: { __typename?: 'ChecklistRelationResponseCollection', data: Array<{ __typename?: 'ChecklistEntity', id?: string | null, attributes?: { __typename?: 'Checklist', title: string, checked: boolean } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
 
 
 export const GetLabelsDocument = `

@@ -17,6 +17,11 @@ export const NewNote = () => {
     setShowForm(false);
   };
 
+  const handleCreate = () => {
+    // dispatch(createNote(note));
+    handleFormClose();
+  };
+
   const handleClickAway = (ev: any) => {
     const preventCloseElements = document.querySelector('.prevent-add-close');
     const preventClose = preventCloseElements ? preventCloseElements.contains(ev.target) : false;
@@ -34,7 +39,7 @@ export const NewNote = () => {
         {showForm ? (
           <ClickAwayListener onClickAway={handleClickAway}>
             <div className='w-full'>
-              <NoteForm />
+              <NoteForm onCreate={handleCreate} />
             </div>
           </ClickAwayListener>
         ) : (
