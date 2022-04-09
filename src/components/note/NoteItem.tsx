@@ -73,12 +73,6 @@ export const NoteItem: FC<NoteItemProps> = ({ note }) => {
             {labels?.data.map(({ attributes }) => (
               <NoteLabel title={attributes!.title} key={attributes!.title} />
             ))}
-            {labels?.data.map(({ attributes }) => (
-              <NoteLabel title={attributes!.title} key={attributes!.title} />
-            ))}
-            {labels?.data.map(({ attributes }) => (
-              <NoteLabel title={attributes!.title} key={attributes!.title} />
-            ))}
           </div>
         )}
       </CardContent>
