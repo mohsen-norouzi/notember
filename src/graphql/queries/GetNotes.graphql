@@ -6,6 +6,7 @@ query GetNotes {
         title
         description
         updatedAt
+        checklist
         image {
           data {
             id
@@ -16,15 +17,6 @@ query GetNotes {
               mime
               provider
               size
-            }
-          }
-        }
-        checklist {
-          data {
-            id
-            attributes {
-              title
-              checked
             }
           }
         }

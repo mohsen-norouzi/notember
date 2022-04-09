@@ -1,0 +1,11 @@
+mutation createNote($data: NoteInput!) {
+  createNote(data: $data) {
+    data {
+      id
+      attributes {
+        title
+        description
+      }
+    }
+  }
+}

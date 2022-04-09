@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -46,66 +46,6 @@ export type BooleanFilterInput = {
   null?: InputMaybe<Scalars['Boolean']>;
   or?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
   startsWith?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type Checklist = {
-  __typename?: 'Checklist';
-  checked: Scalars['Boolean'];
-  checklist?: Maybe<ChecklistRelationResponseCollection>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  publishedAt?: Maybe<Scalars['DateTime']>;
-  title: Scalars['String'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type ChecklistChecklistArgs = {
-  filters?: InputMaybe<ChecklistFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-export type ChecklistEntity = {
-  __typename?: 'ChecklistEntity';
-  attributes?: Maybe<Checklist>;
-  id?: Maybe<Scalars['ID']>;
-};
-
-export type ChecklistEntityResponse = {
-  __typename?: 'ChecklistEntityResponse';
-  data?: Maybe<ChecklistEntity>;
-};
-
-export type ChecklistEntityResponseCollection = {
-  __typename?: 'ChecklistEntityResponseCollection';
-  data: Array<ChecklistEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type ChecklistFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<ChecklistFiltersInput>>>;
-  checked?: InputMaybe<BooleanFilterInput>;
-  checklist?: InputMaybe<ChecklistFiltersInput>;
-  createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
-  not?: InputMaybe<ChecklistFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<ChecklistFiltersInput>>>;
-  publishedAt?: InputMaybe<DateTimeFilterInput>;
-  title?: InputMaybe<StringFilterInput>;
-  updatedAt?: InputMaybe<DateTimeFilterInput>;
-};
-
-export type ChecklistInput = {
-  checked?: InputMaybe<Scalars['Boolean']>;
-  checklist?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
-  title?: InputMaybe<Scalars['String']>;
-};
-
-export type ChecklistRelationResponseCollection = {
-  __typename?: 'ChecklistRelationResponseCollection';
-  data: Array<ChecklistEntity>;
 };
 
 export type DateTimeFilterInput = {
@@ -160,7 +100,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = Checklist | I18NLocale | Label | Note | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = I18NLocale | Label | Note | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -332,7 +272,6 @@ export type LabelRelationResponseCollection = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createChecklist?: Maybe<ChecklistEntityResponse>;
   createLabel?: Maybe<LabelEntityResponse>;
   createNote?: Maybe<NoteEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -340,7 +279,6 @@ export type Mutation = {
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  deleteChecklist?: Maybe<ChecklistEntityResponse>;
   deleteLabel?: Maybe<LabelEntityResponse>;
   deleteNote?: Maybe<NoteEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
@@ -359,7 +297,6 @@ export type Mutation = {
   removeFile?: Maybe<UploadFileEntityResponse>;
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
-  updateChecklist?: Maybe<ChecklistEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateLabel?: Maybe<LabelEntityResponse>;
   updateNote?: Maybe<NoteEntityResponse>;
@@ -369,11 +306,6 @@ export type Mutation = {
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
-};
-
-
-export type MutationCreateChecklistArgs = {
-  data: ChecklistInput;
 };
 
 
@@ -399,11 +331,6 @@ export type MutationCreateUsersPermissionsRoleArgs = {
 
 export type MutationCreateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
-};
-
-
-export type MutationDeleteChecklistArgs = {
-  id: Scalars['ID'];
 };
 
 
@@ -472,12 +399,6 @@ export type MutationResetPasswordArgs = {
 };
 
 
-export type MutationUpdateChecklistArgs = {
-  data: ChecklistInput;
-  id: Scalars['ID'];
-};
-
-
 export type MutationUpdateFileInfoArgs = {
   id: Scalars['ID'];
   info?: InputMaybe<FileInfoInput>;
@@ -524,7 +445,7 @@ export type MutationUploadArgs = {
 
 export type Note = {
   __typename?: 'Note';
-  checklist?: Maybe<ChecklistRelationResponseCollection>;
+  checklist?: Maybe<Scalars['JSON']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   description?: Maybe<Scalars['String']>;
   image?: Maybe<UploadFileEntityResponse>;
@@ -533,14 +454,6 @@ export type Note = {
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
   users?: Maybe<UsersPermissionsUserRelationResponseCollection>;
-};
-
-
-export type NoteChecklistArgs = {
-  filters?: InputMaybe<ChecklistFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -577,7 +490,7 @@ export type NoteEntityResponseCollection = {
 
 export type NoteFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<NoteFiltersInput>>>;
-  checklist?: InputMaybe<ChecklistFiltersInput>;
+  checklist?: InputMaybe<JsonFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
@@ -591,7 +504,7 @@ export type NoteFiltersInput = {
 };
 
 export type NoteInput = {
-  checklist?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  checklist?: InputMaybe<Scalars['JSON']>;
   description?: InputMaybe<Scalars['String']>;
   image?: InputMaybe<Scalars['ID']>;
   labels?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -627,8 +540,6 @@ export enum PublicationState {
 
 export type Query = {
   __typename?: 'Query';
-  checklist?: Maybe<ChecklistEntityResponse>;
-  checklists?: Maybe<ChecklistEntityResponseCollection>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   label?: Maybe<LabelEntityResponse>;
@@ -642,19 +553,6 @@ export type Query = {
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
   usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
-};
-
-
-export type QueryChecklistArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryChecklistsArgs = {
-  filters?: InputMaybe<ChecklistFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -1062,6 +960,13 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type CreateNoteMutationVariables = Exact<{
+  data: NoteInput;
+}>;
+
+
+export type CreateNoteMutation = { __typename?: 'Mutation', createNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null } | null } | null } | null };
+
 export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1070,9 +975,35 @@ export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'La
 export type GetNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number } | null } | null } | null, checklist?: { __typename?: 'ChecklistRelationResponseCollection', data: Array<{ __typename?: 'ChecklistEntity', id?: string | null, attributes?: { __typename?: 'Checklist', title: string, checked: boolean } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number } | null } | null } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
 
 
+export const CreateNoteDocument = `
+    mutation createNote($data: NoteInput!) {
+  createNote(data: $data) {
+    data {
+      id
+      attributes {
+        title
+        description
+      }
+    }
+  }
+}
+    `;
+export const useCreateNoteMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreateNoteMutation, TError, CreateNoteMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreateNoteMutation, TError, CreateNoteMutationVariables, TContext>(
+      ['createNote'],
+      (variables?: CreateNoteMutationVariables) => fetcher<CreateNoteMutation, CreateNoteMutationVariables>(client, CreateNoteDocument, variables, headers)(),
+      options
+    );
 export const GetLabelsDocument = `
     query GetLabels {
   labels {
@@ -1110,6 +1041,7 @@ export const GetNotesDocument = `
         title
         description
         updatedAt
+        checklist
         image {
           data {
             id
@@ -1120,15 +1052,6 @@ export const GetNotesDocument = `
               mime
               provider
               size
-            }
-          }
-        }
-        checklist {
-          data {
-            id
-            attributes {
-              title
-              checked
             }
           }
         }

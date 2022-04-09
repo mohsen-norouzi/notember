@@ -1,23 +1,23 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Icon, IconButton, Input, ListItem } from '@mui/material';
 import clsx from 'clsx';
 
 type CheckListFormProps = {
-  onAdd: (title: string) => void;
+  onAdd: (text: string) => void;
 };
 
 export const CheckListForm: FC<CheckListFormProps> = (props) => {
-  const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
   const [focused, setFocused] = useState(false);
 
   const onSubmitHandler = (e: React.MouseEvent) => {
     e.preventDefault();
-    props.onAdd(title);
-    setTitle('');
+    props.onAdd(text);
+    setText('');
   };
 
   const canAdd = () => {
-    if (title.trim() === '' || !focused) {
+    if (text.trim() === '' || !focused) {
       return false;
     }
 
@@ -25,7 +25,7 @@ export const CheckListForm: FC<CheckListFormProps> = (props) => {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+    setText(event.target.value);
   };
 
   return (
@@ -42,7 +42,7 @@ export const CheckListForm: FC<CheckListFormProps> = (props) => {
       </IconButton>
       <Input
         name='text'
-        value={title}
+        value={text}
         placeholder='Add an item'
         onChange={handleChange}
         disableUnderline

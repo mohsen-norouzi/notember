@@ -1,8 +1,8 @@
-import { Button, List } from '@mui/material';
-import { Checklist } from 'graphql/generated/graphql-types';
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { List } from '@mui/material';
 import { CheckListForm } from './CheckListForm';
 import { CheckListItem } from './CheckListItem';
+import { Checklist } from 'models';
 
 type CheckListProps = {
   checklist: Checklist[];
@@ -10,8 +10,8 @@ type CheckListProps = {
 };
 
 export const NoteCheckList: FC<CheckListProps> = (props) => {
-  const onAddHandler = (title: string) => {
-    const newItem: Checklist = { title, checked: false };
+  const onAddHandler = (text: string) => {
+    const newItem: Checklist = { text, checked: false };
     props.onChecklistChange([...props.checklist, newItem]);
   };
 

@@ -13,7 +13,7 @@ export const NoteItem: FC<NoteItemProps> = ({ note }) => {
 
   return (
     <Card sx={{ borderRadius: '0.5rem' }} className='w-full'>
-      {image && (
+      {image?.data && (
         <CardMedia
           component='img'
           image={import.meta.env.VITE_GRAPHQL_ENDPOINT + image.data?.attributes?.url}

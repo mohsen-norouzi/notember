@@ -1,8 +1,7 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Checkbox, Icon, IconButton, Input, ListItem } from '@mui/material';
 import clsx from 'clsx';
-
-import { Checklist } from 'graphql/generated/graphql-types';
+import { Checklist } from 'models';
 
 type CheckListItemProps = {
   item: Checklist;
@@ -16,7 +15,7 @@ export const CheckListItem: FC<CheckListItemProps> = (props) => {
       return props.onChange('checked', event.target.checked);
     }
 
-    props.onChange('title', event.target.value);
+    props.onChange('text', event.target.value);
   };
 
   return (
@@ -30,7 +29,7 @@ export const CheckListItem: FC<CheckListItemProps> = (props) => {
       <Input
         className={clsx('flex flex-1', { 'line-through opacity-50': props.item.checked })}
         name='text'
-        value={props.item.title}
+        value={props.item.text}
         placeholder='Add an item'
         onChange={handleChange}
         disableUnderline

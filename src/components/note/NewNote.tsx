@@ -1,8 +1,19 @@
-import { Box, ClickAwayListener, TextField, Typography } from '@mui/material';
+import { Box, ClickAwayListener, Typography } from '@mui/material';
+import {
+  CreateNoteMutation,
+  NoteInput,
+  useCreateNoteMutation
+} from 'graphql/generated/graphql-types';
+import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import { useState } from 'react';
 import { NoteForm } from './noteform';
 
 export const NewNote = () => {
+  const { data, error, isLoading, mutate } = useCreateNoteMutation<CreateNoteMutation, Error>(
+    graphqlRequestClient,
+    {}
+  );
+
   const [showForm, setShowForm] = useState(false);
 
   const handleFormOpen = () => {
@@ -17,7 +28,10 @@ export const NewNote = () => {
     setShowForm(false);
   };
 
-  const handleCreate = () => {
+  const handleCreate = (note: NoteInput) => {
+    const newNote = note;
+    newNote.publishedAt = new Date();
+    mutate({ data: newNote });
     // dispatch(createNote(note));
     handleFormClose();
   };

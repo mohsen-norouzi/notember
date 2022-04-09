@@ -1,19 +1,30 @@
 import { FC, useState } from 'react';
 import { Button, Icon, IconButton, TextField, Tooltip } from '@mui/material';
 import { NoteCheckList } from './checklist';
-import { Checklist } from 'graphql/generated/graphql-types';
+import { NoteInput } from 'graphql/generated/graphql-types';
+import { Checklist } from 'models';
 
 type NoteFormProps = {
-  onCreate: () => void;
+  onCreate: (note: NoteInput) => void;
 };
 
 export const NoteForm: FC<NoteFormProps> = (props) => {
   const [showChecklist, setShowCheckList] = useState(false);
+
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [checklist, setChecklist] = useState<Checklist[]>([]);
 
   const onSubmitHandler = (e: React.MouseEvent) => {
     e.preventDefault();
-    props.onCreate();
+
+    const newNote: NoteInput = {
+      title,
+      description,
+      checklist
+    };
+
+    props.onCreate(newNote);
   };
 
   const onChecklistChangeHandler = (value: Checklist[]) => {
@@ -27,7 +38,8 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         variant='outlined'
         size='small'
         placeholder='Title'
-        className='bg-white rounded-t-2xl focus:h-48 w-full'
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
+        className='bg-white rounded-t-2xl w-full'
         inputProps={{ style: { fontSize: '0.9rem', fontWeight: '500' } }}
         InputProps={{ className: 'p-2' }}
         sx={{
@@ -42,7 +54,10 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         variant='outlined'
         size='small'
         placeholder='Take a note...'
-        className='bg-white focus:h-48 w-full'
+        className='bg-white w-full'
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setDescription(event.target.value)
+        }
         inputProps={{ style: { fontSize: '0.9rem', padding: '8px' } }}
         sx={{
           '.MuiOutlinedInput-notchedOutline': {
