@@ -43,26 +43,33 @@ export const NoteItem: FC<NoteItemProps> = ({ note }) => {
         </Typography>
 
         {checklist && checklist.length > 0 && (
-          <List sx={{ padding: '0.5rem 0' }} dense>
-            {checklist.map((item: Checklist, index: number) => (
-              <ListItem key={index} className='flex items-center w-full' sx={{ padding: 0 }} dense>
-                <Icon color='action' className='text-16 material-icons-outlined' fontSize='small'>
-                  {item.checked ? 'check_box_outline' : 'check_box_outline_blank'}
-                </Icon>
-                <Typography
-                  className={clsx('truncate pl-2', item.checked && 'line-through')}
-                  color={item.checked ? 'textSecondary' : 'inherit'}
-                  fontSize='small'
+          <div className='pt-5'>
+            <List sx={{ padding: 0 }} dense>
+              {checklist.map((item: Checklist, index: number) => (
+                <ListItem
+                  key={index}
+                  className='flex items-center w-full'
+                  sx={{ padding: 0 }}
+                  dense
                 >
-                  {item.text}
-                </Typography>
-              </ListItem>
-            ))}
-          </List>
+                  <Icon color='action' className='text-16 material-icons-outlined' fontSize='small'>
+                    {item.checked ? 'check_box_outline' : 'check_box_outline_blank'}
+                  </Icon>
+                  <Typography
+                    className={clsx('truncate pl-2', item.checked && 'line-through')}
+                    color={item.checked ? 'textSecondary' : 'inherit'}
+                    fontSize='small'
+                  >
+                    {item.text}
+                  </Typography>
+                </ListItem>
+              ))}
+            </List>
+          </div>
         )}
 
         {labels?.data && labels?.data.length > 0 && (
-          <div className='flex flex-wrap mt-2 gap-1'>
+          <div className='flex flex-wrap mt-2 gap-1 pt-5'>
             {labels?.data.map(({ attributes }) => (
               <NoteLabel title={attributes!.title} key={attributes!.title} />
             ))}

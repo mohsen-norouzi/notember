@@ -1,10 +1,9 @@
-import { Container } from '@mui/material';
 import { FC } from 'react';
 
 export const Layout: FC = (props) => {
   return (
-    <Container maxWidth={false} className='bg-gray-100 h-screen p-5'>
+    <div className='bg-gray-100 h-screen w-screen'>
       {props.children}
-    </Container>
+    </div>
   );
 };
