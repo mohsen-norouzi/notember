@@ -1,6 +1,17 @@
 import { FC } from 'react';
 import { NoteEntity } from 'graphql/generated/graphql-types';
-import { Card, CardContent, CardMedia, dialogTitleClasses, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  dialogTitleClasses,
+  Icon,
+  List,
+  ListItem,
+  Typography
+} from '@mui/material';
+import clsx from 'clsx';
+import { Checklist } from 'models';
 
 type NoteItemProps = {
   note: NoteEntity;
@@ -9,7 +20,7 @@ type NoteItemProps = {
 export const NoteItem: FC<NoteItemProps> = ({ note }) => {
   if (!note.attributes) return null;
 
-  const { title, description, image } = note.attributes;
+  const { title, description, image, checklist } = note.attributes;
 
   return (
     <Card sx={{ borderRadius: '0.5rem' }} className='w-full'>
@@ -27,6 +38,25 @@ export const NoteItem: FC<NoteItemProps> = ({ note }) => {
         <Typography variant='body2' color='text.secondary'>
           {description}
         </Typography>
+
+        {checklist && checklist.length > 0 && (
+          <List sx={{ padding: '0.5rem 0' }} dense>
+            {checklist.map((item: Checklist, index: number) => (
+              <ListItem key={index} className='flex items-center w-full' sx={{ padding: 0 }} dense>
+                <Icon color='action' className='text-16 material-icons-outlined' fontSize='small'>
+                  {item.checked ? 'check_box_outline' : 'check_box_outline_blank'}
+                </Icon>
+                <Typography
+                  className={clsx('truncate pl-2', item.checked && 'line-through')}
+                  color={item.checked ? 'textSecondary' : 'inherit'}
+                  fontSize='small'
+                >
+                  {item.text}
+                </Typography>
+              </ListItem>
+            ))}
+          </List>
+        )}
       </CardContent>
     </Card>
   );
