@@ -6,7 +6,6 @@ query GetNotes {
         title
         description
         updatedAt
-        checklist
         image {
           data {
             id
@@ -20,6 +19,15 @@ query GetNotes {
             }
           }
         }
+        labels {
+          data {
+            id
+            attributes {
+              title
+            }
+          }
+        }
+        checklist
         users {
           data {
             id

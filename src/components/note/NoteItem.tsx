@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { NoteEntity } from 'graphql/generated/graphql-types';
 import {
   Card,
+  CardActions,
   CardContent,
   CardMedia,
   dialogTitleClasses,
@@ -12,6 +13,7 @@ import {
 } from '@mui/material';
 import clsx from 'clsx';
 import { Checklist } from 'models';
+import { NoteLabel } from './NoteLabel';
 
 type NoteItemProps = {
   note: NoteEntity;
@@ -20,7 +22,7 @@ type NoteItemProps = {
 export const NoteItem: FC<NoteItemProps> = ({ note }) => {
   if (!note.attributes) return null;
 
-  const { title, description, image, checklist } = note.attributes;
+  const { title, description, image, checklist, labels } = note.attributes;
 
   return (
     <Card sx={{ borderRadius: '0.5rem' }} className='w-full'>
@@ -31,7 +33,8 @@ export const NoteItem: FC<NoteItemProps> = ({ note }) => {
           alt={image.data?.attributes?.name}
         />
       )}
-      <CardContent>
+
+      <CardContent sx={{ paddingBottom: '1rem !important' }}>
         <Typography gutterBottom variant='h5' component='div'>
           {title}
         </Typography>
@@ -56,6 +59,20 @@ export const NoteItem: FC<NoteItemProps> = ({ note }) => {
               </ListItem>
             ))}
           </List>
+        )}
+
+        {labels?.data && labels?.data.length > 0 && (
+          <div className='flex flex-wrap mt-2 gap-1'>
+            {labels?.data.map(({ attributes }) => (
+              <NoteLabel title={attributes!.title} key={attributes!.title} />
+            ))}
+            {labels?.data.map(({ attributes }) => (
+              <NoteLabel title={attributes!.title} key={attributes!.title} />
+            ))}
+            {labels?.data.map(({ attributes }) => (
+              <NoteLabel title={attributes!.title} key={attributes!.title} />
+            ))}
+          </div>
         )}
       </CardContent>
     </Card>
