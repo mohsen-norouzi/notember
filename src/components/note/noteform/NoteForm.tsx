@@ -48,6 +48,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
             fontWeight: 'bold'
           }
         }}
+        autoFocus
       />
 
       <TextField
