@@ -1,31 +1,26 @@
 import { FC } from 'react';
 import { NoteEntity } from 'graphql/generated/graphql-types';
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  dialogTitleClasses,
-  Icon,
-  List,
-  ListItem,
-  Typography
-} from '@mui/material';
+import { Card, CardContent, CardMedia, Icon, List, ListItem, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { Checklist } from 'models';
 import { NoteLabel } from './NoteLabel';
 
 type NoteItemProps = {
   note: NoteEntity;
+  onClick: (note: NoteEntity) => void;
 };
 
-export const NoteItem: FC<NoteItemProps> = ({ note }) => {
+export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
   if (!note.attributes) return null;
 
   const { title, description, image, checklist, labels } = note.attributes;
 
   return (
-    <Card sx={{ borderRadius: '0.5rem' }} className='w-full'>
+    <Card
+      sx={{ borderRadius: '0.5rem' }}
+      className='w-full cursor-pointer hover:shadow-xl'
+      onClick={() => onClick(note)}
+    >
       {image?.data && (
         <CardMedia
           component='img'

@@ -1,11 +1,22 @@
-import { GetNotesQuery, useGetNotesQuery } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
-
+import { FC, useState } from 'react';
 import Masonry from '@mui/lab/Masonry';
 
-import { NoteItem } from './NoteItem';
+import {
+  GetNotesQuery,
+  Maybe,
+  NoteEntity,
+  useGetNotesQuery
+} from 'graphql/generated/graphql-types';
+import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 
-export const NoteList = () => {
+import { NoteItem } from './NoteItem';
+import { NoteDialog } from './NoteDialog';
+
+type NoteListProps = {};
+
+export const NoteList: FC<NoteListProps> = (props) => {
+  const [selectedNote, setSelectedNote] = useState<Maybe<NoteEntity>>(null);
+
   const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(
     graphqlRequestClient,
     {}
@@ -14,17 +25,21 @@ export const NoteList = () => {
   if (isLoading) return <p>loading notes</p>;
   if (error) return <p>error loading notes</p>;
 
-  console.log('notes', data);
-
   if (!data || !data.notes || data.notes.data.length === 0) {
     return <p>There are no notes!</p>;
   }
 
   return (
-    <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} sx={{ alignContent: 'flex-start' }}>
-      {data.notes.data.map((note) => (
-        <NoteItem key={note.id} note={note} />
-      ))}
-    </Masonry>
+    <>
+      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} sx={{ alignContent: 'flex-start' }}>
+        {data.notes.data.map((note) => (
+          <NoteItem key={note.id} note={note} onClick={(note) => setSelectedNote(note)} />
+        ))}
+      </Masonry>
+
+      {selectedNote && (
+        <NoteDialog note={selectedNote || null} onClose={() => setSelectedNote(null)} />
+      )}
+    </>
   );
 };

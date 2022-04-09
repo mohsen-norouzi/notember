@@ -1,19 +1,19 @@
 import { FC, useState } from 'react';
 import { Button, Icon, IconButton, TextField, Tooltip } from '@mui/material';
 import { NoteCheckList } from './checklist';
-import { NoteInput } from 'graphql/generated/graphql-types';
+import { NoteEntity, NoteInput } from 'graphql/generated/graphql-types';
 import { Checklist } from 'models';
 
 type NoteFormProps = {
+  note?: NoteEntity;
   onCreate: (note: NoteInput) => void;
 };
 
 export const NoteForm: FC<NoteFormProps> = (props) => {
-  const [showChecklist, setShowCheckList] = useState(false);
-
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [checklist, setChecklist] = useState<Checklist[]>([]);
+  const [title, setTitle] = useState(props.note?.attributes?.title || '');
+  const [description, setDescription] = useState(props.note?.attributes?.description || '');
+  const [checklist, setChecklist] = useState<Checklist[]>(props.note?.attributes?.checklist || []);
+  const [showChecklist, setShowCheckList] = useState(checklist.length > 0);
 
   const onSubmitHandler = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -29,7 +29,6 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
 
   const onChecklistChangeHandler = (value: Checklist[]) => {
     setChecklist(value);
-    // console.log(value)
   };
 
   return (
@@ -38,6 +37,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         variant='outlined'
         size='small'
         placeholder='Title'
+        value={title}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
         className='bg-white rounded-t-2xl w-full'
         inputProps={{ style: { fontSize: '0.9rem', fontWeight: '500' } }}
@@ -56,6 +56,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         size='small'
         placeholder='Take a note...'
         className='bg-white w-full'
+        value={description}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           setDescription(event.target.value)
         }

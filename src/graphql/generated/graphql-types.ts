@@ -977,6 +977,14 @@ export type GetNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number } | null } | null } | null, labels?: { __typename?: 'LabelRelationResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
 
+export type UpdateNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: NoteInput;
+}>;
+
+
+export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null } | null } | null } | null };
+
 
 export const CreateNoteDocument = `
     mutation createNote($data: NoteInput!) {
@@ -1089,5 +1097,31 @@ export const useGetNotesQuery = <
     useQuery<GetNotesQuery, TError, TData>(
       variables === undefined ? ['GetNotes'] : ['GetNotes', variables],
       fetcher<GetNotesQuery, GetNotesQueryVariables>(client, GetNotesDocument, variables, headers),
+      options
+    );
+export const UpdateNoteDocument = `
+    mutation updateNote($id: ID!, $data: NoteInput!) {
+  updateNote(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        title
+        description
+      }
+    }
+  }
+}
+    `;
+export const useUpdateNoteMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>(
+      ['updateNote'],
+      (variables?: UpdateNoteMutationVariables) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(client, UpdateNoteDocument, variables, headers)(),
       options
     );

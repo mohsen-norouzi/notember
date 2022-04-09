@@ -1,5 +1,4 @@
-import { Backdrop } from '@mui/material';
-import { LabelList, NewNote, NoteList } from 'components';
+import { LabelList, NewNote, NoteDialog, NoteList } from 'components';
 
 export const NoteApp = () => {
   return (
