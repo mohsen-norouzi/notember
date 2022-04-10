@@ -12,7 +12,13 @@ import {
   ListItem
 } from '@mui/material';
 import { LabelsForm } from './LabelsForm';
-import { LabelEntity } from 'graphql/generated/graphql-types';
+import {
+  DeleteLabelMutation,
+  LabelEntity,
+  useDeleteLabelMutation
+} from 'graphql/generated/graphql-types';
+import { useQueryClient } from 'react-query';
+import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 
 type LabelsDialogProps = {
   open: boolean;
@@ -21,6 +27,17 @@ type LabelsDialogProps = {
 };
 
 export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
+  const queryClient = useQueryClient();
+
+  const { data, error, isLoading, mutate } = useDeleteLabelMutation<DeleteLabelMutation, Error>(
+    graphqlRequestClient,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('GetLabels');
+      }
+    }
+  );
+
   const onCancelHandler = () => {
     props.onClose();
   };
@@ -28,6 +45,10 @@ export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
   const onSaveHandler = () => {};
 
   const onChange = () => {};
+
+  const onDeleteHandler = (id: string) => {
+    mutate({ id });
+  };
 
   return (
     <Dialog
@@ -67,7 +88,7 @@ export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
                 />
               </div>
 
-              <IconButton style={{ inset: 0 }} onClick={() => {}}>
+              <IconButton style={{ inset: 0 }} onClick={() => onDeleteHandler(label.id!)}>
                 <Icon fontSize='small' className='material-icons-outlined'>
                   delete
                 </Icon>

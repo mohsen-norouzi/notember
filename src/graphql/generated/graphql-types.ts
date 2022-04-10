@@ -987,6 +987,13 @@ export type CreateLabelMutationVariables = Exact<{
 
 export type CreateLabelMutation = { __typename?: 'Mutation', createLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null } | null } | null };
 
+export type DeleteLabelMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteLabelMutation = { __typename?: 'Mutation', deleteLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null } | null } | null };
+
 export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1129,6 +1136,28 @@ export const useCreateLabelMutation = <
     useMutation<CreateLabelMutation, TError, CreateLabelMutationVariables, TContext>(
       ['createLabel'],
       (variables?: CreateLabelMutationVariables) => fetcher<CreateLabelMutation, CreateLabelMutationVariables>(client, CreateLabelDocument, variables, headers)(),
+      options
+    );
+export const DeleteLabelDocument = `
+    mutation deleteLabel($id: ID!) {
+  deleteLabel(id: $id) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteLabelMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<DeleteLabelMutation, TError, DeleteLabelMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<DeleteLabelMutation, TError, DeleteLabelMutationVariables, TContext>(
+      ['deleteLabel'],
+      (variables?: DeleteLabelMutationVariables) => fetcher<DeleteLabelMutation, DeleteLabelMutationVariables>(client, DeleteLabelDocument, variables, headers)(),
       options
     );
 export const GetLabelsDocument = `
