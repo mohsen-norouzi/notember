@@ -42,7 +42,11 @@ export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
 
         <List sx={{ marginTop: '0.75rem' }}>
           {props.labels.map((label) => (
-            <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <ListItem
+              disablePadding
+              key={label.id}
+              sx={{ display: 'flex', justifyContent: 'space-between' }}
+            >
               <div className='flex items-center '>
                 <IconButton onClick={() => {}}>
                   <Icon
