@@ -42,8 +42,6 @@ export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
     props.onClose();
   };
 
-  const onSaveHandler = () => {};
-
   const onChange = () => {};
 
   const onDeleteHandler = (id: string) => {
@@ -99,8 +97,7 @@ export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onCancelHandler}>Cancel</Button>
-        <Button onClick={onSaveHandler}>Save</Button>
+        <Button onClick={onCancelHandler}>Close</Button>
       </DialogActions>
     </Dialog>
   );

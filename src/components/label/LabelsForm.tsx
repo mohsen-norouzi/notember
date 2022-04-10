@@ -20,6 +20,9 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('GetLabels');
+        setTitle('');
+        setColor(null);
+        setIcon(null);
       }
     }
   );
@@ -63,6 +66,7 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
           sx={{ fontSize: '14px' }}
           disableUnderline
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
+          value={title}
           startAdornment={
             <InputAdornment position='start'>
               <Icon className='list-item-icon text-16' color='action' fontSize='small'>
@@ -83,6 +87,7 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
               </IconButton>
             </InputAdornment>
           }
+          autoFocus
         />
       </FormControl>
     </form>
