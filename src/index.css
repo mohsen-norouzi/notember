@@ -3,3 +3,11 @@ body {
   line-height: 1.4;
   overflow-x: hidden;
 }
+
+.material-icons {
+  font-family: 'Material Icons Outlined';
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border: none !important;
+}

@@ -4,9 +4,11 @@ import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-typ
 import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import { useState } from 'react';
 import { LabelItem } from './LabelItem';
+import { LabelsDialog } from './LabelsDialog';
 
 export const LabelList = () => {
-  const [open, setOpen] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showLabelsDialog, setShowLabelsDialog] = useState(false);
 
   const { data, error, isLoading } = useGetLabelsQuery<GetLabelsQuery, Error>(
     graphqlRequestClient,
@@ -16,7 +18,7 @@ export const LabelList = () => {
   if (isLoading) return <p>loading labels</p>;
   if (error) return <p>error loading labels</p>;
 
-  console.log('labels', data);
+  const onLabelClickHandler = () => {};
 
   return (
     <Box className='flex justify-center'>
@@ -28,7 +30,7 @@ export const LabelList = () => {
         <IconButton
           className='bg-white'
           style={{ position: 'absolute', left: 0, top: '0' }}
-          onClick={() => setOpen((isOpen) => !isOpen)}
+          onClick={() => setShowSidebar((isOpen) => !isOpen)}
         >
           <Icon className='material-icons-outlined' fontSize='small'>
             label
@@ -43,11 +45,16 @@ export const LabelList = () => {
           height: { xs: '100%', sm: 'min-content' },
           borderRadius: { xs: '0', sm: '0 1rem 1rem 0' },
           marginTop: { xs: '0', sm: '5.5rem;' },
-          left: { xs: open ? '0' : '-15rem', sm: '' }
+          left: { xs: showSidebar ? '0' : '-15rem', sm: '' }
         }}
       >
-        <LabelItem key='notes' title='Notes' icon='label_outlined' />
-        <LabelItem key='reminders' title='Reminders' icon='notifications_active' />
+        <LabelItem key='notes' title='Notes' icon='label_outlined' onClick={onLabelClickHandler} />
+        <LabelItem
+          key='reminders'
+          title='Reminders'
+          icon='notifications_active'
+          onClick={onLabelClickHandler}
+        />
         <Divider style={{ margin: '0.75rem 0' }} />
 
         <p className='flex-2 p-2 text-gray-600 text-sm'>Labels</p>
@@ -58,14 +65,27 @@ export const LabelList = () => {
             title={attributes?.title}
             icon={attributes?.icon!}
             color={attributes?.color}
+            onClick={onLabelClickHandler}
           />
         ))}
 
-        <LabelItem key='edit' title='Edit Labels' icon='edit_border' />
+        <LabelItem
+          key='edit'
+          title='Edit Labels'
+          icon='edit_border'
+          onClick={() => setShowLabelsDialog(true)}
+        />
         <Divider style={{ margin: '0.75rem 0' }} />
-        <LabelItem key='archive' title='Archive' icon='archive' />
+        <LabelItem key='archive' title='Archive' icon='archive' onClick={onLabelClickHandler} />
       </Box>
-      <Backdrop className='z-10' open={open} onClick={() => setOpen(false)} />
+
+      <LabelsDialog
+        open={showLabelsDialog}
+        onClose={() => setShowLabelsDialog(false)}
+        labels={data?.labels?.data || []}
+      />
+
+      <Backdrop className='z-10' open={showSidebar} onClick={() => setShowSidebar(false)} />
     </Box>
   );
 };
