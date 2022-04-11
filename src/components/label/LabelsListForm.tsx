@@ -5,7 +5,6 @@ import {
   DeleteLabelMutation,
   LabelEntity,
   LabelInput,
-  Maybe,
   UpdateLabelMutation,
   useDeleteLabelMutation,
   useUpdateLabelMutation

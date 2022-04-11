@@ -3,6 +3,7 @@ import { Icon, IconButton, Input, ListItem } from '@mui/material';
 
 import { LabelEntity, LabelInput, Maybe } from 'graphql/generated/graphql-types';
 import { useDebounce } from 'hooks';
+import { IconPicker } from 'components/ui';
 
 type LabelListFormItemProps = {
   label?: Maybe<LabelEntity>;
@@ -16,6 +17,19 @@ export const LabelListFormItem: FC<LabelListFormItemProps> = (props) => {
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
+  };
+
+  const onIconPickHandler = (icon: string, color: string) => {
+    const id = props.label?.id;
+
+    if (id) {
+      let data: LabelInput = {
+        icon,
+        color
+      };
+
+      props.onChange(data, id);
+    }
   };
 
   const onDeleteHandler = () => {
@@ -45,16 +59,11 @@ export const LabelListFormItem: FC<LabelListFormItemProps> = (props) => {
   return (
     <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <div className='flex items-center '>
-        <IconButton onClick={() => {}}>
-          <Icon
-            color='action'
-            fontSize='small'
-            style={{ color: props.label.attributes.color! }}
-            className='material-icons-outlined'
-          >
-            {props.label.attributes.icon}
-          </Icon>
-        </IconButton>
+        <IconPicker
+          onPick={onIconPickHandler}
+          icon={props.label.attributes.icon!}
+          color={props.label.attributes.color!}
+        />
 
         <Input
           className='p-0 h-full ml-2'

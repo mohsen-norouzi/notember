@@ -17,6 +17,7 @@
     "graphql": "^16.3.0",
     "graphql-request": "^4.2.0",
     "react": "^17.0.2",
+    "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
     "react-query": "^3.34.19",
     "react-router-dom": "6"
@@ -27,6 +28,7 @@
     "@graphql-codegen/typescript-operations": "^2.3.5",
     "@graphql-codegen/typescript-react-query": "^3.5.9",
     "@types/react": "^17.0.33",
+    "@types/react-color": "^3.0.6",
     "@types/react-dom": "^17.0.10",
     "@vitejs/plugin-react": "^1.0.7",
     "autoprefixer": "^10.4.4",
