@@ -1,6 +1,8 @@
+import React, { FC, useEffect, useState } from 'react';
 import { Icon, IconButton, Input, ListItem } from '@mui/material';
+
 import { LabelEntity, LabelInput, Maybe } from 'graphql/generated/graphql-types';
-import React, { FC, useState } from 'react';
+import { useDebounce } from 'hooks';
 
 type LabelListFormItemProps = {
   label?: Maybe<LabelEntity>;
@@ -9,24 +11,12 @@ type LabelListFormItemProps = {
 };
 
 export const LabelListFormItem: FC<LabelListFormItemProps> = (props) => {
+  const [title, setTitle] = useState(props.label?.attributes?.title || '');
+  const debouncedTitle = useDebounce<string>(title, 500);
+
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const attributes = props.label?.attributes;
-    const id = props.label?.id;
-
-    if (attributes && id) {
-      let data: LabelInput = {
-        [event.target.name]: event.target.value
-      };
-
-      debugger;
-
-      props.onChange(data, id);
-    }
+    setTitle(event.target.value);
   };
-
-  if (!props.label || !props.label.attributes) {
-    return null;
-  }
 
   const onDeleteHandler = () => {
     const id = props.label?.id;
@@ -35,6 +25,22 @@ export const LabelListFormItem: FC<LabelListFormItemProps> = (props) => {
       props.onDelete(id);
     }
   };
+
+  if (!props.label || !props.label.attributes) {
+    return null;
+  }
+
+  useEffect(() => {
+    const id = props.label?.id;
+
+    if (id) {
+      let data: LabelInput = {
+        title: debouncedTitle
+      };
+
+      props.onChange(data, id);
+    }
+  }, [debouncedTitle]);
 
   return (
     <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -53,7 +59,7 @@ export const LabelListFormItem: FC<LabelListFormItemProps> = (props) => {
         <Input
           className='p-0 h-full ml-2'
           sx={{ fontSize: '14px', padding: '4px 0 2.5px' }}
-          value={props.label.attributes.title}
+          value={title}
           name='title'
           onChange={onChangeHandler}
           disableUnderline
