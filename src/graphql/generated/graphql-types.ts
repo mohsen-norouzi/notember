@@ -999,6 +999,14 @@ export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'LabelEntityResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null }> } | null };
 
+export type UpdateLabelMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: LabelInput;
+}>;
+
+
+export type UpdateLabelMutation = { __typename?: 'Mutation', updateLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null } | null } | null };
+
 
 export const CreateNoteDocument = `
     mutation createNote($data: NoteInput!) {
@@ -1186,5 +1194,32 @@ export const useGetLabelsQuery = <
     useQuery<GetLabelsQuery, TError, TData>(
       variables === undefined ? ['GetLabels'] : ['GetLabels', variables],
       fetcher<GetLabelsQuery, GetLabelsQueryVariables>(client, GetLabelsDocument, variables, headers),
+      options
+    );
+export const UpdateLabelDocument = `
+    mutation updateLabel($id: ID!, $data: LabelInput!) {
+  updateLabel(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        title
+        color
+        icon
+      }
+    }
+  }
+}
+    `;
+export const useUpdateLabelMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateLabelMutation, TError, UpdateLabelMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateLabelMutation, TError, UpdateLabelMutationVariables, TContext>(
+      ['updateLabel'],
+      (variables?: UpdateLabelMutationVariables) => fetcher<UpdateLabelMutation, UpdateLabelMutationVariables>(client, UpdateLabelDocument, variables, headers)(),
       options
     );
