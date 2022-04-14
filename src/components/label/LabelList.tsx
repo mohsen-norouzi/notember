@@ -21,7 +21,7 @@ export const LabelList = () => {
   const onLabelClickHandler = () => {};
 
   return (
-    <Box className='flex justify-center'>
+    <Box className='flex justify-center mt-5'>
       <Box
         sx={{
           visibility: { xs: 'visible', sm: 'collapse' }
@@ -43,7 +43,7 @@ export const LabelList = () => {
         sx={{
           position: { xs: 'fixed', sm: 'static' },
           height: { xs: '100%', sm: 'min-content' },
-          borderRadius: { xs: '0', sm: '0 1rem 1rem 0' },
+          borderRadius: { xs: '0', sm: '0 0.5rem 0.5rem 0' },
           marginTop: { xs: '0', sm: '5.5rem;' },
           left: { xs: showSidebar ? '0' : '-15rem', sm: '' }
         }}
