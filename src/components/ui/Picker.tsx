@@ -76,7 +76,7 @@ export const Picker: FC<PickerProps> = (props) => {
 
         <TabContext value={tabValue}>
           <TabPanel value='icons' sx={{ width: 256, padding: 0 }}>
-            <IconPicker color={color} onIconSelect={onIconSelectHandler} icon={props.icon} />
+            <IconPicker color={color} onIconSelect={onIconSelectHandler} icon={icon} />
           </TabPanel>
 
           <TabPanel value='colors' sx={{ width: 256, padding: 0 }}>
