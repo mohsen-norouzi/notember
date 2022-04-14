@@ -9,10 +9,7 @@ import { useState } from 'react';
 import { NoteForm } from './noteform';
 
 export const NewNote = () => {
-  const { data, error, isLoading, mutate } = useCreateNoteMutation<CreateNoteMutation, Error>(
-    graphqlRequestClient,
-    {}
-  );
+  const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(graphqlRequestClient, {});
 
   const [showForm, setShowForm] = useState(false);
 
@@ -31,7 +28,7 @@ export const NewNote = () => {
   const handleCreate = (note: NoteInput) => {
     const newNote = note;
     newNote.publishedAt = new Date();
-    mutate({ data: newNote });
+    createMutation.mutate({ data: newNote });
     // dispatch(createNote(note));
     handleFormClose();
   };

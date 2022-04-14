@@ -9,6 +9,7 @@ import { NoteLabel } from '../NoteLabel';
 type NoteFormProps = {
   note?: NoteEntity;
   onCreate: (note: NoteInput) => void;
+  onDelete?: (id: string) => void;
 };
 
 export const NoteForm: FC<NoteFormProps> = (props) => {
@@ -129,26 +130,36 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
           <LabelMenu labels={labels} onChange={onLabelsChangeHandler} />
         </div>
 
-        <Button
-          type='submit'
-          variant='contained'
-          color='primary'
-          size='small'
-          onClick={onSubmitHandler}
-          sx={{
-            borderRadius: '15px',
-            border: 'none',
-            outline: 'none',
-            fontStyle: 'normal',
-            boxShadow: 'none',
-            textTransform: 'unset',
-            '&:hover': {
-              boxShadow: 'none'
-            }
-          }}
-        >
-          {props.note ? 'Update' : 'Create'}
-        </Button>
+        <div className='flex items-center justify-center gap-2'>
+          {props.note && (
+            <Tooltip title='Delete Note' placement='bottom'>
+              <IconButton onClick={() => props.onDelete && props.onDelete(props.note?.id!)}>
+                <Icon fontSize='small'>delete</Icon>
+              </IconButton>
+            </Tooltip>
+          )}
+
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+            size='small'
+            onClick={onSubmitHandler}
+            sx={{
+              borderRadius: '15px',
+              border: 'none',
+              outline: 'none',
+              fontStyle: 'normal',
+              boxShadow: 'none',
+              textTransform: 'unset',
+              '&:hover': {
+                boxShadow: 'none'
+              }
+            }}
+          >
+            {props.note ? 'Update' : 'Create'}
+          </Button>
+        </div>
       </div>
     </>
   );

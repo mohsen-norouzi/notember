@@ -6,9 +6,11 @@ import Slide from '@mui/material/Slide';
 
 import { NoteForm } from './noteform';
 import {
+  DeleteNoteMutation,
   NoteEntity,
   NoteInput,
   UpdateNoteMutation,
+  useDeleteNoteMutation,
   useUpdateNoteMutation
 } from 'graphql/generated/graphql-types';
 import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
@@ -31,18 +33,26 @@ type NoteDialogProps = {
 export const NoteDialog: FC<NoteDialogProps> = (props) => {
   const queryClient = useQueryClient();
 
-  const { data, error, isLoading, mutate } = useUpdateNoteMutation<UpdateNoteMutation, Error>(
-    graphqlRequestClient,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('GetNotes');
-        props.onClose();
-      }
+  const updateMutation = useUpdateNoteMutation<UpdateNoteMutation, Error>(graphqlRequestClient, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('GetNotes');
+      props.onClose();
     }
-  );
+  });
 
-  const onCreateHandler = (note: NoteInput) => {
-    mutate({ data: note, id: props.note.id! });
+  const deleteMutation = useDeleteNoteMutation<DeleteNoteMutation, Error>(graphqlRequestClient, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('GetNotes');
+      props.onClose();
+    }
+  });
+
+  const handleCreate = (note: NoteInput) => {
+    updateMutation.mutate({ data: note, id: props.note.id! });
+  };
+
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate({ id });
   };
 
   return (
@@ -54,7 +64,7 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
       onClose={props.onClose}
       open={props.note !== null}
     >
-      <NoteForm onCreate={onCreateHandler} note={props.note} />
+      <NoteForm onCreate={handleCreate} note={props.note} onDelete={handleDelete} />
     </Dialog>
   );
 };

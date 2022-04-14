@@ -209,7 +209,7 @@ export type JsonFilterInput = {
 
 export type Label = {
   __typename?: 'Label';
-  color?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
   icon?: Maybe<Scalars['String']>;
   notes?: Maybe<NoteRelationResponseCollection>;
@@ -960,12 +960,46 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type CreateLabelMutationVariables = Exact<{
+  data: LabelInput;
+}>;
+
+
+export type CreateLabelMutation = { __typename?: 'Mutation', createLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon?: string | null } | null } | null } | null };
+
+export type DeleteLabelMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteLabelMutation = { __typename?: 'Mutation', deleteLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null } | null } | null };
+
+export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'LabelEntityResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon?: string | null } | null }> } | null };
+
+export type UpdateLabelMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: LabelInput;
+}>;
+
+
+export type UpdateLabelMutation = { __typename?: 'Mutation', updateLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon?: string | null } | null } | null } | null };
+
 export type CreateNoteMutationVariables = Exact<{
   data: NoteInput;
 }>;
 
 
 export type CreateNoteMutation = { __typename?: 'Mutation', createNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null } | null } | null } | null };
+
+export type DeleteNoteMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteNoteMutation = { __typename?: 'Mutation', deleteNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null } | null } | null };
 
 export type GetNotesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -980,145 +1014,7 @@ export type UpdateNoteMutationVariables = Exact<{
 
 export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null } | null } | null } | null };
 
-export type CreateLabelMutationVariables = Exact<{
-  data: LabelInput;
-}>;
 
-
-export type CreateLabelMutation = { __typename?: 'Mutation', createLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null } | null } | null };
-
-export type DeleteLabelMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type DeleteLabelMutation = { __typename?: 'Mutation', deleteLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null } | null } | null };
-
-export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'LabelEntityResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null }> } | null };
-
-export type UpdateLabelMutationVariables = Exact<{
-  id: Scalars['ID'];
-  data: LabelInput;
-}>;
-
-
-export type UpdateLabelMutation = { __typename?: 'Mutation', updateLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color?: string | null, icon?: string | null } | null } | null } | null };
-
-
-export const CreateNoteDocument = `
-    mutation createNote($data: NoteInput!) {
-  createNote(data: $data) {
-    data {
-      id
-      attributes {
-        title
-        description
-      }
-    }
-  }
-}
-    `;
-export const useCreateNoteMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient,
-      options?: UseMutationOptions<CreateNoteMutation, TError, CreateNoteMutationVariables, TContext>,
-      headers?: RequestInit['headers']
-    ) =>
-    useMutation<CreateNoteMutation, TError, CreateNoteMutationVariables, TContext>(
-      ['createNote'],
-      (variables?: CreateNoteMutationVariables) => fetcher<CreateNoteMutation, CreateNoteMutationVariables>(client, CreateNoteDocument, variables, headers)(),
-      options
-    );
-export const GetNotesDocument = `
-    query GetNotes {
-  notes {
-    data {
-      id
-      attributes {
-        title
-        description
-        updatedAt
-        image {
-          data {
-            id
-            attributes {
-              name
-              url
-              hash
-              mime
-              provider
-              size
-            }
-          }
-        }
-        labels {
-          data {
-            id
-            attributes {
-              title
-            }
-          }
-        }
-        checklist
-        users {
-          data {
-            id
-            attributes {
-              username
-              email
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export const useGetNotesQuery = <
-      TData = GetNotesQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables?: GetNotesQueryVariables,
-      options?: UseQueryOptions<GetNotesQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<GetNotesQuery, TError, TData>(
-      variables === undefined ? ['GetNotes'] : ['GetNotes', variables],
-      fetcher<GetNotesQuery, GetNotesQueryVariables>(client, GetNotesDocument, variables, headers),
-      options
-    );
-export const UpdateNoteDocument = `
-    mutation updateNote($id: ID!, $data: NoteInput!) {
-  updateNote(id: $id, data: $data) {
-    data {
-      id
-      attributes {
-        title
-        description
-      }
-    }
-  }
-}
-    `;
-export const useUpdateNoteMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(
-      client: GraphQLClient,
-      options?: UseMutationOptions<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>,
-      headers?: RequestInit['headers']
-    ) =>
-    useMutation<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>(
-      ['updateNote'],
-      (variables?: UpdateNoteMutationVariables) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(client, UpdateNoteDocument, variables, headers)(),
-      options
-    );
 export const CreateLabelDocument = `
     mutation createLabel($data: LabelInput!) {
   createLabel(data: $data) {
@@ -1221,5 +1117,138 @@ export const useUpdateLabelMutation = <
     useMutation<UpdateLabelMutation, TError, UpdateLabelMutationVariables, TContext>(
       ['updateLabel'],
       (variables?: UpdateLabelMutationVariables) => fetcher<UpdateLabelMutation, UpdateLabelMutationVariables>(client, UpdateLabelDocument, variables, headers)(),
+      options
+    );
+export const CreateNoteDocument = `
+    mutation createNote($data: NoteInput!) {
+  createNote(data: $data) {
+    data {
+      id
+      attributes {
+        title
+        description
+      }
+    }
+  }
+}
+    `;
+export const useCreateNoteMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreateNoteMutation, TError, CreateNoteMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreateNoteMutation, TError, CreateNoteMutationVariables, TContext>(
+      ['createNote'],
+      (variables?: CreateNoteMutationVariables) => fetcher<CreateNoteMutation, CreateNoteMutationVariables>(client, CreateNoteDocument, variables, headers)(),
+      options
+    );
+export const DeleteNoteDocument = `
+    mutation deleteNote($id: ID!) {
+  deleteNote(id: $id) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteNoteMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<DeleteNoteMutation, TError, DeleteNoteMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<DeleteNoteMutation, TError, DeleteNoteMutationVariables, TContext>(
+      ['deleteNote'],
+      (variables?: DeleteNoteMutationVariables) => fetcher<DeleteNoteMutation, DeleteNoteMutationVariables>(client, DeleteNoteDocument, variables, headers)(),
+      options
+    );
+export const GetNotesDocument = `
+    query GetNotes {
+  notes {
+    data {
+      id
+      attributes {
+        title
+        description
+        updatedAt
+        image {
+          data {
+            id
+            attributes {
+              name
+              url
+              hash
+              mime
+              provider
+              size
+            }
+          }
+        }
+        labels {
+          data {
+            id
+            attributes {
+              title
+            }
+          }
+        }
+        checklist
+        users {
+          data {
+            id
+            attributes {
+              username
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetNotesQuery = <
+      TData = GetNotesQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetNotesQueryVariables,
+      options?: UseQueryOptions<GetNotesQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetNotesQuery, TError, TData>(
+      variables === undefined ? ['GetNotes'] : ['GetNotes', variables],
+      fetcher<GetNotesQuery, GetNotesQueryVariables>(client, GetNotesDocument, variables, headers),
+      options
+    );
+export const UpdateNoteDocument = `
+    mutation updateNote($id: ID!, $data: NoteInput!) {
+  updateNote(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        title
+        description
+      }
+    }
+  }
+}
+    `;
+export const useUpdateNoteMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>(
+      ['updateNote'],
+      (variables?: UpdateNoteMutationVariables) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(client, UpdateNoteDocument, variables, headers)(),
       options
     );
