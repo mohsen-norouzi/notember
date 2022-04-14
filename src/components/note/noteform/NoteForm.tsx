@@ -36,6 +36,14 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
     props.onCreate(newNote);
   };
 
+  const toggleChecklistHandler = () => {
+    if (showChecklist) {
+      onChecklistChangeHandler([]);
+    }
+
+    setShowCheckList((currValue) => !currValue);
+  };
+
   const onChecklistChangeHandler = (value: Checklist[]) => {
     setChecklist(value);
   };
@@ -111,16 +119,14 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
       <div className='flex flex-auto justify-between items-center bg-white rounded-b-2xl p-2 px-3'>
         <div className='flex items-center justify-around'>
           <Tooltip title='Add checklist' placement='bottom'>
-            <IconButton onClick={() => setShowCheckList(!showChecklist)} size='small'>
+            <IconButton onClick={toggleChecklistHandler} size='small'>
               <Icon className='material-icons-outlined' fontSize='small'>
                 playlist_add_check
               </Icon>
             </IconButton>
           </Tooltip>
 
-          <Tooltip title='Add label' placement='bottom'>
-            <LabelMenu labels={labels} onChange={onLabelsChangeHandler} />
-          </Tooltip>
+          <LabelMenu labels={labels} onChange={onLabelsChangeHandler} />
         </div>
 
         <Button
@@ -141,7 +147,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
             }
           }}
         >
-          Create
+          {props.note ? 'Update' : 'Create'}
         </Button>
       </div>
     </>

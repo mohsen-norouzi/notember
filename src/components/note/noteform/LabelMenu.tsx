@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React from 'react';
 import {
   ClickAwayListener,
   Icon,
@@ -6,7 +6,8 @@ import {
   List,
   ListItem,
   ListItemText,
-  Popover
+  Popover,
+  Tooltip
 } from '@mui/material';
 import { GetLabelsQuery, LabelEntity, useGetLabelsQuery } from 'graphql/generated/graphql-types';
 import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
@@ -16,7 +17,7 @@ type LabelMenuProps = {
   onChange: (labels: LabelEntity) => void;
 };
 
-export const LabelMenu: FC<LabelMenuProps> = (props) => {
+export const LabelMenu: React.FC<LabelMenuProps> = (props) => {
   const { data, error, isLoading } = useGetLabelsQuery<GetLabelsQuery, Error>(
     graphqlRequestClient,
     {}
@@ -40,61 +41,65 @@ export const LabelMenu: FC<LabelMenuProps> = (props) => {
   };
 
   return (
-    <div>
-      <IconButton onClick={handleClick} size='small'>
-        <Icon fontSize='small'>label</Icon>
-      </IconButton>
+    <Tooltip title='Add label' placement='bottom'>
+      <div>
+        <IconButton onClick={handleClick} size='small'>
+          <Icon className='material-icons-outlined' fontSize='small'>
+            label
+          </Icon>
+        </IconButton>
 
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        hideBackdrop
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}
-        className='pointer-events-none'
-        classes={{
-          paper: 'pointer-events-auto prevent-add-close'
-        }}
-      >
-        <ClickAwayListener onClickAway={handleClose} className='p-0' sx={{ padding: 0 }}>
-          <List>
-            {data?.labels &&
-              data.labels.data.map((label) => (
-                <ListItem
-                  key={label.id}
-                  button
-                  dense
-                  onClick={() => handleToggleLabel(label)}
-                  className='px-0'
-                >
-                  <Icon
-                    color='action'
-                    fontSize='small'
-                    className='p-0 text-xs'
-                    sx={{ height: 'inherit' }}
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          hideBackdrop
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+          className='pointer-events-none'
+          classes={{
+            paper: 'pointer-events-auto prevent-add-close'
+          }}
+        >
+          <ClickAwayListener onClickAway={handleClose}>
+            <List>
+              {data?.labels &&
+                data.labels.data.map((label) => (
+                  <ListItem
+                    key={label.id}
+                    button
+                    dense
+                    onClick={() => handleToggleLabel(label)}
+                    className='px-0'
                   >
-                    {props.labels.find((l) => l.id === label.id)
-                      ? 'check_box'
-                      : 'check_box_outline_blank'}
-                  </Icon>
-                  <ListItemText
-                    className='truncate px-2'
-                    primary={label.attributes?.title}
-                    disableTypography
-                  />
-                </ListItem>
-              ))}
-          </List>
-        </ClickAwayListener>
-      </Popover>
-    </div>
+                    <Icon
+                      color='action'
+                      fontSize='small'
+                      className='p-0 text-xs'
+                      sx={{ height: 'inherit' }}
+                    >
+                      {props.labels.find((l) => l.id === label.id)
+                        ? 'check_box'
+                        : 'check_box_outline_blank'}
+                    </Icon>
+                    <ListItemText
+                      className='truncate px-2'
+                      primary={label.attributes?.title}
+                      disableTypography
+                    />
+                  </ListItem>
+                ))}
+            </List>
+          </ClickAwayListener>
+        </Popover>
+      </div>
+    </Tooltip>
   );
 };
