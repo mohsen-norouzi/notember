@@ -33,14 +33,11 @@ export const CheckListItem: FC<CheckListItemProps> = (props) => {
         placeholder='Add an item'
         onChange={handleChange}
         disableUnderline
-        style={{ paddingBottom: '0', paddingTop: 0 }}
         inputProps={{ style: { fontSize: '12px' } }}
       />
 
-      <IconButton style={{ paddingBottom: '0', paddingTop: 0 }} onClick={() => props.onRemove()}>
-        <Icon fontSize='small' className='material-icons-outlined'>
-          delete
-        </Icon>
+      <IconButton onClick={() => props.onRemove()} size='small'>
+        <Icon fontSize='small'>delete</Icon>
       </IconButton>
     </ListItem>
   );
