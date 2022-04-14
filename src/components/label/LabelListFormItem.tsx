@@ -3,7 +3,7 @@ import { Icon, IconButton, Input, ListItem } from '@mui/material';
 
 import { LabelEntity, LabelInput, Maybe } from 'graphql/generated/graphql-types';
 import { useDebounce } from 'hooks';
-import { IconPicker } from 'components/ui';
+import { Picker } from 'components/ui';
 
 type LabelListFormItemProps = {
   label?: Maybe<LabelEntity>;
@@ -23,10 +23,15 @@ export const LabelListFormItem: FC<LabelListFormItemProps> = (props) => {
     const id = props.label?.id;
 
     if (id) {
-      let data: LabelInput = {
-        icon,
-        color
-      };
+      let data: LabelInput = {};
+
+      if (icon) {
+        data.icon = icon;
+      }
+
+      if (color) {
+        data.color = color;
+      }
 
       props.onChange(data, id);
     }
@@ -59,7 +64,7 @@ export const LabelListFormItem: FC<LabelListFormItemProps> = (props) => {
   return (
     <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <div className='flex items-center '>
-        <IconPicker
+        <Picker
           onPick={onIconPickHandler}
           icon={props.label.attributes.icon!}
           color={props.label.attributes.color!}
