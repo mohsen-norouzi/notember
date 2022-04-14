@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
 import { Button, Icon, IconButton, TextField, Tooltip } from '@mui/material';
 import { NoteCheckList } from './checklist';
-import { NoteEntity, NoteInput } from 'graphql/generated/graphql-types';
+import { LabelEntity, NoteEntity, NoteInput } from 'graphql/generated/graphql-types';
 import { Checklist } from 'models';
+import { LabelMenu } from './LabelMenu';
+import { NoteLabel } from '../NoteLabel';
 
 type NoteFormProps = {
   note?: NoteEntity;
@@ -13,10 +15,13 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
   const [title, setTitle] = useState(props.note?.attributes?.title || '');
   const [description, setDescription] = useState(props.note?.attributes?.description || '');
   const [checklist, setChecklist] = useState<Checklist[]>(props.note?.attributes?.checklist || []);
+  const [labels, setLabels] = useState<LabelEntity[]>(props.note?.attributes?.labels?.data || []);
   const [showChecklist, setShowCheckList] = useState(checklist.length > 0);
 
   const onSubmitHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    const labelIDs: string[] = labels.map((l) => l.id!);
 
     const newNote: NoteInput = {
       title,
@@ -24,11 +29,28 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
       checklist
     };
 
+    if (labelIDs.length > 0) {
+      newNote.labels = labelIDs;
+    }
+
     props.onCreate(newNote);
   };
 
   const onChecklistChangeHandler = (value: Checklist[]) => {
     setChecklist(value);
+  };
+
+  const onLabelsChangeHandler = (label: LabelEntity) => {
+    const index = labels.findIndex((l) => l.id === label.id);
+    let newLabels = [...labels];
+
+    if (index === -1) {
+      newLabels.push(label);
+    } else {
+      newLabels.splice(index, 1);
+    }
+
+    setLabels(newLabels);
   };
 
   return (
@@ -74,12 +96,30 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         <NoteCheckList checklist={checklist} onChecklistChange={onChecklistChangeHandler} />
       )}
 
+      {labels.length > 0 && (
+        <div className='p-5 flex flex-wrap w-full gap-1 bg-white'>
+          {labels.map((label) => (
+            <NoteLabel
+              title={label.attributes!.title}
+              key={label.attributes!.title}
+              onDelete={() => onLabelsChangeHandler(label)}
+            />
+          ))}
+        </div>
+      )}
+
       <div className='flex flex-auto justify-between items-center bg-white rounded-b-2xl p-2 px-3'>
-        <div className='flex items-center'>
+        <div className='flex items-center justify-around'>
           <Tooltip title='Add checklist' placement='bottom'>
-            <IconButton onClick={() => setShowCheckList(!showChecklist)}>
-              <Icon className='material-icons-outlined'>playlist_add_check</Icon>
+            <IconButton onClick={() => setShowCheckList(!showChecklist)} size='small'>
+              <Icon className='material-icons-outlined' fontSize='small'>
+                playlist_add_check
+              </Icon>
             </IconButton>
+          </Tooltip>
+
+          <Tooltip title='Add label' placement='bottom'>
+            <LabelMenu labels={labels} onChange={onLabelsChangeHandler} />
           </Tooltip>
         </div>
 
