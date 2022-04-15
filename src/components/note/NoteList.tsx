@@ -11,6 +11,7 @@ import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 
 import { NoteItem } from './NoteItem';
 import { NoteDialog } from './NoteDialog';
+import { Typography } from '@mui/material';
 
 type NoteListProps = {
   filter?: string;
@@ -34,7 +35,13 @@ export const NoteList: FC<NoteListProps> = (props) => {
   if (error) return <p>error loading notes</p>;
 
   if (!data || !data.notes || data.notes.data.length === 0) {
-    return <p>There are no notes!</p>;
+    return (
+      <div className='flex items-center justify-center h-full'>
+        <Typography color='textSecondary' variant='h5'>
+          There are no notes!
+        </Typography>
+      </div>
+    );
   }
 
   return (
