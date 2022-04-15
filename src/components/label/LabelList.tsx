@@ -7,6 +7,7 @@ import { LabelItem } from './LabelItem';
 import { LabelsDialog } from './LabelsDialog';
 
 type LabelListProps = {
+  filter?: string;
   onFilter: (value?: string) => void;
 };
 
@@ -23,11 +24,15 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   if (error) return <p>error loading labels</p>;
 
   const onLabelClickHandler = (title?: string) => {
+    if (showSidebar) {
+      setShowSidebar(false);
+    }
+
     props.onFilter(title);
   };
 
   return (
-    <Box className='flex justify-center mt-5'>
+    <Box className='flex justify-center md:mt-5'>
       <Box
         sx={{
           visibility: { xs: 'visible', sm: 'collapse' }
@@ -58,6 +63,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
           key='notes'
           title='Notes'
           icon='label_outlined'
+          active={props.filter === ''}
           onClick={() => onLabelClickHandler('')}
         />
         <LabelItem
@@ -75,6 +81,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
             key={id}
             title={attributes?.title}
             icon={attributes?.icon!}
+            active={props.filter === attributes?.title}
             color={attributes?.color}
             onClick={() => onLabelClickHandler(attributes?.title)}
           />

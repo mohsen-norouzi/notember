@@ -1,10 +1,12 @@
 import Icon from '@mui/material/Icon';
+import clsx from 'clsx';
 import { FC } from 'react';
 
 type LabelItemProps = {
   title?: string;
   icon: string;
   color?: string | undefined | null;
+  active?: boolean;
   onClick: () => void;
 };
 
@@ -15,15 +17,13 @@ export const LabelItem: FC<LabelItemProps> = (props) => {
 
   return (
     <div
-      className='flex items-center cursor-pointer hover:bg-gray-100 rounded-md transition-all'
+      className={clsx(
+        'flex items-center cursor-pointer hover:bg-gray-100 rounded-md transition-all mb-1',
+        { 'bg-gray-100': !!props.active }
+      )}
       onClick={onClickHandler}
     >
-      <Icon
-        color='action'
-        fontSize='small'
-        style={{ color: props.color! }}
-        className='m-2 material-icons-outlined'
-      >
+      <Icon color='action' fontSize='small' style={{ color: props.color! }} className='m-2'>
         {props.icon}
       </Icon>
 
