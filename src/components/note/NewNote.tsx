@@ -46,7 +46,7 @@ export const NewNote = () => {
 
   return (
     <Box component='form' className='flex justify-center justify-items-stretch mt-5'>
-      <div className='shadow flex flex-col w-5/12 rounded-2xl'>
+      <div className='shadow flex flex-col w-10/12 md:w-5/12 rounded-2xl'>
         {showForm ? (
           <ClickAwayListener onClickAway={handleClickAway}>
             <div className='w-full'>
