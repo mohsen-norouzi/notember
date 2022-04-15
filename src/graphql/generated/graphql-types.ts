@@ -1001,7 +1001,9 @@ export type DeleteNoteMutationVariables = Exact<{
 
 export type DeleteNoteMutation = { __typename?: 'Mutation', deleteNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null } | null } | null };
 
-export type GetNotesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetNotesQueryVariables = Exact<{
+  filters?: InputMaybe<NoteFiltersInput>;
+}>;
 
 
 export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number } | null } | null } | null, labels?: { __typename?: 'LabelRelationResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
@@ -1168,8 +1170,8 @@ export const useDeleteNoteMutation = <
       options
     );
 export const GetNotesDocument = `
-    query GetNotes {
-  notes {
+    query GetNotes($filters: NoteFiltersInput) {
+  notes(filters: $filters) {
     data {
       id
       attributes {

@@ -1,13 +1,20 @@
-import { LabelList, NewNote, NoteDialog, NoteList } from 'components';
+import { LabelList, NewNote, NoteList } from 'components';
+import { useState } from 'react';
 
 export const NoteApp = () => {
+  const [filter, setFilter] = useState<string | undefined>('');
+
+  const handleFilterChange = (value?: string) => {
+    setFilter(value);
+  };
+
   return (
     <div className='flex space-x-2 h-screen'>
-      <LabelList />
+      <LabelList onFilter={handleFilterChange} />
 
       <div className='flex flex-col flex-auto space-y-5'>
         <NewNote />
-        <NoteList />
+        <NoteList filter={filter} />
       </div>
     </div>
   );

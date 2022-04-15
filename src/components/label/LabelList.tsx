@@ -1,12 +1,16 @@
-import { Backdrop, Box, Button, Divider, Icon, IconButton } from '@mui/material';
+import { Backdrop, Box, Divider, Icon, IconButton } from '@mui/material';
 import clsx from 'clsx';
 import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-types';
 import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { LabelItem } from './LabelItem';
 import { LabelsDialog } from './LabelsDialog';
 
-export const LabelList = () => {
+type LabelListProps = {
+  onFilter: (value?: string) => void;
+};
+
+export const LabelList: React.FC<LabelListProps> = (props) => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showLabelsDialog, setShowLabelsDialog] = useState(false);
 
@@ -18,7 +22,9 @@ export const LabelList = () => {
   if (isLoading) return <p>loading labels</p>;
   if (error) return <p>error loading labels</p>;
 
-  const onLabelClickHandler = () => {};
+  const onLabelClickHandler = (title?: string) => {
+    props.onFilter(title);
+  };
 
   return (
     <Box className='flex justify-center mt-5'>
@@ -48,12 +54,17 @@ export const LabelList = () => {
           left: { xs: showSidebar ? '0' : '-15rem', sm: '' }
         }}
       >
-        <LabelItem key='notes' title='Notes' icon='label_outlined' onClick={onLabelClickHandler} />
+        <LabelItem
+          key='notes'
+          title='Notes'
+          icon='label_outlined'
+          onClick={() => onLabelClickHandler('')}
+        />
         <LabelItem
           key='reminders'
           title='Reminders'
           icon='notifications_active'
-          onClick={onLabelClickHandler}
+          onClick={() => onLabelClickHandler()}
         />
         <Divider style={{ margin: '0.75rem 0' }} />
 
@@ -65,7 +76,7 @@ export const LabelList = () => {
             title={attributes?.title}
             icon={attributes?.icon!}
             color={attributes?.color}
-            onClick={onLabelClickHandler}
+            onClick={() => onLabelClickHandler(attributes?.title)}
           />
         ))}
 
@@ -76,7 +87,12 @@ export const LabelList = () => {
           onClick={() => setShowLabelsDialog(true)}
         />
         <Divider style={{ margin: '0.75rem 0' }} />
-        <LabelItem key='archive' title='Archive' icon='archive' onClick={onLabelClickHandler} />
+        <LabelItem
+          key='archive'
+          title='Archive'
+          icon='archive'
+          onClick={() => onLabelClickHandler()}
+        />
       </Box>
 
       <LabelsDialog

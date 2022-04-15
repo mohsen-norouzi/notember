@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Masonry from '@mui/lab/Masonry';
 
 import {
@@ -12,15 +12,23 @@ import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import { NoteItem } from './NoteItem';
 import { NoteDialog } from './NoteDialog';
 
-type NoteListProps = {};
+type NoteListProps = {
+  filter?: string;
+};
 
 export const NoteList: FC<NoteListProps> = (props) => {
   const [selectedNote, setSelectedNote] = useState<Maybe<NoteEntity>>(null);
+  const [filters, setFilters] = useState({});
 
-  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(
-    graphqlRequestClient,
-    {}
-  );
+  useEffect(() => {
+    let filterData = props.filter ? { labels: { title: { eq: props.filter } } } : {};
+
+    setFilters(filterData);
+  }, [props.filter]);
+
+  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(graphqlRequestClient, {
+    filters
+  });
 
   if (isLoading) return <p>loading notes</p>;
   if (error) return <p>error loading notes</p>;
