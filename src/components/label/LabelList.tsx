@@ -1,4 +1,4 @@
-import { Backdrop, Box, Divider, Icon, IconButton } from '@mui/material';
+import { Backdrop, Box, Divider, Icon, IconButton, LinearProgress, Stack } from '@mui/material';
 import clsx from 'clsx';
 import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-types';
 import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
@@ -20,7 +20,6 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
     {}
   );
 
-  if (isLoading) return <p>loading labels</p>;
   if (error) return <p>error loading labels</p>;
 
   const onLabelClickHandler = (title?: string) => {
@@ -32,7 +31,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   };
 
   return (
-    <Box className='flex justify-center md:mt-5'>
+    <Box className='flex justify-center md:mt-5 gap-2'>
       <Box
         sx={{
           visibility: { xs: 'visible', sm: 'collapse' }
@@ -43,18 +42,18 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
           style={{ position: 'absolute', left: 0, top: '0' }}
           onClick={() => setShowSidebar((isOpen) => !isOpen)}
         >
-          <Icon className='material-icons-outlined' fontSize='small'>
-            label
-          </Icon>
+          <Icon fontSize='small'>label</Icon>
         </IconButton>
       </Box>
 
       <Box
-        className={clsx('bg-white z-20 transition-all w-60 shadow px-2 py-4 relative')}
+        className={clsx(
+          'bg-white z-20 transition-all w-60 shadow px-2 py-4 relative animated fadeInLeft'
+        )}
         sx={{
           position: { xs: 'fixed', sm: 'static' },
           height: { xs: '100%', sm: 'min-content' },
-          borderRadius: { xs: '0', sm: '0 0.5rem 0.5rem 0' },
+          borderRadius: { xs: '0', sm: '1rem' },
           marginTop: { xs: '0', sm: '5.5rem;' },
           left: { xs: showSidebar ? '0' : '-15rem', sm: '' }
         }}
@@ -72,7 +71,12 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
           icon='notifications_active'
           onClick={() => onLabelClickHandler()}
         />
-        <Divider style={{ margin: '0.75rem 0' }} />
+
+        {isLoading ? (
+          <LinearProgress color='primary' className='mt-2' />
+        ) : (
+          <Divider style={{ margin: '0.75rem 0 0 0' }} />
+        )}
 
         <p className='flex-2 p-2 text-gray-600 text-sm'>Labels</p>
 

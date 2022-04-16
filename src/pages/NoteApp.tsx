@@ -9,7 +9,7 @@ export const NoteApp = () => {
   };
 
   return (
-    <div className='flex space-x-2 h-screen'>
+    <div className='flex gap-2 h-screen'>
       <LabelList onFilter={handleFilterChange} filter={filter} />
 
       <div className='flex flex-col flex-auto space-y-5'>

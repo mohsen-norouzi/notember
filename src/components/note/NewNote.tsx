@@ -6,10 +6,15 @@ import {
 } from 'graphql/generated/graphql-types';
 import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import { useState } from 'react';
+import { useQueryClient } from 'react-query';
 import { NoteForm } from './noteform';
 
 export const NewNote = () => {
-  const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(graphqlRequestClient, {});
+  const queryClient = useQueryClient();
+
+  const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(graphqlRequestClient, {
+    onSuccess: () => queryClient.invalidateQueries('GetNotes')
+  });
 
   const [showForm, setShowForm] = useState(false);
 
@@ -45,7 +50,7 @@ export const NewNote = () => {
   };
 
   return (
-    <Box component='form' className='flex justify-center justify-items-stretch mt-5'>
+    <Box component='form' className='flex justify-center justify-items-stretch mt-5 animated fadeInDown'>
       <div className='shadow flex flex-col w-10/12 md:w-5/12 rounded-2xl'>
         {showForm ? (
           <ClickAwayListener onClickAway={handleClickAway}>

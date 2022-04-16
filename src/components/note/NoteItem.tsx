@@ -1,6 +1,16 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { NoteEntity } from 'graphql/generated/graphql-types';
-import { Card, CardContent, CardMedia, Icon, List, ListItem, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Icon,
+  List,
+  ListItem,
+  Skeleton,
+  Typography
+} from '@mui/material';
 import clsx from 'clsx';
 import { Checklist } from 'models';
 import { NoteLabel } from './NoteLabel';
@@ -11,34 +21,61 @@ type NoteItemProps = {
 };
 
 export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   if (!note.attributes) return null;
 
   const { title, description, image, checklist, labels } = note.attributes;
 
+  const startLoading = () => {
+    setImageLoaded(false);
+  };
+
+  const finishLoading = () => {
+    setTimeout(() => {
+      setImageLoaded(true);
+    }, 3000);
+  };
+
   return (
     <Card
-      sx={{ borderRadius: '0.5rem' }}
-      className='w-full cursor-pointer hover:shadow-xl'
+      sx={{ borderRadius: '1rem' }}
+      className='w-full cursor-pointer hover:shadow-xl animated fadeInUp'
       onClick={() => onClick(note)}
     >
       {image?.data && (
-        <CardMedia
-          component='img'
-          image={import.meta.env.VITE_GRAPHQL_ENDPOINT + image.data?.attributes?.url}
-          alt={image.data?.attributes?.name}
-        />
+        <div>
+          {!imageLoaded && (
+            <Skeleton
+              variant='rectangular'
+              className='max-h-52 overflow-hidden'
+              width={image?.data?.attributes?.width || 50}
+              height={image?.data?.attributes?.height || 50}
+            />
+          )}
+
+          <img
+            src={import.meta.env.VITE_GRAPHQL_ENDPOINT + image.data?.attributes?.url}
+            alt={image.data?.attributes?.name}
+            onLoadStart={startLoading}
+            onLoadCapture={finishLoading}
+            className={clsx({ hidden: !imageLoaded })}
+          />
+        </div>
       )}
 
       <CardContent sx={{ paddingBottom: '1rem !important' }}>
-        <Typography gutterBottom variant='h5' component='div'>
-          {title}
-        </Typography>
-        <Typography variant='body2' color='text.secondary'>
-          {description}
-        </Typography>
+        <Box component='div'className='mb-3'>
+          <Typography gutterBottom variant='h5' component='div'>
+            {title}
+          </Typography>
+          <Typography variant='body2' color='text.secondary'>
+            {description}
+          </Typography>
+        </Box>
 
         {checklist && checklist.length > 0 && (
-          <div className='pt-5'>
+          <div>
             <List sx={{ padding: 0 }} dense>
               {checklist.map((item: Checklist, index: number) => (
                 <ListItem
