@@ -43,6 +43,9 @@ export const NewNote = () => {
     createMutation.mutate(
       { data: newNote },
       {
+        onSuccess: () => {
+          handleFormClose();
+        },
         onError: () => {
           if (newNote.image) {
             handleDeleteImage(newNote.image);
@@ -52,7 +55,6 @@ export const NewNote = () => {
     );
 
     // dispatch(createNote(note));
-    handleFormClose();
   };
 
   const handleClickAway = (ev: any) => {
