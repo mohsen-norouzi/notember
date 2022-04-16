@@ -64,7 +64,7 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
       onClose={props.onClose}
       open={props.note !== null}
     >
-      <NoteForm onCreate={handleCreate} note={props.note} onDelete={handleDelete} />
+      <NoteForm onCreate={handleCreate} note={props.note} onDelete={handleDelete} expanded />
     </Dialog>
   );
 };

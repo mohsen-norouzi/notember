@@ -46,8 +46,8 @@ export const NoteList: FC<NoteListProps> = (props) => {
   if (isLoading || !data || !data.notes || !data.notes.data) {
     return (
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} sx={{ alignContent: 'flex-start' }}>
-        {[1, 2, 3, 4, 5, 6, 7, 8].map(() => (
-          <Stack spacing={1}>
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+          <Stack spacing={1} key={i}>
             <Skeleton variant='rectangular' width='100%' height='40vh' className='rounded-md' />
           </Stack>
         ))}

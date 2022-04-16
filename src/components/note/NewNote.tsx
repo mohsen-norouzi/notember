@@ -1,4 +1,4 @@
-import { Box, ClickAwayListener, Typography } from '@mui/material';
+import { Box, ClickAwayListener } from '@mui/material';
 import {
   CreateNoteMutation,
   NoteInput,
@@ -29,10 +29,6 @@ export const NewNote = () => {
   };
 
   const handleFormClose = () => {
-    if (!showForm) {
-      return;
-    }
-
     setShowForm(false);
   };
 
@@ -76,21 +72,15 @@ export const NewNote = () => {
       className='flex justify-center justify-items-stretch mt-5 animated fadeInDown'
     >
       <div className='shadow flex flex-col w-10/12 md:w-5/12 rounded-2xl'>
-        {showForm ? (
-          <ClickAwayListener onClickAway={handleClickAway}>
-            <div className='w-full'>
-              <NoteForm onCreate={handleCreate} onDeleteImage={handleDeleteImage} />
-            </div>
-          </ClickAwayListener>
-        ) : (
-          <Typography
-            className='w-full rounded-2xl p-5 text-16 bg-white'
-            color='textSecondary'
-            onClick={handleFormOpen}
-          >
-            Take a note...
-          </Typography>
-        )}
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div className='w-full' onClick={handleFormOpen}>
+            <NoteForm
+              onCreate={handleCreate}
+              onDeleteImage={handleDeleteImage}
+              expanded={showForm}
+            />
+          </div>
+        </ClickAwayListener>
       </div>
     </Box>
   );

@@ -41,7 +41,7 @@ export const LabelMenu: React.FC<LabelMenuProps> = (props) => {
   };
 
   return (
-    <Tooltip title='Add label' placement='bottom'>
+    <Tooltip title='Add label' placement={open ? 'top' : 'bottom'}>
       <div>
         <IconButton onClick={handleClick} size='small'>
           <Icon className='material-icons-outlined' fontSize='small'>
