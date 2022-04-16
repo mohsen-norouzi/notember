@@ -57,6 +57,13 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
     }
 
     props.onCreate(newNote);
+
+    // reset
+    setTitle('');
+    setDescription('');
+    setChecklist([]);
+    setLabels([]);
+    setImage(null);
   };
 
   const toggleChecklistHandler = () => {
