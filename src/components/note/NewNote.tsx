@@ -2,7 +2,9 @@ import { Box, ClickAwayListener, Typography } from '@mui/material';
 import {
   CreateNoteMutation,
   NoteInput,
-  useCreateNoteMutation
+  useCreateNoteMutation,
+  useDeleteUploadFileMutation,
+  DeleteUploadFileMutation
 } from 'graphql/generated/graphql-types';
 import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import { useState } from 'react';
@@ -11,12 +13,16 @@ import { NoteForm } from './noteform';
 
 export const NewNote = () => {
   const queryClient = useQueryClient();
+  const [showForm, setShowForm] = useState(false);
 
   const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(graphqlRequestClient, {
     onSuccess: () => queryClient.invalidateQueries('GetNotes')
   });
 
-  const [showForm, setShowForm] = useState(false);
+  const deleteFileMutation = useDeleteUploadFileMutation<DeleteUploadFileMutation, Error>(
+    graphqlRequestClient,
+    {}
+  );
 
   const handleFormOpen = () => {
     setShowForm(true);
@@ -30,10 +36,25 @@ export const NewNote = () => {
     setShowForm(false);
   };
 
+  const handleDeleteImage = (imageID: string) => {
+    deleteFileMutation.mutate({ id: imageID });
+  };
+
   const handleCreate = (note: NoteInput) => {
     const newNote = note;
     newNote.publishedAt = new Date();
-    createMutation.mutate({ data: newNote });
+
+    createMutation.mutate(
+      { data: newNote },
+      {
+        onError: () => {
+          if (newNote.image) {
+            handleDeleteImage(newNote.image);
+          }
+        }
+      }
+    );
+
     // dispatch(createNote(note));
     handleFormClose();
   };
@@ -50,12 +71,15 @@ export const NewNote = () => {
   };
 
   return (
-    <Box component='form' className='flex justify-center justify-items-stretch mt-5 animated fadeInDown'>
+    <Box
+      component='form'
+      className='flex justify-center justify-items-stretch mt-5 animated fadeInDown'
+    >
       <div className='shadow flex flex-col w-10/12 md:w-5/12 rounded-2xl'>
         {showForm ? (
           <ClickAwayListener onClickAway={handleClickAway}>
             <div className='w-full'>
-              <NoteForm onCreate={handleCreate} />
+              <NoteForm onCreate={handleCreate} onDeleteImage={handleDeleteImage} />
             </div>
           </ClickAwayListener>
         ) : (

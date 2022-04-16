@@ -1,15 +1,23 @@
 import { FC, useState } from 'react';
-import { Button, Icon, IconButton, TextField, Tooltip } from '@mui/material';
+import { Button, Fab, Icon, IconButton, TextField, Tooltip } from '@mui/material';
 import { NoteCheckList } from './checklist';
-import { LabelEntity, NoteEntity, NoteInput } from 'graphql/generated/graphql-types';
+import { LabelEntity, Maybe, NoteEntity, NoteInput } from 'graphql/generated/graphql-types';
 import { Checklist } from 'models';
 import { LabelMenu } from './LabelMenu';
 import { NoteLabel } from '../NoteLabel';
+import { ImagePicker } from './ImagePicker';
+import clsx from 'clsx';
 
 type NoteFormProps = {
   note?: NoteEntity;
   onCreate: (note: NoteInput) => void;
   onDelete?: (id: string) => void;
+  onDeleteImage?: (id: string) => void;
+};
+
+type NoteImage = {
+  id: string;
+  url: string;
 };
 
 export const NoteForm: FC<NoteFormProps> = (props) => {
@@ -18,6 +26,15 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
   const [checklist, setChecklist] = useState<Checklist[]>(props.note?.attributes?.checklist || []);
   const [labels, setLabels] = useState<LabelEntity[]>(props.note?.attributes?.labels?.data || []);
   const [showChecklist, setShowCheckList] = useState(checklist.length > 0);
+
+  const noteImage = props.note?.attributes?.image?.data?.id
+    ? {
+        id: props.note?.attributes?.image?.data?.id || '',
+        url: props.note?.attributes?.image?.data?.attributes?.url || ''
+      }
+    : null;
+
+  const [image, setImage] = useState<Maybe<NoteImage>>(noteImage);
 
   const onSubmitHandler = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -32,6 +49,10 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
 
     if (labelIDs.length > 0) {
       newNote.labels = labelIDs;
+    }
+
+    if (image && image.id) {
+      newNote.image = image.id;
     }
 
     props.onCreate(newNote);
@@ -62,15 +83,51 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
     setLabels(newLabels);
   };
 
+  const handleImagePick = (imageID: string, imageUrl: string) => {
+    debugger;
+    setImage({
+      id: imageID,
+      url: imageUrl
+    });
+  };
+
+  const handleDeleteImage = () => {
+    if (image && image.id && props.onDeleteImage) {
+      props.onDeleteImage(image.id);
+      setImage(null);
+    }
+  };
+
   return (
     <>
+      {image && image.url && (
+        <div className='relative'>
+          <img
+            src={import.meta.env.VITE_GRAPHQL_ENDPOINT + image.url}
+            className='w-full block h-full'
+            alt='note'
+          />
+          <Fab
+            sx={{ position: 'absolute', bottom: 0, right: 0, margin: '.8rem', cursor: 'pointer' }}
+            variant='circular'
+            size='small'
+            color='error'
+            aria-label='Delete Image'
+            type='button'
+            onClick={handleDeleteImage}
+          >
+            <Icon fontSize='small'>delete</Icon>
+          </Fab>
+        </div>
+      )}
+
       <TextField
         variant='outlined'
         size='small'
         placeholder='Title'
         value={title}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
-        className='bg-white rounded-t-2xl w-full'
+        className={clsx('bg-white w-full', { 'rounded-t-2xl': !image?.url })}
         inputProps={{ style: { fontSize: '0.9rem', fontWeight: '500' } }}
         InputProps={{ className: 'p-2' }}
         sx={{
@@ -118,16 +175,16 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
       )}
 
       <div className='flex flex-auto justify-between items-center bg-white rounded-b-2xl p-2 px-3'>
-        <div className='flex items-center justify-around'>
+        <div className='flex items-center justify-around gap-x-2'>
           <Tooltip title='Add checklist' placement='bottom'>
             <IconButton onClick={toggleChecklistHandler} size='small'>
-              <Icon className='material-icons-outlined' fontSize='small'>
-                playlist_add_check
-              </Icon>
+              <Icon fontSize='small'>playlist_add_check</Icon>
             </IconButton>
           </Tooltip>
 
           <LabelMenu labels={labels} onChange={onLabelsChangeHandler} />
+
+          <ImagePicker onPick={handleImagePick} />
         </div>
 
         <div className='flex items-center justify-center gap-2'>

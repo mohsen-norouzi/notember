@@ -960,6 +960,20 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type DeleteUploadFileMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteUploadFileMutation = { __typename?: 'Mutation', deleteUploadFile?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null } | null } | null };
+
+export type UploadMutationVariables = Exact<{
+  file: Scalars['Upload'];
+}>;
+
+
+export type UploadMutation = { __typename?: 'Mutation', upload: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string } | null } | null } };
+
 export type CreateLabelMutationVariables = Exact<{
   data: LabelInput;
 }>;
@@ -1017,6 +1031,54 @@ export type UpdateNoteMutationVariables = Exact<{
 export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null } | null } | null } | null };
 
 
+export const DeleteUploadFileDocument = `
+    mutation deleteUploadFile($id: ID!) {
+  deleteUploadFile(id: $id) {
+    data {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUploadFileMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<DeleteUploadFileMutation, TError, DeleteUploadFileMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<DeleteUploadFileMutation, TError, DeleteUploadFileMutationVariables, TContext>(
+      ['deleteUploadFile'],
+      (variables?: DeleteUploadFileMutationVariables) => fetcher<DeleteUploadFileMutation, DeleteUploadFileMutationVariables>(client, DeleteUploadFileDocument, variables, headers)(),
+      options
+    );
+export const UploadDocument = `
+    mutation Upload($file: Upload!) {
+  upload(file: $file) {
+    data {
+      id
+      attributes {
+        name
+        url
+      }
+    }
+  }
+}
+    `;
+export const useUploadMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UploadMutation, TError, UploadMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UploadMutation, TError, UploadMutationVariables, TContext>(
+      ['Upload'],
+      (variables?: UploadMutationVariables) => fetcher<UploadMutation, UploadMutationVariables>(client, UploadDocument, variables, headers)(),
+      options
+    );
 export const CreateLabelDocument = `
     mutation createLabel($data: LabelInput!) {
   createLabel(data: $data) {

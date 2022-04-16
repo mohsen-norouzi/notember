@@ -17,6 +17,7 @@
     "graphql": "^16.3.0",
     "graphql-request": "^4.2.0",
     "react": "^17.0.2",
+    "react-advanced-cropper": "^0.6.1",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.2",
     "react-query": "^3.34.19",
