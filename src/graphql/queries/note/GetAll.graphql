@@ -26,6 +26,8 @@ query GetNotes($filters: NoteFiltersInput) {
             id
             attributes {
               title
+              color
+              icon
             }
           }
         }
