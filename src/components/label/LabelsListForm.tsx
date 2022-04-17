@@ -23,13 +23,13 @@ export const LabelsFormList: FC<LabelsFormListProps> = (props) => {
 
   const deleteMutation = useDeleteLabelMutation<DeleteLabelMutation, Error>(graphqlRequestClient, {
     onSuccess: () => {
-      queryClient.invalidateQueries('GetLabels');
+      queryClient.invalidateQueries(['GetLabels']);
     }
   });
 
   const updateMutation = useUpdateLabelMutation<UpdateLabelMutation, Error>(graphqlRequestClient, {
     onSuccess: () => {
-      queryClient.invalidateQueries('GetLabels');
+      queryClient.invalidateQueries(['GetLabels']);
     }
   });
 

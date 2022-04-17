@@ -19,7 +19,7 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
     graphqlRequestClient,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('GetLabels');
+        queryClient.invalidateQueries(['GetLabels']);
         setTitle('');
         setColor(null);
         setIcon(null);

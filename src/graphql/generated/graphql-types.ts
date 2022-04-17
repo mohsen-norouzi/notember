@@ -211,7 +211,7 @@ export type Label = {
   __typename?: 'Label';
   color: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
-  icon?: Maybe<Scalars['String']>;
+  icon: Scalars['String'];
   notes?: Maybe<NoteRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   title: Scalars['String'];
@@ -979,7 +979,7 @@ export type CreateLabelMutationVariables = Exact<{
 }>;
 
 
-export type CreateLabelMutation = { __typename?: 'Mutation', createLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon?: string | null } | null } | null } | null };
+export type CreateLabelMutation = { __typename?: 'Mutation', createLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon: string } | null } | null } | null };
 
 export type DeleteLabelMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -991,7 +991,7 @@ export type DeleteLabelMutation = { __typename?: 'Mutation', deleteLabel?: { __t
 export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'LabelEntityResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon?: string | null } | null }> } | null };
+export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'LabelEntityResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon: string } | null }> } | null };
 
 export type UpdateLabelMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -999,7 +999,7 @@ export type UpdateLabelMutationVariables = Exact<{
 }>;
 
 
-export type UpdateLabelMutation = { __typename?: 'Mutation', updateLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon?: string | null } | null } | null } | null };
+export type UpdateLabelMutation = { __typename?: 'Mutation', updateLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon: string } | null } | null } | null };
 
 export type CreateNoteMutationVariables = Exact<{
   data: NoteInput;
@@ -1020,7 +1020,7 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number, height?: number | null, width?: number | null } | null } | null } | null, labels?: { __typename?: 'LabelRelationResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
+export type GetNotesQuery = { __typename?: 'Query', notes?: { __typename?: 'NoteEntityResponseCollection', data: Array<{ __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null, updatedAt?: any | null, checklist?: any | null, image?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', id?: string | null, attributes?: { __typename?: 'UploadFile', name: string, url: string, hash: string, mime: string, provider: string, size: number, height?: number | null, width?: number | null } | null } | null } | null, labels?: { __typename?: 'LabelRelationResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon: string } | null }> } | null, users?: { __typename?: 'UsersPermissionsUserRelationResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string, email: string } | null }> } | null } | null }> } | null };
 
 export type UpdateNoteMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -1260,6 +1260,8 @@ export const GetNotesDocument = `
             id
             attributes {
               title
+              color
+              icon
             }
           }
         }
