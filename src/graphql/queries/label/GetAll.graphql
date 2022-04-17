@@ -1,0 +1,12 @@
+query GetLabels {
+  labels {
+    data {
+      id
+      attributes {
+        title
+        color
+        icon
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+mutation deleteLabel($id: ID!) {
+  deleteLabel(id: $id) {
+    data {
+      id
+    }
+  }
+}

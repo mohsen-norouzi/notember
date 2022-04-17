@@ -1,0 +1,20 @@
+.square-button {
+  border: none;
+  background: none;
+  color: inherit;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  width: 42px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.5s;
+}
+.square-button:focus {
+  outline: none;
+}
+.square-button:hover {
+  background: black;
+}
