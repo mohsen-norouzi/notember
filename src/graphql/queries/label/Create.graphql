@@ -1,0 +1,12 @@
+mutation createLabel($data: LabelInput!) {
+  createLabel(data: $data) {
+    data {
+      id
+      attributes {
+        title
+        color
+        icon
+      }
+    }
+  }
+}
