@@ -3,6 +3,7 @@ import './VerticalButtons.css';
 import clsx from 'clsx';
 
 interface Props {
+  children?: React.ReactNode;
   className?: string;
 }
 

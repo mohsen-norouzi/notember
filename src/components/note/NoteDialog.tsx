@@ -35,14 +35,14 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
 
   const updateMutation = useUpdateNoteMutation<UpdateNoteMutation, Error>(graphqlRequestClient, {
     onSuccess: () => {
-      queryClient.invalidateQueries('GetNotes');
+      queryClient.invalidateQueries(['GetNotes']);
       props.onClose();
     }
   });
 
   const deleteMutation = useDeleteNoteMutation<DeleteNoteMutation, Error>(graphqlRequestClient, {
     onSuccess: () => {
-      queryClient.invalidateQueries('GetNotes');
+      queryClient.invalidateQueries(['GetNotes']);
       props.onClose();
     }
   });

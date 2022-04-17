@@ -1,9 +1,13 @@
 @import './assets/css/animate.css';
 
+#root,
+html,
 body {
   font-size: 13px;
   line-height: 1.4;
   overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 .material-icons {

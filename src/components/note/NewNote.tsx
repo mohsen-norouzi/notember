@@ -16,7 +16,7 @@ export const NewNote = () => {
   const [showForm, setShowForm] = useState(false);
 
   const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(graphqlRequestClient, {
-    onSuccess: () => queryClient.invalidateQueries('GetNotes')
+    onSuccess: () => queryClient.invalidateQueries(['GetNotes'])
   });
 
   const deleteFileMutation = useDeleteUploadFileMutation<DeleteUploadFileMutation, Error>(
