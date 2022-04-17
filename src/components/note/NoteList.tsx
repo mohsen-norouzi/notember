@@ -31,7 +31,19 @@ export const NoteList: FC<NoteListProps> = (props) => {
     filters
   });
 
-  if (error) return <p>error loading notes</p>;
+  if (error) {
+    return (
+      <div className='flex flex-col items-center justify-center h-full space-y-5'>
+        <Typography color='textSecondary' variant='h1'>
+          {': ('}
+        </Typography>
+
+        <Typography color='textSecondary' variant='h5'>
+          Failed to load notes!
+        </Typography>
+      </div>
+    );
+  }
 
   if (data && data.notes && data.notes.data.length === 0) {
     return (

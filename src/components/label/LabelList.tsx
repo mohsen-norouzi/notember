@@ -20,8 +20,6 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
     {}
   );
 
-  if (error) return <p>error loading labels</p>;
-
   const onLabelClickHandler = (title?: string) => {
     if (showSidebar) {
       setShowSidebar(false);
@@ -79,6 +77,8 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
         )}
 
         <p className='flex-2 p-2 text-gray-600 text-sm'>Labels</p>
+
+        {error && <p className='flex-2 px-2 mb-3 text-rose-400 text-sm'>failed to load labels</p>}
 
         {data?.labels?.data.map(({ id, attributes }) => (
           <LabelItem
