@@ -1,7 +1,7 @@
 import { LabelList, NewNote, NoteList } from 'components';
 import { useState } from 'react';
 
-export const NoteApp = () => {
+export const NotePage = () => {
   const [filter, setFilter] = useState<string | undefined>('');
 
   const handleFilterChange = (value?: string) => {

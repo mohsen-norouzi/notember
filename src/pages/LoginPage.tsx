@@ -20,7 +20,7 @@ const defaultValues: LoginType = {
   password: ''
 };
 
-export const LoginApp = () => {
+export const LoginPage = () => {
   const navigate = useNavigate();
   const { data, error, isLoading, mutate } = useLoginMutation<LoginMutation, Error>(
     graphqlRequestClient,

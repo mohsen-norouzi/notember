@@ -1,2 +1,2 @@
-export * from './NoteApp';
-export * from './LoginApp';
+export * from './NotePage';
+export * from './LoginPage';
