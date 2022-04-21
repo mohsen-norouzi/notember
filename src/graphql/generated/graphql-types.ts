@@ -1030,6 +1030,20 @@ export type UpdateNoteMutationVariables = Exact<{
 
 export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null } | null } | null } | null };
 
+export type LoginMutationVariables = Exact<{
+  input: UsersPermissionsLoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', username: string, email?: string | null } } };
+
+export type RegisterMutationVariables = Exact<{
+  input: UsersPermissionsRegisterInput;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', username: string, email?: string | null } } };
+
 
 export const DeleteUploadFileDocument = `
     mutation deleteUploadFile($id: ID!) {
@@ -1318,5 +1332,53 @@ export const useUpdateNoteMutation = <
     useMutation<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>(
       ['updateNote'],
       (variables?: UpdateNoteMutationVariables) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(client, UpdateNoteDocument, variables, headers)(),
+      options
+    );
+export const LoginDocument = `
+    mutation login($input: UsersPermissionsLoginInput!) {
+  login(input: $input) {
+    jwt
+    user {
+      username
+      email
+    }
+  }
+}
+    `;
+export const useLoginMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<LoginMutation, TError, LoginMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
+      ['login'],
+      (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables, headers)(),
+      options
+    );
+export const RegisterDocument = `
+    mutation register($input: UsersPermissionsRegisterInput!) {
+  register(input: $input) {
+    jwt
+    user {
+      username
+      email
+    }
+  }
+}
+    `;
+export const useRegisterMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<RegisterMutation, TError, RegisterMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<RegisterMutation, TError, RegisterMutationVariables, TContext>(
+      ['register'],
+      (variables?: RegisterMutationVariables) => fetcher<RegisterMutation, RegisterMutationVariables>(client, RegisterDocument, variables, headers)(),
       options
     );
