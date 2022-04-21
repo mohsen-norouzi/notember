@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
-import { LoginPage, NotePage } from 'pages';
+import { LoginPage, NotePage, RegisterPage } from 'pages';
 import { Layout } from 'components';
 
 const queryClient = new QueryClient({
@@ -22,6 +22,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<NotePage />} />
           <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
         </Routes>
       </Layout>
       <ReactQueryDevtools />
