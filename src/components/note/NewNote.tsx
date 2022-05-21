@@ -6,7 +6,7 @@ import {
   useDeleteUploadFileMutation,
   DeleteUploadFileMutation
 } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { NoteForm } from './noteform';
@@ -15,12 +15,12 @@ export const NewNote = () => {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
 
-  const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(graphqlRequestClient, {
+  const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(getGraphQLRequestClient(), {
     onSuccess: () => queryClient.invalidateQueries(['GetNotes'])
   });
 
   const deleteFileMutation = useDeleteUploadFileMutation<DeleteUploadFileMutation, Error>(
-    graphqlRequestClient,
+    getGraphQLRequestClient(),
     {}
   );
 

@@ -10,7 +10,7 @@ import {
   Tooltip
 } from '@mui/material';
 import { GetLabelsQuery, LabelEntity, useGetLabelsQuery } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 type LabelMenuProps = {
   labels: LabelEntity[];
@@ -19,7 +19,7 @@ type LabelMenuProps = {
 
 export const LabelMenu: React.FC<LabelMenuProps> = (props) => {
   const { data, error, isLoading } = useGetLabelsQuery<GetLabelsQuery, Error>(
-    graphqlRequestClient,
+    getGraphQLRequestClient(),
     {}
   );
 

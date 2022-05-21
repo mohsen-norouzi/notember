@@ -13,8 +13,8 @@ import {
   useDeleteNoteMutation,
   useUpdateNoteMutation
 } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import { useQueryClient } from 'react-query';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -33,14 +33,14 @@ type NoteDialogProps = {
 export const NoteDialog: FC<NoteDialogProps> = (props) => {
   const queryClient = useQueryClient();
 
-  const updateMutation = useUpdateNoteMutation<UpdateNoteMutation, Error>(graphqlRequestClient, {
+  const updateMutation = useUpdateNoteMutation<UpdateNoteMutation, Error>(getGraphQLRequestClient(), {
     onSuccess: () => {
       queryClient.invalidateQueries(['GetNotes']);
       props.onClose();
     }
   });
 
-  const deleteMutation = useDeleteNoteMutation<DeleteNoteMutation, Error>(graphqlRequestClient, {
+  const deleteMutation = useDeleteNoteMutation<DeleteNoteMutation, Error>(getGraphQLRequestClient(), {
     onSuccess: () => {
       queryClient.invalidateQueries(['GetNotes']);
       props.onClose();

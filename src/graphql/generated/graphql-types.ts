@@ -1037,6 +1037,11 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', username: string, email?: string | null } } };
 
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'UsersPermissionsMe', username: string } | null };
+
 export type RegisterMutationVariables = Exact<{
   input: UsersPermissionsRegisterInput;
 }>;
@@ -1356,6 +1361,27 @@ export const useLoginMutation = <
     useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
       ['login'],
       (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables, headers)(),
+      options
+    );
+export const MeDocument = `
+    query Me {
+  me {
+    username
+  }
+}
+    `;
+export const useMeQuery = <
+      TData = MeQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: MeQueryVariables,
+      options?: UseQueryOptions<MeQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<MeQuery, TError, TData>(
+      variables === undefined ? ['Me'] : ['Me', variables],
+      fetcher<MeQuery, MeQueryVariables>(client, MeDocument, variables, headers),
       options
     );
 export const RegisterDocument = `

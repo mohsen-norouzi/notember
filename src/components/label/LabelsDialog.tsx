@@ -1,15 +1,7 @@
 import { FC } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
-import {
-  DeleteLabelMutation,
-  LabelEntity,
-  UpdateLabelMutation,
-  useDeleteLabelMutation,
-  useUpdateLabelMutation
-} from 'graphql/generated/graphql-types';
-import { useQueryClient } from 'react-query';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
+import { LabelEntity } from 'graphql/generated/graphql-types';
 
 import { LabelsForm } from './LabelsForm';
 import { LabelsFormList } from './LabelsListForm';

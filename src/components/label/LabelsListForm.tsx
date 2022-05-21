@@ -10,9 +10,9 @@ import {
   useUpdateLabelMutation
 } from 'graphql/generated/graphql-types';
 import { useQueryClient } from 'react-query';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 
 import { LabelListFormItem } from './LabelListFormItem';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 type LabelsFormListProps = {
   labels: LabelEntity[];
@@ -21,17 +21,23 @@ type LabelsFormListProps = {
 export const LabelsFormList: FC<LabelsFormListProps> = (props) => {
   const queryClient = useQueryClient();
 
-  const deleteMutation = useDeleteLabelMutation<DeleteLabelMutation, Error>(graphqlRequestClient, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['GetLabels']);
+  const deleteMutation = useDeleteLabelMutation<DeleteLabelMutation, Error>(
+    getGraphQLRequestClient(),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['GetLabels']);
+      }
     }
-  });
+  );
 
-  const updateMutation = useUpdateLabelMutation<UpdateLabelMutation, Error>(graphqlRequestClient, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['GetLabels']);
+  const updateMutation = useUpdateLabelMutation<UpdateLabelMutation, Error>(
+    getGraphQLRequestClient(),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['GetLabels']);
+      }
     }
-  });
+  );
 
   const onDeleteHandler = (id: string) => {
     deleteMutation.mutate({ id });

@@ -5,9 +5,5 @@ interface LayoutProps {
 }
 
 export const Layout: FC<LayoutProps> = (props) => {
-  return (
-    <div className='bg-gray-100 h-screen'>
-      {props.children}
-    </div>
-  );
+  return <div className='bg-gray-100 h-screen'>{props.children}</div>;
 };

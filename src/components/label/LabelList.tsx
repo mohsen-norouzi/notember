@@ -1,10 +1,11 @@
 import { Backdrop, Box, Divider, Icon, IconButton, LinearProgress, Stack } from '@mui/material';
 import clsx from 'clsx';
 import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import React, { useState } from 'react';
 import { LabelItem } from './LabelItem';
 import { LabelsDialog } from './LabelsDialog';
+import { ClientError } from 'graphql-request';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 type LabelListProps = {
   filter?: string;
@@ -16,8 +17,18 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   const [showLabelsDialog, setShowLabelsDialog] = useState(false);
 
   const { data, error, isLoading } = useGetLabelsQuery<GetLabelsQuery, Error>(
-    graphqlRequestClient,
-    {}
+    getGraphQLRequestClient(),
+    {},
+    {
+      onError: (err) => {
+        // console.log('my error', err);
+      },
+      retry: (failureCount, error) => {
+        const errorObject: ClientError = JSON.parse(JSON.stringify(error));
+        console.log(errorObject);
+        return true;
+      }
+    }
   );
 
   const onLabelClickHandler = (title?: string) => {

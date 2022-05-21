@@ -7,11 +7,11 @@ import {
   NoteEntity,
   useGetNotesQuery
 } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 
 import { NoteItem } from './NoteItem';
 import { NoteDialog } from './NoteDialog';
 import { Skeleton, Stack, Typography } from '@mui/material';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 type NoteListProps = {
   filter?: string;
@@ -27,7 +27,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
     setFilters(filterData);
   }, [props.filter]);
 
-  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(graphqlRequestClient, {
+  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(getGraphQLRequestClient(), {
     filters
   });
 

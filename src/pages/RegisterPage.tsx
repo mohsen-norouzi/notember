@@ -15,8 +15,8 @@ import {
   useRegisterMutation,
   UsersPermissionsRegisterInput
 } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import { useNavigate } from 'react-router-dom';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 type LoginType = {
   email: string;
@@ -33,7 +33,7 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
 
   const { data, error, isLoading, mutate } = useRegisterMutation<RegisterMutation, Error>(
-    graphqlRequestClient,
+    getGraphQLRequestClient(false),
     {
       onSuccess: (result) => {
         if (result.register && result.register.jwt && result.register.user) {

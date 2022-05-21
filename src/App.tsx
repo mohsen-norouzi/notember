@@ -4,8 +4,12 @@ import { Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
+import { Provider } from 'react-redux';
+import { store } from 'redux/store';
+
 import { LoginPage, NotePage, RegisterPage } from 'pages';
 import { Layout } from 'components';
+import { Auth } from 'components/auth';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,16 +21,20 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Layout>
-        <Routes>
-          <Route path='/' element={<NotePage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-        </Routes>
-      </Layout>
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Auth>
+          <Layout>
+            <Routes>
+              <Route path='/' element={<NotePage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/register' element={<RegisterPage />} />
+            </Routes>
+          </Layout>
+          <ReactQueryDevtools />
+        </Auth>
+      </QueryClientProvider>
+    </Provider>
   );
 };
 
