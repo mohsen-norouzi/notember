@@ -1,11 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface labelState {
   show: boolean;
+  filter: string;
 }
 
 const initialState: labelState = {
-  show: false
+  show: false,
+  filter: ''
 };
 
 export const labelSlice = createSlice({
@@ -23,6 +25,10 @@ export const labelSlice = createSlice({
 
     hideLabels: (state) => {
       state.show = false;
+    },
+
+    setFilter: (state, action: PayloadAction<string>) => {
+      state.filter = action.payload;
     }
   }
 });

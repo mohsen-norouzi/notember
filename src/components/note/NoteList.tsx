@@ -12,20 +12,21 @@ import { NoteItem } from './NoteItem';
 import { NoteDialog } from './NoteDialog';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
+import { useAppSelector } from 'redux/hooks';
 
-type NoteListProps = {
-  filter?: string;
-};
+type NoteListProps = {};
 
 export const NoteList: FC<NoteListProps> = (props) => {
+  const filter = useAppSelector((state) => state.label.filter);
+
   const [selectedNote, setSelectedNote] = useState<Maybe<NoteEntity>>(null);
   const [filters, setFilters] = useState({});
 
   useEffect(() => {
-    let filterData = props.filter ? { labels: { title: { eq: props.filter } } } : {};
+    let filterData = filter ? { labels: { title: { eq: filter } } } : {};
 
     setFilters(filterData);
-  }, [props.filter]);
+  }, [filter]);
 
   const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(
     getGraphQLRequestClient(),

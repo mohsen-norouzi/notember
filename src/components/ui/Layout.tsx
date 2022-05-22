@@ -30,7 +30,7 @@ export const Layout: FC<LayoutProps> = (props) => {
         onClose={handleToggleLabels}
         sx={{ display: { xs: 'block', sm: 'none' } }}
       >
-        <LabelList onFilter={() => {}} />
+        <LabelList />
       </Drawer>
     </>
   );

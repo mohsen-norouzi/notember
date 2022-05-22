@@ -8,14 +8,11 @@ import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 
-type LabelListProps = {
-  filter?: string;
-  onFilter: (value?: string) => void;
-};
+type LabelListProps = {};
 
 export const LabelList: React.FC<LabelListProps> = (props) => {
   const dispatch = useAppDispatch();
-  const showLabels = useAppSelector((state) => state.label.show);
+  const { show, filter } = useAppSelector((state) => state.label);
 
   const [showLabelsDialog, setShowLabelsDialog] = useState(false);
 
@@ -35,11 +32,11 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   );
 
   const onLabelClickHandler = (title?: string) => {
-    if (showLabels) {
+    if (show) {
       dispatch(labelActions.hideLabels());
     }
 
-    props.onFilter(title);
+    dispatch(labelActions.setFilter(title || ''));
   };
 
   const handleToggleLabels = () => {
@@ -59,7 +56,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
           key='notes'
           title='Notes'
           icon='label_outlined'
-          active={props.filter === ''}
+          active={filter === ''}
           onClick={() => onLabelClickHandler('')}
         />
         <LabelItem
@@ -84,7 +81,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
             key={id}
             title={attributes?.title}
             icon={attributes?.icon!}
-            active={props.filter === attributes?.title}
+            active={filter === attributes?.title}
             color={attributes?.color}
             onClick={() => onLabelClickHandler(attributes?.title)}
           />
