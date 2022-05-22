@@ -1,13 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Icon,
-  IconButton,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Icon, IconButton, TextField, Typography } from '@mui/material';
 import { GetIcons, MaterialIcons } from './Icons';
 
 type IconPickerProps = {
@@ -16,7 +8,7 @@ type IconPickerProps = {
   onIconSelect: (icon: string) => void;
 };
 
-const defaultIcons = [...MaterialIcons].slice(0, 24);
+const defaultIcons = [...MaterialIcons].slice(0, 28);
 
 export const IconPicker: FC<IconPickerProps> = (props) => {
   const [icons, setIcons] = useState<string[]>(defaultIcons);
@@ -54,18 +46,17 @@ export const IconPicker: FC<IconPickerProps> = (props) => {
         />
       </div>
 
-      <div className='flex flex-wrap  p-2 items-center'>
-        {icons.map((i) => (
-          <IconButton className='flex' onClick={() => onIconSelectHandler(i)}>
+      <div className='flex flex-wrap p-1 items-center'>
+        {icons.map((icon, index) => (
+          <IconButton key={index} className='flex' onClick={() => onIconSelectHandler(icon)}>
             <Icon
-              fontSize='small'
               sx={{
                 height: '1.5rem',
                 width: '1.5rem',
-                color: i === selectedIcon ? props.color : null
+                color: icon === selectedIcon ? props.color : null
               }}
             >
-              {i}
+              {icon}
             </Icon>
           </IconButton>
         ))}

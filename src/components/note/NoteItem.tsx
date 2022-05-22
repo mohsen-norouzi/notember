@@ -59,13 +59,13 @@ export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
             alt={image.data?.attributes?.name}
             onLoadStart={startLoading}
             onLoadCapture={finishLoading}
-            className={clsx({ hidden: !imageLoaded })}
+            className={clsx('w-full h-full', { hidden: !imageLoaded })}
           />
         </div>
       )}
 
       <CardContent sx={{ paddingBottom: '1rem !important' }}>
-        <Box component='div'className='mb-3'>
+        <Box component='div' className='mb-3'>
           <Typography gutterBottom variant='h5' component='div'>
             {title}
           </Typography>

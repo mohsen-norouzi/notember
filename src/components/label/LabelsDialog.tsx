@@ -1,15 +1,7 @@
 import { FC } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
-import {
-  DeleteLabelMutation,
-  LabelEntity,
-  UpdateLabelMutation,
-  useDeleteLabelMutation,
-  useUpdateLabelMutation
-} from 'graphql/generated/graphql-types';
-import { useQueryClient } from 'react-query';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
+import { LabelEntity } from 'graphql/generated/graphql-types';
 
 import { LabelsForm } from './LabelsForm';
 import { LabelsFormList } from './LabelsListForm';
@@ -31,14 +23,14 @@ export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
       onClose={props.onClose}
       // open={labelsDialogOpen}
     >
-      <DialogTitle>Edit Labels</DialogTitle>
+      <DialogTitle sx={{ padding: '1rem' }}>Edit Labels</DialogTitle>
 
-      <DialogContent>
+      <DialogContent sx={{ padding: '0 1rem' }}>
         <LabelsForm />
         <LabelsFormList labels={props.labels} />
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ marginTop: '0' }}>
         <Button onClick={onCancelHandler}>Close</Button>
       </DialogActions>
     </Dialog>

@@ -6,7 +6,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { Cropper, CropperRef, getMimeType, ImageRestriction } from 'react-advanced-cropper';
 import 'react-advanced-cropper/dist/style.css';
 import { useUploadMutation, UploadMutation } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -25,7 +25,7 @@ type ImageDialogProps = {
 
 export const ImageDialog: FC<ImageDialogProps> = (props) => {
   const { data, error, isLoading, mutate } = useUploadMutation<UploadMutation, Error>(
-    graphqlRequestClient,
+    getGraphQLRequestClient(),
     {}
   );
 

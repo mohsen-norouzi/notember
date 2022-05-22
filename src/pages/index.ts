@@ -1,1 +1,3 @@
-export * from './NoteApp'
+export * from './NotePage';
+export * from './LoginPage';
+export * from './RegisterPage';
