@@ -23,14 +23,14 @@ export const LabelsDialog: FC<LabelsDialogProps> = (props) => {
       onClose={props.onClose}
       // open={labelsDialogOpen}
     >
-      <DialogTitle>Edit Labels</DialogTitle>
+      <DialogTitle sx={{ padding: '1rem' }}>Edit Labels</DialogTitle>
 
-      <DialogContent>
+      <DialogContent sx={{ padding: '0 1rem' }}>
         <LabelsForm />
         <LabelsFormList labels={props.labels} />
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions sx={{ marginTop: '0' }}>
         <Button onClick={onCancelHandler}>Close</Button>
       </DialogActions>
     </Dialog>

@@ -2102,7 +2102,7 @@ export const MaterialIcons = [
 ];
 
 export const GetIcons = (key: string) => {
-  if (key.trim().length < 2) return [];
+  // if (key.trim().length < 2) return [];
 
   return MaterialIcons.filter((icon) => icon.indexOf(key.toLocaleLowerCase()) > -1);
 };
