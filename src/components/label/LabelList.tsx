@@ -1,11 +1,12 @@
-import { Backdrop, Box, Divider, Icon, IconButton, LinearProgress, Stack } from '@mui/material';
-import clsx from 'clsx';
+import { Box, Divider, LinearProgress } from '@mui/material';
 import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-types';
 import React, { useState } from 'react';
 import { LabelItem } from './LabelItem';
 import { LabelsDialog } from './LabelsDialog';
 import { ClientError } from 'graphql-request';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { appActions } from 'redux/app-slice';
 
 type LabelListProps = {
   filter?: string;
@@ -13,7 +14,9 @@ type LabelListProps = {
 };
 
 export const LabelList: React.FC<LabelListProps> = (props) => {
-  const [showSidebar, setShowSidebar] = useState(false);
+  const dispatch = useAppDispatch();
+  const showLabels = useAppSelector((state) => state.app.showLabels);
+
   const [showLabelsDialog, setShowLabelsDialog] = useState(false);
 
   const { data, error, isLoading } = useGetLabelsQuery<GetLabelsQuery, Error>(
@@ -32,39 +35,24 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   );
 
   const onLabelClickHandler = (title?: string) => {
-    if (showSidebar) {
-      setShowSidebar(false);
+    if (showLabels) {
+      dispatch(appActions.hideLabels());
     }
 
     props.onFilter(title);
   };
 
-  return (
-    <Box className='flex justify-center md:mt-5 gap-2'>
-      <Box
-        sx={{
-          visibility: { xs: 'visible', sm: 'collapse' }
-        }}
-      >
-        <IconButton
-          className='bg-white'
-          style={{ position: 'absolute', left: 0, top: '0' }}
-          onClick={() => setShowSidebar((isOpen) => !isOpen)}
-        >
-          <Icon fontSize='small'>label</Icon>
-        </IconButton>
-      </Box>
+  const handleToggleLabels = () => {
+    dispatch(appActions.toggleShowLabels());
+  };
 
+  return (
+    <>
       <Box
-        className={clsx(
-          'bg-white z-20 transition-all w-60 shadow px-2 py-4 relative animated fadeInLeft'
-        )}
+        className='bg-white z-20 transition-all w-60 shadow px-2 py-4  animated fadeInLeftp'
         sx={{
-          position: { xs: 'fixed', sm: 'static' },
           height: { xs: '100%', sm: 'min-content' },
-          borderRadius: { xs: '0', sm: '1rem' },
-          marginTop: { xs: '0', sm: '5.5rem;' },
-          left: { xs: showSidebar ? '0' : '-15rem', sm: '' }
+          borderRadius: { xs: '0', sm: '1rem' }
         }}
       >
         <LabelItem
@@ -122,8 +110,6 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
         onClose={() => setShowLabelsDialog(false)}
         labels={data?.labels?.data || []}
       />
-
-      <Backdrop className='z-10' open={showSidebar} onClick={() => setShowSidebar(false)} />
-    </Box>
+    </>
   );
 };

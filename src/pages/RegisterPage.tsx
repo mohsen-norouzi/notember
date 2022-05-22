@@ -15,7 +15,7 @@ import {
   useRegisterMutation,
   UsersPermissionsRegisterInput
 } from 'graphql/generated/graphql-types';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 type LoginType = {
@@ -60,8 +60,8 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className='h-full w-full flex flex-col flex-auto items-center justify-center'>
-      <Card sx={{ borderRadius: '1rem' }} className='shadow-xl animated fadeInUp'>
+    <div className='h-full w-full flex flex-col flex-auto items-center justify-center animated fadeInUp'>
+      <Card sx={{ borderRadius: '1rem' }} className='shadow-xl'>
         <CardContent>
           <div className='flex flex-col items-center justify-center gap-5 w-full mb-5'>
             <CardMedia component='img' src={logoImage} alt='logo' sx={{ width: 45 }}></CardMedia>
@@ -124,6 +124,11 @@ export const RegisterPage = () => {
           </Button>
         </CardActions>
       </Card>
+
+      <div className='mt-5'>
+        <span>Already have an account? </span>
+        <Link to='/login'>Sign in!</Link>
+      </div>
     </div>
   );
 };

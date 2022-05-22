@@ -27,13 +27,16 @@ export const NoteList: FC<NoteListProps> = (props) => {
     setFilters(filterData);
   }, [props.filter]);
 
-  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(getGraphQLRequestClient(), {
-    filters
-  });
+  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(
+    getGraphQLRequestClient(),
+    {
+      filters
+    }
+  );
 
   if (error) {
     return (
-      <div className='flex flex-col items-center justify-center h-full space-y-5'>
+      <div className='flex flex-col items-center justify-center h-full'>
         <Typography color='textSecondary' variant='h1'>
           {': ('}
         </Typography>

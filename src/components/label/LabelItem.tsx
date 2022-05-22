@@ -23,11 +23,11 @@ export const LabelItem: FC<LabelItemProps> = (props) => {
       )}
       onClick={onClickHandler}
     >
-      <Icon color='action' fontSize='small' style={{ color: props.color! }} className='m-2'>
+      <Icon color='action' style={{ color: props.color! }} className='m-2'>
         {props.icon}
       </Icon>
 
-      <p className='flex-2 p-2 text-gray-600 text-sm'>{props.title}</p>
+      <p className='flex-2 p-2 text-gray-600'>{props.title}</p>
     </div>
   );
 };

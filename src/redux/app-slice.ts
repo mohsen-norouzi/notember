@@ -4,11 +4,13 @@ import { RootState } from './store';
 interface appState {
   token?: string;
   theme: 'dark' | 'light';
+  showLabels: boolean;
 }
 
 const initialState: appState = {
   token: undefined,
-  theme: 'dark'
+  theme: 'dark',
+  showLabels: false
 };
 
 export const appSlice = createSlice({
@@ -33,6 +35,14 @@ export const appSlice = createSlice({
     authenticate: (state) => {
       const token = localStorage.getItem('jwt');
       state.token = token || '';
+    },
+
+    toggleShowLabels: (state) => {
+      state.showLabels = !state.showLabels;
+    },
+
+    hideLabels: (state) => {
+      state.showLabels = false;
     }
   }
 });

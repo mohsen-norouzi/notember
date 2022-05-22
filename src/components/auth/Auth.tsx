@@ -1,7 +1,7 @@
 import { MeQuery, useMeQuery } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import React, { FC, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { appActions } from 'redux/app-slice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
@@ -9,8 +9,18 @@ type AuthProps = {
   children?: React.ReactNode;
 };
 
+const noRetryPages = ['/register', '/login'];
+const shouldRetryOnFocus = (pathName: string) => {
+  if (noRetryPages.indexOf(pathName) === -1) {
+    return true;
+  }
+
+  return false;
+};
+
 export const Auth: FC<AuthProps> = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.app.token);
 
@@ -20,16 +30,18 @@ export const Auth: FC<AuthProps> = (props) => {
     {
       onError: (err) => {
         const errorObject = JSON.parse(JSON.stringify(error));
-        console.log('ME On Error --->', errorObject);
       },
       retry: (failureCount, error) => {
         const errorObject = JSON.parse(JSON.stringify(error));
 
         // unauthorized access
         if (errorObject.response.error && errorObject.response.error.status === 401) {
-          console.log('ME On Error ---> unauthorized access');
           dispatch(appActions.logout());
-          navigate('/login');
+
+          if (shouldRetryOnFocus(location.pathname)) {
+            navigate('/login');
+          }
+
           return false;
         }
 
@@ -38,12 +50,13 @@ export const Auth: FC<AuthProps> = (props) => {
       },
       onSuccess: () => {
         navigate('/');
-      }
+      },
+      refetchOnWindowFocus: shouldRetryOnFocus(location.pathname)
     }
   );
 
   useEffect(() => {
-    if (token === '') {
+    if (token === '' && shouldRetryOnFocus(location.pathname)) {
       navigate('/login');
     }
   }, [token]);

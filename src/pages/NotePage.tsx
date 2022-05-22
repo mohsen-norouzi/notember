@@ -1,5 +1,6 @@
 import { LabelList, NewNote, NoteList } from 'components';
 import { useState } from 'react';
+import Box from '@mui/material/Box';
 
 export const NotePage = () => {
   const [filter, setFilter] = useState<string | undefined>('');
@@ -9,13 +10,13 @@ export const NotePage = () => {
   };
 
   return (
-    <div className='flex gap-2 min-h-screen'>
-      <LabelList onFilter={handleFilterChange} filter={filter} />
+    <div className='flex gap-2 mx-2'>
+      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+        <LabelList onFilter={handleFilterChange} filter={filter} />
+      </Box>
 
-      <div className='flex flex-col flex-auto space-y-5'>
-        <NewNote />
-        <NoteList filter={filter} />
-      </div>
+      {/* <NewNote /> */}
+      <NoteList filter={filter} />
     </div>
   );
 };
