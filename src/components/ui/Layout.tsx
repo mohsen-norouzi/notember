@@ -1,21 +1,21 @@
-import { Backdrop, Drawer } from '@mui/material';
+import { Drawer } from '@mui/material';
 import { LabelList } from 'components/label';
 import { FC } from 'react';
-import { appActions } from 'redux/app-slice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { AppbarLayout } from './AppbarLayout';
+import { labelActions } from 'redux/slices/label-slice';
 
 interface LayoutProps {
   children?: React.ReactNode;
 }
 
 export const Layout: FC<LayoutProps> = (props) => {
-  const showLabels = useAppSelector((state) => state.app.showLabels);
+  const showLabels = useAppSelector((state) => state.label.show);
 
   const dispatch = useAppDispatch();
 
   const handleToggleLabels = () => {
-    dispatch(appActions.toggleShowLabels());
+    dispatch(labelActions.toggleShowLabels());
   };
 
   return (

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,10 +7,9 @@ import Typography from '@mui/material/Typography';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Drawer, Icon } from '@mui/material';
+import { Icon } from '@mui/material';
 import { useAppDispatch } from 'redux/hooks';
-import { appActions } from 'redux/app-slice';
-import { LabelList } from 'components/label';
+import { labelActions } from 'redux/slices/label-slice';
 
 export const AppbarLayout = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +26,7 @@ export const AppbarLayout = () => {
   };
 
   const handleToggleLabels = () => {
-    dispatch(appActions.toggleShowLabels());
+    dispatch(labelActions.toggleShowLabels());
   };
 
   const menuId = 'primary-search-account-menu';

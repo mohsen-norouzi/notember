@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import appReducer from './app-slice';
+import appReducer from './slices/app-slice';
+import labelReducer from './slices/label-slice';
 
 export const store = configureStore({
   reducer: {
-    app: appReducer
+    app: appReducer,
+    label: labelReducer
   }
 });
 

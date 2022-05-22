@@ -17,8 +17,8 @@ import {
 } from 'graphql/generated/graphql-types';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux/hooks';
-import { appActions } from 'redux/app-slice';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
+import { appActions } from 'redux/slices/app-slice';
 
 type LoginType = {
   email: string;

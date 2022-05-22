@@ -6,7 +6,7 @@ import { LabelsDialog } from './LabelsDialog';
 import { ClientError } from 'graphql-request';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { appActions } from 'redux/app-slice';
+import { labelActions } from 'redux/slices/label-slice';
 
 type LabelListProps = {
   filter?: string;
@@ -15,7 +15,7 @@ type LabelListProps = {
 
 export const LabelList: React.FC<LabelListProps> = (props) => {
   const dispatch = useAppDispatch();
-  const showLabels = useAppSelector((state) => state.app.showLabels);
+  const showLabels = useAppSelector((state) => state.label.show);
 
   const [showLabelsDialog, setShowLabelsDialog] = useState(false);
 
@@ -36,14 +36,14 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
 
   const onLabelClickHandler = (title?: string) => {
     if (showLabels) {
-      dispatch(appActions.hideLabels());
+      dispatch(labelActions.hideLabels());
     }
 
     props.onFilter(title);
   };
 
   const handleToggleLabels = () => {
-    dispatch(appActions.toggleShowLabels());
+    dispatch(labelActions.toggleShowLabels());
   };
 
   return (

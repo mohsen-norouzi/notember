@@ -2,7 +2,7 @@ import { MeQuery, useMeQuery } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import React, { FC, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { appActions } from 'redux/app-slice';
+import { appActions } from 'redux/slices/app-slice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 type AuthProps = {
