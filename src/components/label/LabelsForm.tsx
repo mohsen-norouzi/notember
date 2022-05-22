@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { FormControl, Icon, IconButton, Input, InputAdornment } from '@mui/material';
 
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 import {
   CreateLabelMutation,
   LabelInput,
@@ -9,6 +8,7 @@ import {
   useCreateLabelMutation
 } from 'graphql/generated/graphql-types';
 import { useQueryClient } from 'react-query';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 type LabelsFormProps = {};
 
@@ -16,7 +16,7 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
   const queryClient = useQueryClient();
 
   const { data, error, isLoading, mutate } = useCreateLabelMutation<CreateLabelMutation, Error>(
-    graphqlRequestClient,
+    getGraphQLRequestClient(),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['GetLabels']);

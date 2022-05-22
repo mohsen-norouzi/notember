@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/lab": "^5.0.0-alpha.77",
     "@mui/material": "^5.5.3",
+    "@reduxjs/toolkit": "^1.8.1",
     "clsx": "^1.1.1",
     "graphql": "^16.3.0",
     "graphql-request": "^4.2.0",
@@ -20,7 +21,9 @@
     "react-advanced-cropper": "^0.6.1",
     "react-color": "^2.19.3",
     "react-dom": "^18.0.0",
+    "react-hook-form": "^7.30.0",
     "react-query": "4.0.0-beta.3",
+    "react-redux": "^8.0.1",
     "react-router-dom": "6"
   },
   "devDependencies": {

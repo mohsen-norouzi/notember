@@ -7,33 +7,37 @@ import {
   NoteEntity,
   useGetNotesQuery
 } from 'graphql/generated/graphql-types';
-import graphqlRequestClient from 'lib/clients/GraphqlRequestClient';
 
 import { NoteItem } from './NoteItem';
 import { NoteDialog } from './NoteDialog';
 import { Skeleton, Stack, Typography } from '@mui/material';
+import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
+import { useAppSelector } from 'redux/hooks';
 
-type NoteListProps = {
-  filter?: string;
-};
+type NoteListProps = {};
 
 export const NoteList: FC<NoteListProps> = (props) => {
+  const filter = useAppSelector((state) => state.label.filter);
+
   const [selectedNote, setSelectedNote] = useState<Maybe<NoteEntity>>(null);
   const [filters, setFilters] = useState({});
 
   useEffect(() => {
-    let filterData = props.filter ? { labels: { title: { eq: props.filter } } } : {};
+    let filterData = filter ? { labels: { title: { eq: filter } } } : {};
 
     setFilters(filterData);
-  }, [props.filter]);
+  }, [filter]);
 
-  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(graphqlRequestClient, {
-    filters
-  });
+  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(
+    getGraphQLRequestClient(),
+    {
+      filters
+    }
+  );
 
   if (error) {
     return (
-      <div className='flex flex-col items-center justify-center h-full space-y-5'>
+      <div className='flex flex-col items-center justify-center h-full'>
         <Typography color='textSecondary' variant='h1'>
           {': ('}
         </Typography>
@@ -47,7 +51,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
 
   if (data && data.notes && data.notes.data.length === 0) {
     return (
-      <div className='flex items-center justify-center h-full'>
+      <div className='flex items-center justify-center w-full h-auto mt-5'>
         <Typography color='textSecondary' variant='h5'>
           There are no notes!
         </Typography>
