@@ -51,7 +51,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
 
   if (data && data.notes && data.notes.data.length === 0) {
     return (
-      <div className='flex items-center justify-center h-full'>
+      <div className='flex items-center justify-center w-full h-auto mt-5'>
         <Typography color='textSecondary' variant='h5'>
           There are no notes!
         </Typography>
