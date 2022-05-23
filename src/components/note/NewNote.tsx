@@ -1,4 +1,4 @@
-import { Box, ClickAwayListener, Fab, Icon } from '@mui/material';
+import { Box, Fab, Icon } from '@mui/material';
 import {
   CreateNoteMutation,
   NoteInput,
@@ -7,12 +7,10 @@ import {
   DeleteUploadFileMutation
 } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
-import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { noteActions } from 'redux/slices/note-slice';
 import { NoteDialog } from './NoteDialog';
-import { NoteForm } from './noteform';
 
 export const NewNote = () => {
   const queryClient = useQueryClient();
@@ -74,7 +72,7 @@ export const NewNote = () => {
 
       {showNoteForm && (
         <NoteDialog
-          onCreate={handleCreate}
+          onSubmit={handleCreate}
           onDeleteImage={handleDeleteImage}
           onClose={handleFormClose}
         />

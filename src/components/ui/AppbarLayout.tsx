@@ -8,11 +8,15 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Icon } from '@mui/material';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
+import { userActions } from 'redux/slices/user-slice';
+import { useNavigate } from 'react-router-dom';
 
 export const AppbarLayout = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -27,6 +31,11 @@ export const AppbarLayout = () => {
 
   const handleToggleLabels = () => {
     dispatch(labelActions.toggleShowLabels());
+  };
+
+  const handleLogout = () => {
+    dispatch(userActions.logout());
+    navigate('/login');
   };
 
   const menuId = 'primary-search-account-menu';
@@ -46,8 +55,7 @@ export const AppbarLayout = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -79,6 +87,7 @@ export const AppbarLayout = () => {
             N▢tember
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
+
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size='large' aria-label='show 4 new mails' color='inherit'>
               <Badge badgeContent={4} color='error'>

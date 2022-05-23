@@ -80,7 +80,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
       </Masonry>
 
       {selectedNote && (
-        <NoteDialog note={selectedNote || null} onClose={() => setSelectedNote(null)} />
+        <NoteDialog note={selectedNote || null} onClose={() => setSelectedNote(null)}  />
       )}
     </>
   );

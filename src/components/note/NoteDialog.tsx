@@ -28,7 +28,7 @@ const Transition = React.forwardRef(function Transition(
 type NoteDialogProps = {
   note?: NoteEntity;
   onClose: () => void;
-  onCreate?: (note: NoteInput) => void;
+  onSubmit?: (note: NoteInput) => void;
   onDeleteImage?: (id: string) => void;
 };
 
@@ -60,8 +60,8 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
       return updateMutation.mutate({ data: note, id: props.note.id! });
     }
 
-    if (props.onCreate) {
-      return props.onCreate(note);
+    if (props.onSubmit) {
+      return props.onSubmit(note);
     }
   };
 
@@ -70,8 +70,9 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
   };
 
   const handleDeleteImage = () => {
-    if (props.onDeleteImage) {
-      props.onDeleteImage();
+    debugger;
+    if (props.onDeleteImage && props.note && props.note.attributes?.image) {
+      props.onDeleteImage(props.note.attributes?.image.data?.id!);
     }
   };
 
@@ -88,7 +89,6 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
         onCreate={handleCreate}
         note={props.note}
         onDelete={handleDelete}
-        expanded
         onDeleteImage={handleDeleteImage}
       />
     </Dialog>

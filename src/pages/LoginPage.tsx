@@ -18,7 +18,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux/hooks';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
-import { appActions } from 'redux/slices/app-slice';
+import { userActions } from 'redux/slices/user-slice';
 
 type LoginType = {
   email: string;
@@ -40,7 +40,7 @@ export const LoginPage = () => {
       onSuccess: (result) => {
         console.log('success');
         if (result.login && result.login.jwt) {
-          dispatch(appActions.login(result.login.jwt.toString()));
+          dispatch(userActions.login(result.login.jwt.toString()));
           navigate('/');
         }
       },
