@@ -48,9 +48,12 @@ export const Auth: FC<AuthProps> = (props) => {
         console.log('retrying', error);
         return true;
       },
-      onSuccess: () => {
+      onSuccess: (data) => {
+        if (data && data.me) {
+          dispatch(userActions.setUserData(data.me));
+        }
         navigate('/');
-      },
+    },
       refetchOnWindowFocus: shouldRetryOnFocus(location.pathname)
     }
   );

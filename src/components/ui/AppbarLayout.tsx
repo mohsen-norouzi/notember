@@ -4,16 +4,19 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { Icon } from '@mui/material';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { Avatar, Button, Icon, Popover } from '@mui/material';
+import { useAppDispatch } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 import { userActions } from 'redux/slices/user-slice';
 import { useNavigate } from 'react-router-dom';
+import Badge from '@mui/material/Badge';
 
-export const AppbarLayout = () => {
+type AppbarLayoutProps = {
+  username: string;
+  email?: string;
+};
+
+export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -40,7 +43,7 @@ export const AppbarLayout = () => {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <Menu
+    <Popover
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'top',
@@ -55,8 +58,25 @@ export const AppbarLayout = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
-    </Menu>
+      <div className='flex flex-col'>
+        <div className='flex gap-2 p-4 pb-2'>
+          <Avatar sx={{ bgcolor: '#E53E3E' }} aria-label='recipe' className='uppercase'>
+            {props.username[0]}
+          </Avatar>
+
+          <div className='flex flex-col'>
+            <Typography>{props.username}</Typography>
+            <Typography color='text.secondary'>{props.email}</Typography>
+          </div>
+        </div>
+
+        <div className='flex  w-full py-1'>
+          <Button className='w-full' color='warning' onClick={handleLogout} size='medium'>
+            Logout
+          </Button>
+        </div>
+      </div>
+    </Popover>
   );
 
   return (
@@ -88,28 +108,40 @@ export const AppbarLayout = () => {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
 
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size='large' aria-label='show 4 new mails' color='inherit'>
+          <Box sx={{ display: 'flex' }}>
+            {/* <IconButton size='large' aria-label='show 4 new mails' color='inherit'>
               <Badge badgeContent={4} color='error'>
                 <Icon fontSize='small'>mail</Icon>
               </Badge>
             </IconButton>
+             */}
+
             <IconButton size='large' aria-label='show 17 new notifications' color='inherit'>
-              <Badge badgeContent={17} color='error'>
-                <Icon fontSize='small'>notifications</Icon>
+              <Badge badgeContent={0} color='error'>
+                <Icon fontSize='small'>light_mode</Icon>
               </Badge>
             </IconButton>
-            <IconButton
+            <IconButton onClick={handleProfileMenuOpen} sx={{ padding: 0 }}>
+              <Avatar
+                className='hover:bg-gray-200'
+                sx={{
+                  bgcolor: 'transparent',
+                  color: 'inherit',
+                  width: 32,
+                  height: 32
+                }}
+              ></Avatar>
+            </IconButton>
+            {/* <IconButton
               size='large'
               edge='end'
               aria-label='account of current user'
               aria-controls={menuId}
               aria-haspopup='true'
-              onClick={handleProfileMenuOpen}
               color='inherit'
             >
               <Icon>account_circle</Icon>
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,24 +1,34 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  Maybe,
+  UsersPermissionsLoginPayload,
+  UsersPermissionsMe
+} from 'graphql/generated/graphql-types';
 
 interface userState {
   token?: string;
   authenticated: boolean;
+  username: string;
+  email: string;
 }
 
 const initialState: userState = {
   token: undefined,
-  authenticated: false
+  authenticated: false,
+  username: '',
+  email: ''
 };
 
 export const userSlice = createSlice({
   name: 'user',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     login: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
-      state.authenticated = true;
-      localStorage.setItem('jwt', action.payload);
+      if (action.payload && action.payload.trim() !== '') {
+        state.token = action.payload;
+        state.authenticated = true;
+        localStorage.setItem('jwt', action.payload);
+      }
     },
 
     logout: (state) => {
@@ -31,6 +41,18 @@ export const userSlice = createSlice({
       const token = localStorage.getItem('jwt');
       state.token = token || '';
       state.authenticated = token !== undefined;
+    },
+
+    setUserData: (state, action: PayloadAction<UsersPermissionsMe>) => {
+      const { username, email } = action.payload;
+
+      if (username) {
+        state.username = action.payload.username;
+      }
+
+      if (email) {
+        state.email = action.payload.email || '';
+      }
     }
   }
 });

@@ -39,8 +39,8 @@ export const LoginPage = () => {
     {
       onSuccess: (result) => {
         console.log('success');
-        if (result.login && result.login.jwt) {
-          dispatch(userActions.login(result.login.jwt.toString()));
+        if (result.login) {
+          dispatch(userActions.login(result.login.jwt || ''));
           navigate('/');
         }
       },

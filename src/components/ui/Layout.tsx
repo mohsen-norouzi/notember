@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 export const Layout: FC<LayoutProps> = (props) => {
-  const authenticated = useAppSelector((state) => state.user.authenticated);
+  const { authenticated, username, email } = useAppSelector((state) => state.user);
   const showLabels = useAppSelector((state) => state.label.show);
 
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ export const Layout: FC<LayoutProps> = (props) => {
 
   return (
     <>
-      {authenticated && <AppbarLayout />}
+      {authenticated && <AppbarLayout username={username} email={email} />}
 
       {props.children}
 

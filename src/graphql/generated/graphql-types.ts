@@ -1035,12 +1035,12 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', username: string, email?: string | null } } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', id: string, email?: string | null, confirmed?: boolean | null, blocked?: boolean | null, username: string, role?: { __typename?: 'UsersPermissionsMeRole', id: string, name: string, description?: string | null } | null } } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'UsersPermissionsMe', username: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'UsersPermissionsMe', id: string, username: string, email?: string | null, confirmed?: boolean | null, blocked?: boolean | null, role?: { __typename?: 'UsersPermissionsMeRole', id: string, name: string, description?: string | null, type?: string | null } | null } | null };
 
 export type RegisterMutationVariables = Exact<{
   input: UsersPermissionsRegisterInput;
@@ -1344,8 +1344,16 @@ export const LoginDocument = `
   login(input: $input) {
     jwt
     user {
-      username
+      id
       email
+      confirmed
+      blocked
+      username
+      role {
+        id
+        name
+        description
+      }
     }
   }
 }
@@ -1366,7 +1374,17 @@ export const useLoginMutation = <
 export const MeDocument = `
     query Me {
   me {
+    id
     username
+    email
+    confirmed
+    blocked
+    role {
+      id
+      name
+      description
+      type
+    }
   }
 }
     `;
