@@ -30,6 +30,7 @@ export const userSlice = createSlice({
     authenticate: (state) => {
       const token = localStorage.getItem('jwt');
       state.token = token || '';
+      state.authenticated = token !== undefined;
     }
   }
 });
