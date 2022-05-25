@@ -63,26 +63,31 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className='h-full w-full flex flex-col flex-auto items-center justify-center  animated fadeInUp'>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Card sx={{ borderRadius: '1rem' }} className='shadow-xl'>
+    <div className='h-full w-full flex flex-col flex-auto items-center justify-center animated fadeIn'>
+      <form onSubmit={handleSubmit(onSubmit)} className='w-full px-5 sm:w-96 sm:px-0 mx-auto'>
+        <Card className='shadow-xl p-5 !rounded-lg w-full '>
           <CardContent>
-            <div className='flex flex-col items-center justify-center gap-5 w-full mb-5'>
-              <CardMedia component='img' src={logoImage} alt='logo' sx={{ width: 45 }}></CardMedia>
-              <Typography variant='h5'>Login to your account</Typography>
+            <div className='flex flex-col items-center justify-center w-full mb-6'>
+              <Typography variant='h1' noWrap component='div' color='text-secondary'>
+                ▢
+              </Typography>
+
+              <Typography variant='h4' fontWeight='500' color='text.primary'>
+                Login
+              </Typography>
             </div>
-            <div className='bg-white flex flex-col justify-center items-center gap-2'>
+
+            <div className='bg-white flex flex-col justify-center items-center'>
               <Controller
                 name='email'
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    placeholder='Email'
+                    label='Email'
                     variant='outlined'
-                    size='small'
-                    sx={{ border: '1px solid !important' }}
                     autoFocus
+                    className='w-full !mb-3'
                   />
                 )}
               />
@@ -91,30 +96,34 @@ export const LoginPage = () => {
                 name='password'
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    placeholder='Password'
-                    variant='outlined'
-                    size='small'
-                    sx={{ border: '1px solid !important' }}
-                  />
+                  <TextField {...field} label='Password' variant='outlined' className='w-full' />
                 )}
               />
-            </div>{' '}
+            </div>
           </CardContent>
 
-          <CardActions className='justify-center'>
-            <Button type='submit' size='medium'>
-              Login
-            </Button>
+          <CardActions className='flex flex-col justify-center items-center'>
+            <div className='px-2 w-full mb-5'>
+              <Button
+                type='submit'
+                color='primary'
+                variant='contained'
+                size='large'
+                className='w-full rounded-lg'
+              >
+                Login
+              </Button>
+            </div>
+
+            <Typography className='font-medium'>
+              No account?{' '}
+              <Link to='/register' className='text-sky-500'>
+                Create one!
+              </Link>
+            </Typography>
           </CardActions>
         </Card>
       </form>
-
-      <div className='mt-5'>
-        <span>No account? </span>
-        <Link to='/register'>Create one!</Link>
-      </div>
     </div>
   );
 };

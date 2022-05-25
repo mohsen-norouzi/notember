@@ -60,75 +60,81 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className='h-full w-full flex flex-col flex-auto items-center justify-center animated fadeInUp'>
-      <Card sx={{ borderRadius: '1rem' }} className='shadow-xl'>
-        <CardContent>
-          <div className='flex flex-col items-center justify-center gap-5 w-full mb-5'>
-            <CardMedia component='img' src={logoImage} alt='logo' sx={{ width: 45 }}></CardMedia>
-            <Typography variant='h5'>Create an account</Typography>
-          </div>
+    <div className='h-full w-full flex flex-col flex-auto items-center justify-center animated fadeIn'>
+      <form onSubmit={handleSubmit(onSubmit)} className='w-full px-5 sm:w-96 sm:px-0 mx-auto'>
+        <Card className='shadow-xl p-5 !rounded-lg w-full'>
+          <CardContent className='!pb-0'>
+            <div className='flex flex-col items-center justify-center w-full mb-10'>
+              <Typography variant='h1' noWrap component='div' color='text-secondary'>
+                ▢
+              </Typography>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className='bg-white flex flex-col justify-center items-center gap-2'
-          >
-            <Controller
-              name='username'
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  placeholder='Username'
-                  variant='outlined'
-                  size='small'
-                  sx={{ border: '1px solid !important' }}
-                  autoFocus
-                />
-              )}
-            />
+              <Typography variant='h4' fontWeight='500' color='text.primary'>
+                Register
+              </Typography>
+            </div>
 
-            <Controller
-              name='email'
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  placeholder='Email'
-                  variant='outlined'
-                  size='small'
-                  sx={{ border: '1px solid !important' }}
-                />
-              )}
-            />
+            <div className='bg-white flex flex-col justify-center items-center'>
+              <Controller
+                name='username'
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label='Username'
+                    variant='outlined'
+                    autoFocus
+                    className='w-full !mb-3'
+                  />
+                )}
+              />
 
-            <Controller
-              name='password'
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type='password'
-                  placeholder='Password'
-                  variant='outlined'
-                  size='small'
-                  sx={{ border: '1px solid !important' }}
-                />
-              )}
-            />
-          </form>
-        </CardContent>
+              <Controller
+                name='email'
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label='Email' variant='outlined' className='w-full !mb-3' />
+                )}
+              />
 
-        <CardActions className='justify-center'>
-          <Button type='submit' size='medium'>
-            Register
-          </Button>
-        </CardActions>
-      </Card>
+              <Controller
+                name='password'
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type='password'
+                    label='Password'
+                    variant='outlined'
+                    className='w-full !mb-5'
+                  />
+                )}
+              />
+            </div>
+          </CardContent>
 
-      <div className='mt-5'>
-        <span>Already have an account? </span>
-        <Link to='/login'>Sign in!</Link>
-      </div>
+          <CardActions className='flex flex-col justify-center items-center'>
+            <div className='px-2 w-full mb-5'>
+              <Button
+                type='submit'
+                color='primary'
+                variant='contained'
+                size='large'
+                className='w-full rounded-lg'
+              >
+                Register
+              </Button>
+            </div>
+
+            <Typography className='font-medium'>
+              Already have an account?{' '}
+              <Link to='/login' className='text-sky-500'>
+                Sign in!
+              </Link>
+            </Typography>
+          </CardActions>
+        </Card>
+      </form>
     </div>
   );
 };
