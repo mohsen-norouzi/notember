@@ -1,15 +1,8 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-import logoImage from 'assets/images/logo.png';
 import {
   LoginMutation,
   useLoginMutation,
@@ -25,10 +18,12 @@ type LoginType = {
   password: string;
 };
 
-const defaultValues: LoginType = {
-  email: '',
-  password: ''
-};
+const schema = yup
+  .object({
+    email: yup.string().email().required(),
+    password: yup.string().required()
+  })
+  .required();
 
 export const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -50,14 +45,17 @@ export const LoginPage = () => {
     }
   );
 
-  const { control, handleSubmit } = useForm<LoginType>({ defaultValues });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid }
+  } = useForm<LoginType>({ mode: 'onChange', resolver: yupResolver(schema) });
 
   const onSubmit = (data: LoginType) => {
     const input: UsersPermissionsLoginInput = {
       identifier: data.email,
       password: data.password
     };
-    console.log('loging in...', input);
 
     mutate({ input });
   };
@@ -86,8 +84,11 @@ export const LoginPage = () => {
                     {...field}
                     label='Email'
                     variant='outlined'
+                    type='email'
                     autoFocus
                     className='w-full !mb-3'
+                    error={errors.email !== undefined}
+                    helperText={errors.email && (errors.email?.message || 'This field is required')}
                   />
                 )}
               />
@@ -96,7 +97,16 @@ export const LoginPage = () => {
                 name='password'
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} label='Password' variant='outlined' className='w-full' />
+                  <TextField
+                    {...field}
+                    label='Password'
+                    variant='outlined'
+                    className='w-full'
+                    error={errors.password !== undefined}
+                    helperText={
+                      errors.password && (errors.password?.message || 'This field is required')
+                    }
+                  />
                 )}
               />
             </div>
@@ -110,6 +120,7 @@ export const LoginPage = () => {
                 variant='contained'
                 size='large'
                 className='w-full rounded-lg'
+                disabled={!isValid}
               >
                 Login
               </Button>

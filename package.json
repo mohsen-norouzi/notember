@@ -11,6 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@hookform/resolvers": "^2.8.10",
     "@mui/lab": "^5.0.0-alpha.77",
     "@mui/material": "^5.5.3",
     "@reduxjs/toolkit": "^1.8.1",
@@ -24,7 +25,8 @@
     "react-hook-form": "^7.30.0",
     "react-query": "4.0.0-beta.3",
     "react-redux": "^8.0.1",
-    "react-router-dom": "6"
+    "react-router-dom": "6",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",

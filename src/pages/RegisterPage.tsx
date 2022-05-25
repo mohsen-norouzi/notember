@@ -1,15 +1,8 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-import logoImage from 'assets/images/logo.png';
 import {
   RegisterMutation,
   useRegisterMutation,
@@ -18,16 +11,13 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
-type LoginType = {
-  email: string;
-  password: string;
-};
-
-const defaultValues: UsersPermissionsRegisterInput = {
-  email: '',
-  password: '',
-  username: ''
-};
+const schema = yup
+  .object({
+    username: yup.string().min(3).required(),
+    email: yup.string().email().required(),
+    password: yup.string().min(5).required()
+  })
+  .required();
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -47,7 +37,14 @@ export const RegisterPage = () => {
     }
   );
 
-  const { control, handleSubmit } = useForm<UsersPermissionsRegisterInput>({ defaultValues });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid }
+  } = useForm<UsersPermissionsRegisterInput>({
+    mode: 'onChange',
+    resolver: yupResolver(schema)
+  });
 
   const onSubmit = (data: UsersPermissionsRegisterInput) => {
     const input: UsersPermissionsRegisterInput = {
@@ -70,7 +67,7 @@ export const RegisterPage = () => {
               </Typography>
 
               <Typography variant='h4' fontWeight='500' color='text.primary'>
-                Register
+                Join us!
               </Typography>
             </div>
 
@@ -85,6 +82,10 @@ export const RegisterPage = () => {
                     variant='outlined'
                     autoFocus
                     className='w-full !mb-3'
+                    error={errors.username !== undefined}
+                    helperText={
+                      errors.username && (errors.username?.message || 'This field is required')
+                    }
                   />
                 )}
               />
@@ -93,7 +94,14 @@ export const RegisterPage = () => {
                 name='email'
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} label='Email' variant='outlined' className='w-full !mb-3' />
+                  <TextField
+                    {...field}
+                    label='Email'
+                    variant='outlined'
+                    className='w-full !mb-3'
+                    error={errors.email !== undefined}
+                    helperText={errors.email && (errors.email?.message || 'This field is required')}
+                  />
                 )}
               />
 
@@ -107,6 +115,10 @@ export const RegisterPage = () => {
                     label='Password'
                     variant='outlined'
                     className='w-full !mb-5'
+                    error={errors.password !== undefined}
+                    helperText={
+                      errors.password && (errors.password?.message || 'This field is required')
+                    }
                   />
                 )}
               />
@@ -121,6 +133,7 @@ export const RegisterPage = () => {
                 variant='contained'
                 size='large'
                 className='w-full rounded-lg'
+                disabled={!isValid}
               >
                 Register
               </Button>
