@@ -33,7 +33,6 @@ export const LoginPage = () => {
     getGraphQLRequestClient(false),
     {
       onSuccess: (result) => {
-        console.log('success');
         if (result.login) {
           dispatch(userActions.login(result.login.jwt || ''));
           navigate('/');
@@ -49,7 +48,11 @@ export const LoginPage = () => {
     control,
     handleSubmit,
     formState: { errors, isValid }
-  } = useForm<LoginType>({ mode: 'onChange', resolver: yupResolver(schema) });
+  } = useForm<LoginType>({
+    defaultValues: { email: '', password: '' },
+    mode: 'onChange',
+    resolver: yupResolver(schema)
+  });
 
   const onSubmit = (data: LoginType) => {
     const input: UsersPermissionsLoginInput = {

@@ -10,17 +10,21 @@ import {
 } from 'graphql/generated/graphql-types';
 import { Link, useNavigate } from 'react-router-dom';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
+import { userActions } from 'redux/slices/user-slice';
+import { useAppDispatch } from 'redux/hooks';
 
 const schema = yup
   .object({
     username: yup
       .string()
+      .default('')
       .min(3)
       .required()
       .matches(/^[A-Za-z]*$/, 'username must start with an alphabet'),
-    email: yup.string().email().required(),
+    email: yup.string().default('').email().required(),
     password: yup
       .string()
+      .default('')
       .min(5)
       .required()
       .matches(/^(?=.*[A-Z])/, 'password must contain at least one uppercase')
@@ -31,14 +35,15 @@ const schema = yup
   .required();
 
 export const RegisterPage = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { data, error, isLoading, mutate } = useRegisterMutation<RegisterMutation, Error>(
     getGraphQLRequestClient(false),
     {
       onSuccess: (result) => {
-        if (result.register && result.register.jwt && result.register.user) {
-          localStorage.setItem('jwt', result.register.jwt.toString());
+        if (result.register) {
+          dispatch(userActions.login(result.register.jwt || ''));
           navigate('/');
         }
       },
@@ -53,6 +58,7 @@ export const RegisterPage = () => {
     handleSubmit,
     formState: { errors, isValid }
   } = useForm<UsersPermissionsRegisterInput>({
+    defaultValues: { username: '', email: '', password: '' },
     mode: 'onChange',
     resolver: yupResolver(schema)
   });
