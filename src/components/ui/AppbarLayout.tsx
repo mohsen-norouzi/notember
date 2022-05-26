@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { Avatar, Button, Icon, Popover } from '@mui/material';
+import { Avatar, Button, CssBaseline, Icon, Popover, useScrollTrigger } from '@mui/material';
 import { useAppDispatch } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 import { userActions } from 'redux/slices/user-slice';
@@ -80,72 +80,47 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <AppBar
         position='static'
         color='transparent'
         className='text-black'
         sx={{ boxShadow: 'none' }}
       >
-        <Toolbar>
+        <Toolbar className='!pl-0'>
           <IconButton
             size='large'
             edge='start'
             color='inherit'
             aria-label='open drawer'
+            className='!ml-1'
             sx={{ display: { xs: 'block', sm: 'none' } }}
             onClick={handleToggleLabels}
           >
             <Icon>menu</Icon>
           </IconButton>
           <Typography
-            variant='h6'
-            noWrap
+            variant='h5'
+            className='text-center w-60 mx-2 fixed'
             component='div'
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             N▢tember
           </Typography>
+
           <Box sx={{ flexGrow: 1 }} />
 
-          <Box sx={{ display: 'flex' }}>
-            {/* <IconButton size='large' aria-label='show 4 new mails' color='inherit'>
-              <Badge badgeContent={4} color='error'>
-                <Icon fontSize='small'>mail</Icon>
-              </Badge>
+          <Box>
+            <IconButton size='medium'>
+              <Icon>light_mode</Icon>
             </IconButton>
-             */}
-
-            <IconButton size='large' aria-label='show 17 new notifications' color='inherit'>
-              <Badge badgeContent={0} color='error'>
-                <Icon fontSize='small'>light_mode</Icon>
-              </Badge>
+            <IconButton onClick={handleProfileMenuOpen} size='medium'>
+              <Icon>person</Icon>
             </IconButton>
-            <IconButton onClick={handleProfileMenuOpen} sx={{ padding: 0 }}>
-              <Avatar
-                className='hover:bg-gray-200'
-                sx={{
-                  bgcolor: 'transparent',
-                  color: 'inherit',
-                  width: 32,
-                  height: 32
-                }}
-              ></Avatar>
-            </IconButton>
-            {/* <IconButton
-              size='large'
-              edge='end'
-              aria-label='account of current user'
-              aria-controls={menuId}
-              aria-haspopup='true'
-              color='inherit'
-            >
-              <Icon>account_circle</Icon>
-            </IconButton> */}
           </Box>
         </Toolbar>
       </AppBar>
       {renderMenu}
-    </Box>
+    </>
   );
 };

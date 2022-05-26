@@ -35,11 +35,13 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   };
 
   return (
-    <>
+    <Box className='block w-60 relative' component='div'>
       <Box
-        className='bg-white z-20 transition-all w-60 shadow px-2 py-4  animated fadeInLeftp'
+        component='div'
+        className='bg-white z-20 transition-all  shadow px-2 py-4 w-60 animated fadeInLeft fixed overflow-auto'
         sx={{
           height: { xs: '100%', sm: 'min-content' },
+          maxHeight: { xs: '100vh', sm: 'calc(100vh - 75px)' },
           borderRadius: { xs: '0', sm: '1rem' }
         }}
       >
@@ -98,6 +100,6 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
         onClose={() => setShowLabelsDialog(false)}
         labels={labels}
       />
-    </>
+    </Box>
   );
 };
