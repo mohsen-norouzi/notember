@@ -13,9 +13,20 @@ import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 
 const schema = yup
   .object({
-    username: yup.string().min(3).required(),
+    username: yup
+      .string()
+      .min(3)
+      .required()
+      .matches(/^[A-Za-z]*$/, 'username must start with an alphabet'),
     email: yup.string().email().required(),
-    password: yup.string().min(5).required()
+    password: yup
+      .string()
+      .min(5)
+      .required()
+      .matches(/^(?=.*[A-Z])/, 'password must contain at least one uppercase')
+      .matches(/^(?=.*[a-z])/, 'password must contain at least one lowercase')
+      .matches(/^(?=.*[0-9])^/, 'password must contain at least one number')
+      .matches(/^(?=.*[!@#\$%\^&\*])^/, 'password must contain at least one character')
   })
   .required();
 
