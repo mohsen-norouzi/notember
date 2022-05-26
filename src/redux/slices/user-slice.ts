@@ -1,33 +1,36 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  Maybe,
-  UsersPermissionsLoginPayload,
-  UsersPermissionsMe
-} from 'graphql/generated/graphql-types';
+import { UsersPermissionsLoginPayload, UsersPermissionsMe } from 'graphql/generated/graphql-types';
 
 interface userState {
   token?: string;
   authenticated: boolean;
   username: string;
   email: string;
+  userId: string;
 }
 
 const initialState: userState = {
   token: undefined,
   authenticated: false,
   username: '',
-  email: ''
+  email: '',
+  userId: ''
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<string>) => {
-      if (action.payload && action.payload.trim() !== '') {
-        state.token = action.payload;
+    login: (state, action: PayloadAction<UsersPermissionsLoginPayload>) => {
+      const { jwt, user } = action.payload;
+
+      if (jwt && jwt.trim() !== '') {
+        state.token = jwt;
         state.authenticated = true;
-        localStorage.setItem('jwt', action.payload);
+        state.email = user.email || '';
+        state.userId = user.id;
+        state.username = user.username;
+        localStorage.setItem('jwt', jwt);
       }
     },
 
@@ -35,6 +38,9 @@ export const userSlice = createSlice({
       localStorage.removeItem('jwt');
       state.authenticated = false;
       state.token = undefined;
+      state.username = '';
+      state.email = '';
+      state.userId = '';
     },
 
     authenticate: (state) => {
@@ -44,14 +50,18 @@ export const userSlice = createSlice({
     },
 
     setUserData: (state, action: PayloadAction<UsersPermissionsMe>) => {
-      const { username, email } = action.payload;
+      const { username, email, id } = action.payload;
 
       if (username) {
-        state.username = action.payload.username;
+        state.username = username;
       }
 
       if (email) {
-        state.email = action.payload.email || '';
+        state.email = email || '';
+      }
+
+      if (id) {
+        state.userId = id;
       }
     }
   }
