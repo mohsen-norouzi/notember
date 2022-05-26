@@ -216,6 +216,7 @@ export type Label = {
   publishedAt?: Maybe<Scalars['DateTime']>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
+  user?: Maybe<UsersPermissionsUserEntityResponse>;
 };
 
 
@@ -255,6 +256,7 @@ export type LabelFiltersInput = {
   publishedAt?: InputMaybe<DateTimeFilterInput>;
   title?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
+  user?: InputMaybe<UsersPermissionsUserFiltersInput>;
 };
 
 export type LabelInput = {
@@ -263,6 +265,7 @@ export type LabelInput = {
   notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   title?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<Scalars['ID']>;
 };
 
 export type LabelRelationResponseCollection = {
@@ -891,11 +894,20 @@ export type UsersPermissionsUser = {
   confirmed?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   email: Scalars['String'];
+  labels?: Maybe<LabelRelationResponseCollection>;
   notes?: Maybe<NoteRelationResponseCollection>;
   provider?: Maybe<Scalars['String']>;
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   username: Scalars['String'];
+};
+
+
+export type UsersPermissionsUserLabelsArgs = {
+  filters?: InputMaybe<LabelFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -931,6 +943,7 @@ export type UsersPermissionsUserFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   email?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
+  labels?: InputMaybe<LabelFiltersInput>;
   not?: InputMaybe<UsersPermissionsUserFiltersInput>;
   notes?: InputMaybe<NoteFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
@@ -947,6 +960,7 @@ export type UsersPermissionsUserInput = {
   confirmationToken?: InputMaybe<Scalars['String']>;
   confirmed?: InputMaybe<Scalars['Boolean']>;
   email?: InputMaybe<Scalars['String']>;
+  labels?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   notes?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   password?: InputMaybe<Scalars['String']>;
   provider?: InputMaybe<Scalars['String']>;
@@ -988,7 +1002,9 @@ export type DeleteLabelMutationVariables = Exact<{
 
 export type DeleteLabelMutation = { __typename?: 'Mutation', deleteLabel?: { __typename?: 'LabelEntityResponse', data?: { __typename?: 'LabelEntity', id?: string | null } | null } | null };
 
-export type GetLabelsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetLabelsQueryVariables = Exact<{
+  filters?: InputMaybe<LabelFiltersInput>;
+}>;
 
 
 export type GetLabelsQuery = { __typename?: 'Query', labels?: { __typename?: 'LabelEntityResponseCollection', data: Array<{ __typename?: 'LabelEntity', id?: string | null, attributes?: { __typename?: 'Label', title: string, color: string, icon: string } | null }> } | null };
@@ -1148,8 +1164,8 @@ export const useDeleteLabelMutation = <
       options
     );
 export const GetLabelsDocument = `
-    query GetLabels {
-  labels {
+    query GetLabels($filters: LabelFiltersInput) {
+  labels(filters: $filters) {
     data {
       id
       attributes {

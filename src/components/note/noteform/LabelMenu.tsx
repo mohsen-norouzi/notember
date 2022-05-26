@@ -9,8 +9,8 @@ import {
   Popover,
   Tooltip
 } from '@mui/material';
-import { GetLabelsQuery, LabelEntity, useGetLabelsQuery } from 'graphql/generated/graphql-types';
-import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
+import { LabelEntity } from 'graphql/generated/graphql-types';
+import { useAppSelector } from 'redux/hooks';
 
 type LabelMenuProps = {
   labels: LabelEntity[];
@@ -18,11 +18,7 @@ type LabelMenuProps = {
 };
 
 export const LabelMenu: React.FC<LabelMenuProps> = (props) => {
-  const { data, error, isLoading } = useGetLabelsQuery<GetLabelsQuery, Error>(
-    getGraphQLRequestClient(),
-    {}
-  );
-
+  const labels = useAppSelector((state) => state.label.labels);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,32 +66,31 @@ export const LabelMenu: React.FC<LabelMenuProps> = (props) => {
         >
           <ClickAwayListener onClickAway={handleClose}>
             <List>
-              {data?.labels &&
-                data.labels.data.map((label) => (
-                  <ListItem
-                    key={label.id}
-                    button
-                    dense
-                    onClick={() => handleToggleLabel(label)}
-                    className='px-0'
+              {labels.map((label) => (
+                <ListItem
+                  key={label.id}
+                  button
+                  dense
+                  onClick={() => handleToggleLabel(label)}
+                  className='px-0'
+                >
+                  <Icon
+                    color='action'
+                    fontSize='small'
+                    className='p-0 text-xs'
+                    sx={{ height: 'inherit' }}
                   >
-                    <Icon
-                      color='action'
-                      fontSize='small'
-                      className='p-0 text-xs'
-                      sx={{ height: 'inherit' }}
-                    >
-                      {props.labels.find((l) => l.id === label.id)
-                        ? 'check_box'
-                        : 'check_box_outline_blank'}
-                    </Icon>
-                    <ListItemText
-                      className='truncate px-2'
-                      primary={label.attributes?.title}
-                      disableTypography
-                    />
-                  </ListItem>
-                ))}
+                    {props.labels.find((l) => l.id === label.id)
+                      ? 'check_box'
+                      : 'check_box_outline_blank'}
+                  </Icon>
+                  <ListItemText
+                    className='truncate px-2'
+                    primary={label.attributes?.title}
+                    disableTypography
+                  />
+                </ListItem>
+              ))}
             </List>
           </ClickAwayListener>
         </Popover>

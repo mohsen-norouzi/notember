@@ -1,5 +1,5 @@
-query GetLabels {
-  labels {
+query GetLabels($filters: LabelFiltersInput) {
+  labels(filters: $filters) {
     data {
       id
       attributes {

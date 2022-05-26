@@ -15,6 +15,7 @@ import { NoteDialog } from './NoteDialog';
 export const NewNote = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.user.userId);
   const showNoteForm = useAppSelector((state) => state.note.showNoteForm);
 
   const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(
@@ -35,6 +36,7 @@ export const NewNote = () => {
 
   const handleCreate = (note: NoteInput) => {
     const newNote = note;
+    newNote.users = [userId];
     newNote.publishedAt = new Date();
 
     createMutation.mutate(

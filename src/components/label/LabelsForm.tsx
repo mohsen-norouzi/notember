@@ -9,10 +9,13 @@ import {
 } from 'graphql/generated/graphql-types';
 import { useQueryClient } from 'react-query';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
+import { useAppSelector } from 'redux/hooks';
+import { Picker } from 'components/ui';
 
 type LabelsFormProps = {};
 
 export const LabelsForm: FC<LabelsFormProps> = () => {
+  const userId = useAppSelector((state) => state.user.userId);
   const queryClient = useQueryClient();
 
   const { data, error, isLoading, mutate } = useCreateLabelMutation<CreateLabelMutation, Error>(
@@ -21,15 +24,15 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['GetLabels']);
         setTitle('');
-        setColor(null);
-        setIcon(null);
+        setIcon('label');
+        setColor('#2e2e2e');
       }
     }
   );
 
   const [title, setTitle] = useState('');
-  const [icon, setIcon] = useState<Maybe<string>>(null);
-  const [color, setColor] = useState<Maybe<string>>(null);
+  const [icon, setIcon] = useState<string>('label');
+  const [color, setColor] = useState<string>('#2E2E2E');
 
   const isValid = () => {
     if (title.trim() === '') {
@@ -44,7 +47,8 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
 
     const data: LabelInput = {
       title,
-      publishedAt: new Date()
+      publishedAt: new Date(),
+      user: userId
     };
 
     if (icon) {
@@ -58,6 +62,16 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
     mutate({ data });
   };
 
+  const onIconPickHandler = (icon: string, color: string) => {
+    if (icon) {
+      setIcon(icon);
+    }
+
+    if (color) {
+      setColor(color);
+    }
+  };
+
   return (
     <form>
       <FormControl variant='standard'>
@@ -69,9 +83,7 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
           value={title}
           startAdornment={
             <InputAdornment position='start'>
-              <Icon className='list-item-icon text-16' color='action' fontSize='small'>
-                add
-              </Icon>
+              <Picker onPick={onIconPickHandler} icon={icon} color={color} />
             </InputAdornment>
           }
           endAdornment={

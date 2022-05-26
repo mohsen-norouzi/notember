@@ -17,6 +17,7 @@ import { useAppSelector } from 'redux/hooks';
 type NoteListProps = {};
 
 export const NoteList: FC<NoteListProps> = (props) => {
+  const userId = useAppSelector((state) => state.user.userId);
   const filter = useAppSelector((state) => state.label.filter);
 
   const [selectedNote, setSelectedNote] = useState<Maybe<NoteEntity>>(null);
@@ -31,7 +32,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
   const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(
     getGraphQLRequestClient(),
     {
-      filters
+      filters: { ...filters, users: { id: { eq: userId } } }
     }
   );
 
@@ -80,7 +81,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
       </Masonry>
 
       {selectedNote && (
-        <NoteDialog note={selectedNote || null} onClose={() => setSelectedNote(null)}  />
+        <NoteDialog note={selectedNote || null} onClose={() => setSelectedNote(null)} />
       )}
     </>
   );
