@@ -14,13 +14,13 @@ import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { userActions } from 'redux/slices/user-slice';
 
 type LoginType = {
-  email: string;
+  username: string;
   password: string;
 };
 
 const schema = yup
   .object({
-    email: yup.string().email().required(),
+    username: yup.string().required(),
     password: yup.string().required()
   })
   .required();
@@ -34,7 +34,7 @@ export const LoginPage = () => {
     {
       onSuccess: (result) => {
         if (result.login) {
-          dispatch(userActions.login(result.login.jwt || ''));
+          dispatch(userActions.login(result.login));
           navigate('/');
         }
       },
@@ -49,14 +49,14 @@ export const LoginPage = () => {
     handleSubmit,
     formState: { errors, isValid }
   } = useForm<LoginType>({
-    defaultValues: { email: '', password: '' },
+    defaultValues: { username: '', password: '' },
     mode: 'onChange',
     resolver: yupResolver(schema)
   });
 
   const onSubmit = (data: LoginType) => {
     const input: UsersPermissionsLoginInput = {
-      identifier: data.email,
+      identifier: data.username,
       password: data.password
     };
 
@@ -80,18 +80,20 @@ export const LoginPage = () => {
 
             <div className='bg-white flex flex-col justify-center items-center'>
               <Controller
-                name='email'
+                name='username'
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label='Email'
+                    label='Username'
                     variant='outlined'
-                    type='email'
+                    type='text'
                     autoFocus
                     className='w-full !mb-3'
-                    error={errors.email !== undefined}
-                    helperText={errors.email && (errors.email?.message || 'This field is required')}
+                    error={errors.username !== undefined}
+                    helperText={
+                      errors.username && (errors.username?.message || 'This field is required')
+                    }
                   />
                 )}
               />
@@ -105,6 +107,7 @@ export const LoginPage = () => {
                     label='Password'
                     variant='outlined'
                     className='w-full'
+                    type='password'
                     error={errors.password !== undefined}
                     helperText={
                       errors.password && (errors.password?.message || 'This field is required')
