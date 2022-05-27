@@ -33,8 +33,11 @@ export const LoginPage = () => {
     getGraphQLRequestClient(false),
     {
       onSuccess: (result) => {
-        if (result.login) {
-          dispatch(userActions.login(result.login));
+        const { user, jwt } = result.login;
+
+        if (user && jwt) {
+          dispatch(userActions.login(jwt));
+          dispatch(userActions.setUserData(user));
           navigate('/');
         }
       },

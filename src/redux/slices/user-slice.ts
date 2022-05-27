@@ -21,16 +21,13 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<UsersPermissionsLoginPayload>) => {
-      const { jwt, user } = action.payload;
+    login: (state, action: PayloadAction<string>) => {
+      const token = action.payload;
 
-      if (jwt && jwt.trim() !== '') {
-        state.token = jwt;
+      if (token && token.trim() !== '') {
+        state.token = token;
         state.authenticated = true;
-        state.email = user.email || '';
-        state.userId = user.id;
-        state.username = user.username;
-        localStorage.setItem('jwt', jwt);
+        localStorage.setItem('jwt', token);
       }
     },
 

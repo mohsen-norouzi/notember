@@ -42,8 +42,11 @@ export const RegisterPage = () => {
     getGraphQLRequestClient(false),
     {
       onSuccess: (result) => {
-        if (result.register) {
-          dispatch(userActions.login(result.register.jwt || ''));
+        const { user, jwt } = result.register;
+
+        if (user && jwt) {
+          dispatch(userActions.login(jwt));
+          dispatch(userActions.setUserData(user));
           navigate('/');
         }
       },

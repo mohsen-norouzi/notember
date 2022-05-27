@@ -1063,7 +1063,7 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', username: string, email?: string | null } } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', id: string, email?: string | null, confirmed?: boolean | null, blocked?: boolean | null, username: string, role?: { __typename?: 'UsersPermissionsMeRole', id: string, name: string, description?: string | null } | null } } };
 
 
 export const DeleteUploadFileDocument = `
@@ -1423,8 +1423,16 @@ export const RegisterDocument = `
   register(input: $input) {
     jwt
     user {
-      username
+      id
       email
+      confirmed
+      blocked
+      username
+      role {
+        id
+        name
+        description
+      }
     }
   }
 }
