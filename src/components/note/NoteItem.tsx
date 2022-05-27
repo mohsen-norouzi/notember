@@ -48,7 +48,7 @@ export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
           {!imageLoaded && (
             <Skeleton
               variant='rectangular'
-              className='max-h-52 overflow-hidden'
+              className='max-h-52 overflow-hidden min-w-full'
               width={image?.data?.attributes?.width || 50}
               height={image?.data?.attributes?.height || 50}
             />

@@ -10,7 +10,6 @@ import clsx from 'clsx';
 
 type NoteFormProps = {
   note?: NoteEntity;
-  expanded: boolean;
   onCreate: (note: NoteInput) => void;
   onDelete?: (id: string) => void;
   onDeleteImage?: (id: string) => void;
@@ -92,7 +91,6 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
   };
 
   const handleImagePick = (imageID: string, imageUrl: string) => {
-    debugger;
     setImage({
       id: imageID,
       url: imageUrl
@@ -108,7 +106,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
 
   return (
     <>
-      {props.expanded && image && image.url && (
+      {image && image.url && (
         <div className='relative'>
           <img
             src={import.meta.env.VITE_GRAPHQL_ENDPOINT + image.url}
@@ -132,12 +130,11 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
       <TextField
         variant='outlined'
         size='small'
-        placeholder={props.expanded ? 'Title' : 'Take a note...'}
+        placeholder='Title'
         value={title}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
         className={clsx('bg-white w-full', {
-          'rounded-t-2xl': !image?.url,
-          'rounded-2xl': !props.expanded
+          'rounded-t-2xl': !image?.url
         })}
         InputProps={{ className: 'p-2' }}
         sx={{
@@ -148,90 +145,86 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         autoFocus
       />
 
-      {props.expanded && (
-        <>
-          <TextField
-            variant='outlined'
-            size='small'
-            placeholder='Description'
-            className='bg-white w-full'
-            value={description}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setDescription(event.target.value)
-            }
-            inputProps={{ style: { fontSize: '0.9rem', padding: '8px' } }}
-            sx={{
-              '.MuiOutlinedInput-notchedOutline': {
-                border: 'none'
-              }
-            }}
-            multiline
-            rows={4}
-          />
+      <TextField
+        variant='outlined'
+        size='small'
+        placeholder='Description'
+        className='bg-white w-full'
+        value={description}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setDescription(event.target.value)
+        }
+        inputProps={{ style: { fontSize: '0.9rem', padding: '8px' } }}
+        sx={{
+          '.MuiOutlinedInput-notchedOutline': {
+            border: 'none'
+          }
+        }}
+        multiline
+        rows={4}
+      />
 
-          {showChecklist && (
-            <NoteCheckList checklist={checklist} onChecklistChange={onChecklistChangeHandler} />
-          )}
-
-          {labels.length > 0 && (
-            <div className='p-5 flex flex-wrap w-full gap-1 bg-white'>
-              {labels.map((label) => (
-                <NoteLabel
-                  title={label.attributes!.title}
-                  key={label.attributes!.title}
-                  onDelete={() => onLabelsChangeHandler(label)}
-                />
-              ))}
-            </div>
-          )}
-
-          <div className='flex flex-auto justify-between items-center bg-white rounded-b-2xl p-2 px-3'>
-            <div className='flex items-center justify-around gap-x-2'>
-              <Tooltip title='Add checklist' placement='bottom'>
-                <IconButton onClick={toggleChecklistHandler} size='small'>
-                  <Icon fontSize='small'>playlist_add_check</Icon>
-                </IconButton>
-              </Tooltip>
-
-              <LabelMenu labels={labels} onChange={onLabelsChangeHandler} />
-
-              <ImagePicker onPick={handleImagePick} />
-            </div>
-
-            <div className='flex items-center justify-center gap-2'>
-              {props.note && (
-                <Tooltip title='Delete Note' placement='bottom'>
-                  <IconButton onClick={() => props.onDelete && props.onDelete(props.note?.id!)}>
-                    <Icon fontSize='small'>delete</Icon>
-                  </IconButton>
-                </Tooltip>
-              )}
-
-              <div className='flex gap-1'>
-                <Button
-                  type='submit'
-                  variant='outlined'
-                  color='primary'
-                  size='small'
-                  onClick={onSubmitHandler}
-                  sx={{
-                    borderRadius: '15px',
-                    outline: 'none',
-                    fontStyle: 'normal',
-                    boxShadow: 'none',
-                    textTransform: 'unset',
-                    '&:hover': {
-                      boxShadow: 'none'
-                    }
-                  }}
-                >
-                  {props.note ? 'Update' : 'Create'}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </>
+      {showChecklist && (
+        <NoteCheckList checklist={checklist} onChecklistChange={onChecklistChangeHandler} />
       )}
+
+      {labels.length > 0 && (
+        <div className='p-5 flex flex-wrap w-full gap-1 bg-white'>
+          {labels.map((label) => (
+            <NoteLabel
+              title={label.attributes!.title}
+              key={label.attributes!.title}
+              onDelete={() => onLabelsChangeHandler(label)}
+            />
+          ))}
+        </div>
+      )}
+
+      <div className='flex flex-auto justify-between items-center bg-white rounded-b-2xl p-2 px-3'>
+        <div className='flex items-center justify-around gap-x-2'>
+          <Tooltip title='Add checklist' placement='bottom'>
+            <IconButton onClick={toggleChecklistHandler} size='small'>
+              <Icon fontSize='small'>playlist_add_check</Icon>
+            </IconButton>
+          </Tooltip>
+
+          <LabelMenu labels={labels} onChange={onLabelsChangeHandler} />
+
+          <ImagePicker onPick={handleImagePick} />
+        </div>
+
+        <div className='flex items-center justify-center gap-2'>
+          {props.note && (
+            <Tooltip title='Delete Note' placement='bottom'>
+              <IconButton onClick={() => props.onDelete && props.onDelete(props.note?.id!)}>
+                <Icon fontSize='small'>delete</Icon>
+              </IconButton>
+            </Tooltip>
+          )}
+
+          <div className='flex gap-1'>
+            <Button
+              type='submit'
+              variant='outlined'
+              color='primary'
+              size='small'
+              onClick={onSubmitHandler}
+              sx={{
+                borderRadius: '15px',
+                outline: 'none',
+                fontStyle: 'normal',
+                boxShadow: 'none',
+                textTransform: 'unset',
+                '&:hover': {
+                  boxShadow: 'none'
+                }
+              }}
+            >
+              {props.note ? 'Update' : 'Create'}
+            </Button>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

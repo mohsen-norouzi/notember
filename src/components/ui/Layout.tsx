@@ -10,6 +10,7 @@ interface LayoutProps {
 }
 
 export const Layout: FC<LayoutProps> = (props) => {
+  const { authenticated, username, email } = useAppSelector((state) => state.user);
   const showLabels = useAppSelector((state) => state.label.show);
 
   const dispatch = useAppDispatch();
@@ -20,18 +21,20 @@ export const Layout: FC<LayoutProps> = (props) => {
 
   return (
     <>
-      <AppbarLayout />
+      {authenticated && <AppbarLayout username={username} email={email} />}
 
       {props.children}
 
-      <Drawer
-        anchor='left'
-        open={showLabels}
-        onClose={handleToggleLabels}
-        sx={{ display: { xs: 'block', sm: 'none' } }}
-      >
-        <LabelList />
-      </Drawer>
+      {authenticated && (
+        <Drawer
+          anchor='left'
+          open={showLabels}
+          onClose={handleToggleLabels}
+          sx={{ display: { xs: 'block', sm: 'none' } }}
+        >
+          <LabelList />
+        </Drawer>
+      )}
     </>
   );
 };

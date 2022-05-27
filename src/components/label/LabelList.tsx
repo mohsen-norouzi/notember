@@ -1,9 +1,8 @@
+import React, { useState } from 'react';
 import { Box, Divider, LinearProgress } from '@mui/material';
 import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-types';
-import React, { useState } from 'react';
 import { LabelItem } from './LabelItem';
 import { LabelsDialog } from './LabelsDialog';
-import { ClientError } from 'graphql-request';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
@@ -12,21 +11,17 @@ type LabelListProps = {};
 
 export const LabelList: React.FC<LabelListProps> = (props) => {
   const dispatch = useAppDispatch();
-  const { show, filter } = useAppSelector((state) => state.label);
+  const username = useAppSelector((state) => state.user.username);
+  const { show, filter, labels } = useAppSelector((state) => state.label);
 
   const [showLabelsDialog, setShowLabelsDialog] = useState(false);
 
   const { data, error, isLoading } = useGetLabelsQuery<GetLabelsQuery, Error>(
     getGraphQLRequestClient(),
-    {},
+    { filters: { user: { username: { eq: username } } } },
     {
-      onError: (err) => {
-        // console.log('my error', err);
-      },
-      retry: (failureCount, error) => {
-        const errorObject: ClientError = JSON.parse(JSON.stringify(error));
-        console.log(errorObject);
-        return true;
+      onSuccess: (data) => {
+        dispatch(labelActions.setLabels(data.labels?.data || []));
       }
     }
   );
@@ -39,16 +34,14 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
     dispatch(labelActions.setFilter(title || ''));
   };
 
-  const handleToggleLabels = () => {
-    dispatch(labelActions.toggleShowLabels());
-  };
-
   return (
-    <>
+    <Box className='block w-60 relative' component='div'>
       <Box
-        className='bg-white z-20 transition-all w-60 shadow px-2 py-4  animated fadeInLeftp'
+        component='div'
+        className='bg-white z-20 transition-all  shadow px-2 py-4 w-60 animated fadeInLeft fixed overflow-auto'
         sx={{
           height: { xs: '100%', sm: 'min-content' },
+          maxHeight: { xs: '100vh', sm: 'calc(100vh - 75px)' },
           borderRadius: { xs: '0', sm: '1rem' }
         }}
       >
@@ -76,7 +69,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
 
         {error && <p className='flex-2 px-2 mb-3 text-rose-400 text-sm'>failed to load labels</p>}
 
-        {data?.labels?.data.map(({ id, attributes }) => (
+        {labels.map(({ id, attributes }) => (
           <LabelItem
             key={id}
             title={attributes?.title}
@@ -105,8 +98,8 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
       <LabelsDialog
         open={showLabelsDialog}
         onClose={() => setShowLabelsDialog(false)}
-        labels={data?.labels?.data || []}
+        labels={labels}
       />
-    </>
+    </Box>
   );
 };

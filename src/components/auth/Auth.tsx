@@ -2,8 +2,8 @@ import { MeQuery, useMeQuery } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import React, { FC, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { appActions } from 'redux/slices/app-slice';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { userActions } from 'redux/slices/user-slice';
 
 type AuthProps = {
   children?: React.ReactNode;
@@ -22,7 +22,7 @@ export const Auth: FC<AuthProps> = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state) => state.app.token);
+  const token = useAppSelector((state) => state.user.token);
 
   const { data, error, isLoading } = useMeQuery<MeQuery, Error>(
     getGraphQLRequestClient(),
@@ -36,7 +36,7 @@ export const Auth: FC<AuthProps> = (props) => {
 
         // unauthorized access
         if (errorObject.response.error && errorObject.response.error.status === 401) {
-          dispatch(appActions.logout());
+          dispatch(userActions.logout());
 
           if (shouldRetryOnFocus(location.pathname)) {
             navigate('/login');
@@ -48,9 +48,12 @@ export const Auth: FC<AuthProps> = (props) => {
         console.log('retrying', error);
         return true;
       },
-      onSuccess: () => {
+      onSuccess: (data) => {
+        if (data && data.me) {
+          dispatch(userActions.setUserData(data.me));
+        }
         navigate('/');
-      },
+    },
       refetchOnWindowFocus: shouldRetryOnFocus(location.pathname)
     }
   );
@@ -62,7 +65,7 @@ export const Auth: FC<AuthProps> = (props) => {
   }, [token]);
 
   useEffect(() => {
-    dispatch(appActions.authenticate());
+    dispatch(userActions.authenticate());
   }, []);
 
   if (isLoading) {

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Button, Icon, IconButton, Popover, Stack, Tab, Tabs } from '@mui/material';
 import { ColorPicker } from './ColorPicker';
 import { IconPicker } from './IconPicker';
@@ -46,6 +46,20 @@ export const Picker: FC<PickerProps> = (props) => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    if (props.icon !== icon) {
+      console.log('props.icon changes');
+      setIcon(props.icon);
+    }
+  }, [props.icon]);
+
+  useEffect(() => {
+    if (props.color !== color) {
+      console.log('props.color changes');
+      setColor(props.color);
+    }
+  }, [props.color]);
 
   return (
     <div>

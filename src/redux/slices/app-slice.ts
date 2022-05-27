@@ -1,13 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface appState {
-  token?: string;
   theme: 'dark' | 'light';
 }
 
 const initialState: appState = {
-  token: undefined,
   theme: 'dark'
 };
 
@@ -18,21 +15,6 @@ export const appSlice = createSlice({
   reducers: {
     toggleTheme: (state) => {
       state.theme === 'dark' ? 'light' : 'dark';
-    },
-
-    login: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
-      localStorage.setItem('jwt', action.payload);
-    },
-
-    logout: (state) => {
-      localStorage.removeItem('jwt');
-      state.token = undefined;
-    },
-
-    authenticate: (state) => {
-      const token = localStorage.getItem('jwt');
-      state.token = token || '';
     }
   }
 });

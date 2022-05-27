@@ -1,4 +1,4 @@
-import { Box, ClickAwayListener } from '@mui/material';
+import { Box, Fab, Icon } from '@mui/material';
 import {
   CreateNoteMutation,
   NoteInput,
@@ -7,30 +7,28 @@ import {
   DeleteUploadFileMutation
 } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
-import { useState } from 'react';
 import { useQueryClient } from 'react-query';
-import { NoteForm } from './noteform';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { noteActions } from 'redux/slices/note-slice';
+import { NoteDialog } from './NoteDialog';
 
 export const NewNote = () => {
   const queryClient = useQueryClient();
-  const [showForm, setShowForm] = useState(false);
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.user.userId);
+  const showNoteForm = useAppSelector((state) => state.note.showNoteForm);
 
-  const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(getGraphQLRequestClient(), {
-    onSuccess: () => queryClient.invalidateQueries(['GetNotes'])
-  });
+  const createMutation = useCreateNoteMutation<CreateNoteMutation, Error>(
+    getGraphQLRequestClient(),
+    {
+      onSuccess: () => queryClient.invalidateQueries(['GetNotes'])
+    }
+  );
 
   const deleteFileMutation = useDeleteUploadFileMutation<DeleteUploadFileMutation, Error>(
     getGraphQLRequestClient(),
     {}
   );
-
-  const handleFormOpen = () => {
-    setShowForm(true);
-  };
-
-  const handleFormClose = () => {
-    setShowForm(false);
-  };
 
   const handleDeleteImage = (imageID: string) => {
     deleteFileMutation.mutate({ id: imageID });
@@ -38,6 +36,7 @@ export const NewNote = () => {
 
   const handleCreate = (note: NoteInput) => {
     const newNote = note;
+    newNote.users = [userId];
     newNote.publishedAt = new Date();
 
     createMutation.mutate(
@@ -57,33 +56,29 @@ export const NewNote = () => {
     // dispatch(createNote(note));
   };
 
-  const handleClickAway = (ev: any) => {
-    const preventCloseElements = document.querySelector('.prevent-add-close');
-    const preventClose = preventCloseElements ? preventCloseElements.contains(ev.target) : false;
+  const handleFormClose = () => {
+    dispatch(noteActions.hideForm());
+  };
 
-    if (preventClose) {
-      return;
-    }
-
-    handleFormClose();
+  const handleFormOpen = () => {
+    dispatch(noteActions.showForm());
   };
 
   return (
-    <Box
-      component='form'
-      className='flex justify-center justify-items-stretch animated fadeInDown'
-    >
-      <div className='shadow flex flex-col w-10/12 md:w-5/12 rounded-2xl'>
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <div className='w-full' onClick={handleFormOpen}>
-            <NoteForm
-              onCreate={handleCreate}
-              onDeleteImage={handleDeleteImage}
-              expanded={showForm}
-            />
-          </div>
-        </ClickAwayListener>
-      </div>
-    </Box>
+    <>
+      <Box role='presentation' sx={{ position: 'fixed', bottom: 16, right: 16 }} className='z-30'>
+        <Fab color='primary' size='small' aria-label='scroll back to top' onClick={handleFormOpen}>
+          <Icon>add</Icon>
+        </Fab>
+      </Box>
+
+      {showNoteForm && (
+        <NoteDialog
+          onSubmit={handleCreate}
+          onDeleteImage={handleDeleteImage}
+          onClose={handleFormClose}
+        />
+      )}
+    </>
   );
 };
