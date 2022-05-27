@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { LabelEntity } from 'graphql/generated/graphql-types';
 
 interface labelState {
+  labels: LabelEntity[];
   show: boolean;
   filter: string;
 }
 
 const initialState: labelState = {
+  labels: [],
   show: false,
   filter: ''
 };
@@ -15,6 +18,10 @@ export const labelSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    setLabels: (state, action: PayloadAction<LabelEntity[]>) => {
+      state.labels = action.payload;
+    },
+
     toggleShowLabels: (state) => {
       state.show = !state.show;
     },

@@ -26,33 +26,54 @@ const Transition = React.forwardRef(function Transition(
 });
 
 type NoteDialogProps = {
-  note: NoteEntity;
+  note?: NoteEntity;
   onClose: () => void;
+  onSubmit?: (note: NoteInput) => void;
+  onDeleteImage?: (id: string) => void;
 };
 
 export const NoteDialog: FC<NoteDialogProps> = (props) => {
   const queryClient = useQueryClient();
 
-  const updateMutation = useUpdateNoteMutation<UpdateNoteMutation, Error>(getGraphQLRequestClient(), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['GetNotes']);
-      props.onClose();
+  const updateMutation = useUpdateNoteMutation<UpdateNoteMutation, Error>(
+    getGraphQLRequestClient(),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['GetNotes']);
+        props.onClose();
+      }
     }
-  });
+  );
 
-  const deleteMutation = useDeleteNoteMutation<DeleteNoteMutation, Error>(getGraphQLRequestClient(), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['GetNotes']);
-      props.onClose();
+  const deleteMutation = useDeleteNoteMutation<DeleteNoteMutation, Error>(
+    getGraphQLRequestClient(),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['GetNotes']);
+        props.onClose();
+      }
     }
-  });
+  );
 
   const handleCreate = (note: NoteInput) => {
-    updateMutation.mutate({ data: note, id: props.note.id! });
+    if (props.note) {
+      return updateMutation.mutate({ data: note, id: props.note.id! });
+    }
+
+    if (props.onSubmit) {
+      return props.onSubmit(note);
+    }
   };
 
   const handleDelete = (id: string) => {
     deleteMutation.mutate({ id });
+  };
+
+  const handleDeleteImage = () => {
+    debugger;
+    if (props.onDeleteImage && props.note && props.note.attributes?.image) {
+      props.onDeleteImage(props.note.attributes?.image.data?.id!);
+    }
   };
 
   return (
@@ -64,7 +85,12 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
       onClose={props.onClose}
       open={props.note !== null}
     >
-      <NoteForm onCreate={handleCreate} note={props.note} onDelete={handleDelete} expanded />
+      <NoteForm
+        onCreate={handleCreate}
+        note={props.note}
+        onDelete={handleDelete}
+        onDeleteImage={handleDeleteImage}
+      />
     </Dialog>
   );
 };

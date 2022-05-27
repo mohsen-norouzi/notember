@@ -9,7 +9,7 @@ export const NotePage = () => {
         <LabelList />
       </Box>
 
-      {/* <NewNote /> */}
+      <NewNote />
       <NoteList />
     </div>
   );
