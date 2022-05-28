@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { AppbarLayout } from './AppbarLayout';
 import { labelActions } from 'redux/slices/label-slice';
+import { SnackbarProvider } from 'notistack';
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -20,7 +21,11 @@ export const Layout: FC<LayoutProps> = (props) => {
   };
 
   return (
-    <>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+      preventDuplicate
+    >
       {authenticated && <AppbarLayout username={username} email={email} />}
 
       {props.children}
@@ -35,6 +40,6 @@ export const Layout: FC<LayoutProps> = (props) => {
           <LabelList />
         </Drawer>
       )}
-    </>
+    </SnackbarProvider>
   );
 };

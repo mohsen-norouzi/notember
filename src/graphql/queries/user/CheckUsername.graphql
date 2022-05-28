@@ -1,0 +1,9 @@
+query GetUsername ($filters: UsersPermissionsUserFiltersInput) {
+  usersPermissionsUsers(filters: $filters) {
+    data {
+      attributes {
+        username
+      }
+    }
+  }
+}
