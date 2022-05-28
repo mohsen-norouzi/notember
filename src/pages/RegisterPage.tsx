@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -12,6 +12,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { userActions } from 'redux/slices/user-slice';
 import { useAppDispatch } from 'redux/hooks';
+import { useSnackbar } from 'notistack';
+import { ClientError } from 'graphql-request';
+import { LoadingButton } from '@mui/lab';
+import { UsernameInput } from './UsernameInput';
+import { useState } from 'react';
 
 const schema = yup
   .object({
@@ -35,10 +40,11 @@ const schema = yup
   .required();
 
 export const RegisterPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { data, error, isLoading, mutate } = useRegisterMutation<RegisterMutation, Error>(
+  const { error, isLoading, mutate } = useRegisterMutation<RegisterMutation, Error>(
     getGraphQLRequestClient(false),
     {
       onSuccess: (result) => {
@@ -50,8 +56,16 @@ export const RegisterPage = () => {
           navigate('/');
         }
       },
-      onError: (err) => {
-        console.log(err);
+      onError: () => {
+        const errorObject: ClientError = JSON.parse(JSON.stringify(error));
+
+        if (errorObject.response && errorObject.response.errors) {
+          const message = errorObject.response.errors[0].message;
+          enqueueSnackbar(message, { variant: 'error' });
+          return;
+        }
+
+        enqueueSnackbar('An error occured!', { variant: 'error' });
       }
     }
   );
@@ -59,7 +73,9 @@ export const RegisterPage = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid }
+    setError,
+    getValues,
+    formState: { errors, isValid, isValidating }
   } = useForm<UsersPermissionsRegisterInput>({
     defaultValues: { username: '', email: '', password: '' },
     mode: 'onChange',
@@ -74,6 +90,19 @@ export const RegisterPage = () => {
     };
 
     mutate({ input });
+  };
+
+  const [validatingUsername, setValidatingUsername] = useState(false);
+  const handleValidateStart = () => {
+    setValidatingUsername(true);
+  };
+
+  const handleValidateFinish = (taken: boolean) => {
+    if (taken) {
+      setError('username', { message: 'Username already taken' });
+    }
+
+    setValidatingUsername(false);
   };
 
   return (
@@ -92,22 +121,12 @@ export const RegisterPage = () => {
             </div>
 
             <div className='bg-white flex flex-col justify-center items-center'>
-              <Controller
-                name='username'
+              <UsernameInput
                 control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label='Username'
-                    variant='outlined'
-                    autoFocus
-                    className='w-full !mb-3'
-                    error={errors.username !== undefined}
-                    helperText={
-                      errors.username && (errors.username?.message || 'This field is required')
-                    }
-                  />
-                )}
+                value={getValues('username')}
+                isValidating={validatingUsername}
+                onValidateStart={handleValidateStart}
+                onValidateFinish={handleValidateFinish}
               />
 
               <Controller
@@ -147,16 +166,17 @@ export const RegisterPage = () => {
 
           <CardActions className='flex flex-col justify-center items-center'>
             <div className='px-2 w-full mb-5'>
-              <Button
+              <LoadingButton
                 type='submit'
                 color='primary'
                 variant='contained'
                 size='large'
                 className='w-full rounded-lg'
-                disabled={!isValid}
+                disabled={!isValid || validatingUsername}
+                loading={isLoading}
               >
                 Register
-              </Button>
+              </LoadingButton>
             </div>
 
             <Typography className='font-medium'>
