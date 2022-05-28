@@ -6,10 +6,13 @@ import { LabelsDialog } from './LabelsDialog';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
+import { useSnackbar } from 'notistack';
+import clsx from 'clsx';
 
 type LabelListProps = {};
 
 export const LabelList: React.FC<LabelListProps> = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const username = useAppSelector((state) => state.user.username);
   const { show, filter, labels } = useAppSelector((state) => state.label);
@@ -22,6 +25,17 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
     {
       onSuccess: (data) => {
         dispatch(labelActions.setLabels(data.labels?.data || []));
+      },
+      onError: () => {
+        enqueueSnackbar('Failed to load labels.', { variant: 'error' });
+      },
+      retry: (failureCount, error) => {
+        if (failureCount < 2) {
+          enqueueSnackbar('Failed to load labels. Retrying...', { variant: 'error' });
+          return true;
+        }
+
+        return false;
       }
     }
   );
@@ -67,7 +81,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
 
         <p className='flex-2 p-2 text-gray-600 text-sm'>Labels</p>
 
-        {error && <p className='flex-2 px-2 mb-3 text-rose-400 text-sm'>failed to load labels</p>}
+        {error && <p className='flex-2 px-2 mb-3 text-rose-400 text-sm'>failed to load labels!</p>}
 
         {labels.map(({ id, attributes }) => (
           <LabelItem

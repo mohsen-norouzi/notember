@@ -1046,6 +1046,13 @@ export type UpdateNoteMutationVariables = Exact<{
 
 export type UpdateNoteMutation = { __typename?: 'Mutation', updateNote?: { __typename?: 'NoteEntityResponse', data?: { __typename?: 'NoteEntity', id?: string | null, attributes?: { __typename?: 'Note', title: string, description?: string | null } | null } | null } | null };
 
+export type GetUsernameQueryVariables = Exact<{
+  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
+}>;
+
+
+export type GetUsernameQuery = { __typename?: 'Query', usersPermissionsUsers?: { __typename?: 'UsersPermissionsUserEntityResponseCollection', data: Array<{ __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null };
+
 export type LoginMutationVariables = Exact<{
   input: UsersPermissionsLoginInput;
 }>;
@@ -1353,6 +1360,31 @@ export const useUpdateNoteMutation = <
     useMutation<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>(
       ['updateNote'],
       (variables?: UpdateNoteMutationVariables) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(client, UpdateNoteDocument, variables, headers)(),
+      options
+    );
+export const GetUsernameDocument = `
+    query GetUsername($filters: UsersPermissionsUserFiltersInput) {
+  usersPermissionsUsers(filters: $filters) {
+    data {
+      attributes {
+        username
+      }
+    }
+  }
+}
+    `;
+export const useGetUsernameQuery = <
+      TData = GetUsernameQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetUsernameQueryVariables,
+      options?: UseQueryOptions<GetUsernameQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetUsernameQuery, TError, TData>(
+      variables === undefined ? ['GetUsername'] : ['GetUsername', variables],
+      fetcher<GetUsernameQuery, GetUsernameQueryVariables>(client, GetUsernameDocument, variables, headers),
       options
     );
 export const LoginDocument = `

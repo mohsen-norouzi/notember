@@ -10,13 +10,16 @@ import {
 
 import { NoteItem } from './NoteItem';
 import { NoteDialog } from './NoteDialog';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Icon, Skeleton, Stack, Typography } from '@mui/material';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
-import { useAppSelector } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { appActions } from 'redux/slices/app-slice';
+import { useSnackbar } from 'notistack';
 
 type NoteListProps = {};
 
 export const NoteList: FC<NoteListProps> = (props) => {
+  const { enqueueSnackbar } = useSnackbar();
   const userId = useAppSelector((state) => state.user.userId);
   const filter = useAppSelector((state) => state.label.filter);
 
@@ -33,15 +36,29 @@ export const NoteList: FC<NoteListProps> = (props) => {
     getGraphQLRequestClient(),
     {
       filters: { ...filters, users: { id: { eq: userId } } }
+    },
+    {
+      onSuccess: () => {},
+      onError: () => {
+        enqueueSnackbar('Failed to load notes.', { variant: 'error' });
+      },
+      retry: (failureCount, error) => {
+        if (failureCount < 2) {
+          enqueueSnackbar('Failed to load notes. Retrying...', { variant: 'error' });
+          return true;
+        }
+
+        return false;
+      }
     }
   );
 
   if (error) {
     return (
-      <div className='flex flex-col items-center justify-center h-full'>
-        <Typography color='textSecondary' variant='h1'>
-          {': ('}
-        </Typography>
+      <div className='flex flex-col items-center justify-center h-full w-full mt-10 gap-5'>
+        <Icon className='!text-9xl' color='action'>
+          report
+        </Icon>
 
         <Typography color='textSecondary' variant='h5'>
           Failed to load notes!
@@ -52,7 +69,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
 
   if (data && data.notes && data.notes.data.length === 0) {
     return (
-      <div className='flex items-center justify-center w-full h-auto mt-5'>
+      <div className='flex  items-center justify-center w-full h-auto mt-5'>
         <Typography color='textSecondary' variant='h5'>
           There are no notes!
         </Typography>

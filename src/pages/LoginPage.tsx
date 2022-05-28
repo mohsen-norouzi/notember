@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -12,6 +12,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'redux/hooks';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { userActions } from 'redux/slices/user-slice';
+import { LoadingButton } from '@mui/lab';
+import { useSnackbar } from 'notistack';
+import { ClientError } from 'graphql-request';
 
 type LoginType = {
   username: string;
@@ -26,10 +29,11 @@ const schema = yup
   .required();
 
 export const LoginPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { data, error, isLoading, mutate } = useLoginMutation<LoginMutation, Error>(
+  const { data, error, isLoading, mutate } = useLoginMutation<LoginMutation, ClientError>(
     getGraphQLRequestClient(false),
     {
       onSuccess: (result) => {
@@ -42,8 +46,16 @@ export const LoginPage = () => {
         }
       },
       onError: (err) => {
-        console.log(err);
-      }
+        const errorObject: ClientError = JSON.parse(JSON.stringify(error));
+
+        if (errorObject.response) {
+          enqueueSnackbar('Invalid username or password!', { variant: 'error' });
+          return;
+        }
+
+        enqueueSnackbar('An error occured!', { variant: 'error' });
+      },
+      retry: false
     }
   );
 
@@ -123,16 +135,17 @@ export const LoginPage = () => {
 
           <CardActions className='flex flex-col justify-center items-center'>
             <div className='px-2 w-full mb-5'>
-              <Button
+              <LoadingButton
                 type='submit'
                 color='primary'
                 variant='contained'
                 size='large'
                 className='w-full rounded-lg'
+                loading={isLoading}
                 disabled={!isValid}
               >
                 Login
-              </Button>
+              </LoadingButton>
             </div>
 
             <Typography className='font-medium'>

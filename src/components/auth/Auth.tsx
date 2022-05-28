@@ -45,15 +45,14 @@ export const Auth: FC<AuthProps> = (props) => {
           return false;
         }
 
-        console.log('retrying', error);
-        return true;
+        return false;
       },
       onSuccess: (data) => {
         if (data && data.me) {
           dispatch(userActions.setUserData(data.me));
         }
         navigate('/');
-    },
+      },
       refetchOnWindowFocus: shouldRetryOnFocus(location.pathname)
     }
   );
@@ -68,9 +67,9 @@ export const Auth: FC<AuthProps> = (props) => {
     dispatch(userActions.authenticate());
   }, []);
 
-  if (isLoading) {
-    return <p>Authenticating...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Authenticating...</p>;
+  // }
 
   return <>{props.children}</>;
 };
