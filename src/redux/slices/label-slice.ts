@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
 import { LabelEntity } from 'graphql/generated/graphql-types';
+import { userActions } from './user-slice';
 
 interface labelState {
   labels: LabelEntity[];
@@ -15,7 +16,6 @@ const initialState: labelState = {
 
 export const labelSlice = createSlice({
   name: 'label',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     setLabels: (state, action: PayloadAction<LabelEntity[]>) => {
@@ -37,6 +37,12 @@ export const labelSlice = createSlice({
     setFilter: (state, action: PayloadAction<string>) => {
       state.filter = action.payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(isAnyOf(userActions.logout), (state) => {
+      state.labels = [];
+      state.filter = '';
+    });
   }
 });
 

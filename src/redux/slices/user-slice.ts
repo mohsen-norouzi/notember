@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UsersPermissionsLoginPayload, UsersPermissionsMe } from 'graphql/generated/graphql-types';
+import { UsersPermissionsMe } from 'graphql/generated/graphql-types';
 
 interface userState {
   token?: string;

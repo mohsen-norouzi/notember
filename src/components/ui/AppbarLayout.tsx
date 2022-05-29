@@ -5,11 +5,12 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Avatar, Button, CssBaseline, Icon, Popover, useScrollTrigger } from '@mui/material';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 import { userActions } from 'redux/slices/user-slice';
 import { useNavigate } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
+import { appActions } from 'redux/slices/app-slice';
 
 type AppbarLayoutProps = {
   username: string;
@@ -19,6 +20,7 @@ type AppbarLayoutProps = {
 export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const mode = useAppSelector((state) => state.app.mode);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -39,6 +41,10 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
   const handleLogout = () => {
     dispatch(userActions.logout());
     navigate('/login');
+  };
+
+  const handleToggleMode = () => {
+    dispatch(appActions.toggleMode());
   };
 
   const menuId = 'primary-search-account-menu';
@@ -87,14 +93,11 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
         className='text-black'
         sx={{ boxShadow: 'none' }}
       >
-        <Toolbar className='!pl-0'>
+        <Toolbar className='!pl-2'>
           <IconButton
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
+            size='medium'
             className='!ml-1'
-            sx={{ display: { xs: 'block', sm: 'none' } }}
+            sx={{ display: { xs: '', sm: 'none' } }}
             onClick={handleToggleLabels}
           >
             <Icon>menu</Icon>
@@ -103,6 +106,7 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
             variant='h5'
             className='text-center w-60 mx-2 fixed'
             component='div'
+            color='text.primary'
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             N▢tember
@@ -111,8 +115,8 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
           <Box sx={{ flexGrow: 1 }} />
 
           <Box>
-            <IconButton size='medium'>
-              <Icon>light_mode</Icon>
+            <IconButton size='medium' onClick={handleToggleMode}>
+              {mode === 'light' ? <Icon>light_mode</Icon> : <Icon>dark_mode</Icon>}
             </IconButton>
             <IconButton onClick={handleProfileMenuOpen} size='medium'>
               <Icon>person</Icon>
