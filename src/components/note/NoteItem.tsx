@@ -1,16 +1,6 @@
 import { FC, useState } from 'react';
 import { NoteEntity } from 'graphql/generated/graphql-types';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Icon,
-  List,
-  ListItem,
-  Skeleton,
-  Typography
-} from '@mui/material';
+import { Box, Card, CardContent, Icon, List, ListItem, Skeleton, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { Checklist } from 'models';
 import { NoteLabel } from './NoteLabel';
@@ -32,9 +22,7 @@ export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
   };
 
   const finishLoading = () => {
-    setTimeout(() => {
-      setImageLoaded(true);
-    }, 3000);
+    setImageLoaded(true);
   };
 
   return (
@@ -48,9 +36,8 @@ export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
           {!imageLoaded && (
             <Skeleton
               variant='rectangular'
-              className='max-h-52 overflow-hidden min-w-full'
-              width={image?.data?.attributes?.width || 50}
-              height={image?.data?.attributes?.height || 50}
+              className={'max-h-52 overflow-hidden w-full'}
+              height={image?.data?.attributes?.height!}
             />
           )}
 
@@ -64,18 +51,23 @@ export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
         </div>
       )}
 
-      <CardContent sx={{ paddingBottom: '1rem !important' }}>
-        <Box component='div' className='mb-3'>
-          <Typography gutterBottom variant='h5' component='div'>
-            {title}
-          </Typography>
-          <Typography variant='body2' color='text.secondary'>
-            {description}
-          </Typography>
+      <CardContent className='!p-5'>
+        <Box component='div'>
+          {title && (
+            <Typography gutterBottom variant='h5' component='div' className='!m-0'>
+              {title}
+            </Typography>
+          )}
+
+          {description && (
+            <Typography variant='body2' color='text.secondary' className='!mt-2'>
+              {description}
+            </Typography>
+          )}
         </Box>
 
         {checklist && checklist.length > 0 && (
-          <div>
+          <div className='!mt-3'>
             <List sx={{ padding: 0 }} dense>
               {checklist.map((item: Checklist, index: number) => (
                 <ListItem
