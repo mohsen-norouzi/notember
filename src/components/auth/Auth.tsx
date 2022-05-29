@@ -1,6 +1,7 @@
 import { MeQuery, useMeQuery } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import React, { FC, useEffect } from 'react';
+import { useQueryClient } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { userActions } from 'redux/slices/user-slice';
@@ -22,15 +23,14 @@ export const Auth: FC<AuthProps> = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state) => state.user.token);
+  const { token, authenticated } = useAppSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
-  const { data, error, isLoading } = useMeQuery<MeQuery, Error>(
+  const { error, isFetching, refetch } = useMeQuery<MeQuery, Error>(
     getGraphQLRequestClient(),
     {},
     {
-      onError: (err) => {
-        const errorObject = JSON.parse(JSON.stringify(error));
-      },
+      onError: () => {},
       retry: (failureCount, error) => {
         const errorObject = JSON.parse(JSON.stringify(error));
 
@@ -41,8 +41,6 @@ export const Auth: FC<AuthProps> = (props) => {
           if (shouldRetryOnFocus(location.pathname)) {
             navigate('/login');
           }
-
-          return false;
         }
 
         return false;
@@ -51,6 +49,7 @@ export const Auth: FC<AuthProps> = (props) => {
         if (data && data.me) {
           dispatch(userActions.setUserData(data.me));
         }
+
         navigate('/');
       },
       refetchOnWindowFocus: shouldRetryOnFocus(location.pathname)
@@ -67,9 +66,14 @@ export const Auth: FC<AuthProps> = (props) => {
     dispatch(userActions.authenticate());
   }, []);
 
-  // if (isLoading) {
-  //   return <p>Authenticating...</p>;
-  // }
+  useEffect(() => {
+    queryClient.cancelQueries(['Me']);
+    refetch();
+  }, [authenticated]);
+
+  if (isFetching) {
+    return <p>loading...</p>;
+  }
 
   return <>{props.children}</>;
 };
