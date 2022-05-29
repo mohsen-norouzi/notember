@@ -1,6 +1,8 @@
+import { Box, Typography } from '@mui/material';
 import Icon from '@mui/material/Icon';
 import clsx from 'clsx';
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 type LabelItemProps = {
   title?: string;
@@ -16,18 +18,23 @@ export const LabelItem: FC<LabelItemProps> = (props) => {
   };
 
   return (
-    <div
-      className={clsx(
-        'flex items-center cursor-pointer hover:bg-gray-100 rounded-md transition-all mb-1',
-        { 'bg-gray-100': !!props.active }
-      )}
+    <Box
+      className={clsx('flex items-center cursor-pointer rounded-md transition-all mb-1', {
+        active: !!props.active
+      })}
       onClick={onClickHandler}
+      sx={{
+        bgcolor: !!props.active ? 'action.selected' : 'unset',
+        ':hover': { bgcolor: 'action.hover' }
+      }}
     >
       <Icon color='action' style={{ color: props.color! }} className='m-2'>
         {props.icon}
       </Icon>
 
-      <p className='flex-2 p-2 text-gray-600'>{props.title}</p>
-    </div>
+      <Typography className='flex-2 p-2' color='text.primary'>
+        {props.title}
+      </Typography>
+    </Box>
   );
 };
