@@ -27,8 +27,7 @@ export const NoteItem: FC<NoteItemProps> = ({ note, onClick }) => {
 
   return (
     <Card
-      sx={{ borderRadius: '1rem' }}
-      className='w-full cursor-pointer hover:shadow-xl animated fadeInUp'
+      className='w-full cursor-pointer hover:shadow-xl animated fadeInUp !rounded-2xl'
       onClick={() => onClick(note)}
     >
       {image?.data && (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Divider, LinearProgress } from '@mui/material';
+import { Box, Card, Divider, LinearProgress } from '@mui/material';
 import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-types';
 import { LabelItem } from './LabelItem';
 import { LabelsDialog } from './LabelsDialog';
@@ -7,7 +7,6 @@ import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 import { useSnackbar } from 'notistack';
-import clsx from 'clsx';
 
 type LabelListProps = {};
 
@@ -51,9 +50,8 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
 
   return (
     <Box className='block w-60 relative' component='div'>
-      <Box
-        component='div'
-        className='bg-white z-20 transition-all  shadow px-2 py-4 w-60 animated fadeInLeft fixed overflow-auto'
+      <Card
+        className='z-20 shadow px-2 py-4 w-60 fixed overflow-auto'
         sx={{
           height: { xs: '100%', sm: 'min-content' },
           maxHeight: { xs: '100vh', sm: 'calc(100vh - 75px)' },
@@ -108,7 +106,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
           icon='archive'
           onClick={() => onLabelClickHandler()}
         />
-      </Box>
+      </Card>
 
       <LabelsDialog
         open={showLabelsDialog}
