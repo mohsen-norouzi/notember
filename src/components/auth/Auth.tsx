@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import { MeQuery, useMeQuery } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import React, { FC, useEffect } from 'react';
@@ -72,7 +73,11 @@ export const Auth: FC<AuthProps> = (props) => {
   }, [authenticated]);
 
   if (isFetching) {
-    return <p>loading...</p>;
+    return (
+      <div className='flex h-screen w-screen items-center justify-center'>
+        <CircularProgress />
+      </div>
+    );
   }
 
   return <>{props.children}</>;
