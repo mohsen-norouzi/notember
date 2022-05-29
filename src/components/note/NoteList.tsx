@@ -49,7 +49,8 @@ export const NoteList: FC<NoteListProps> = (props) => {
         }
 
         return false;
-      }
+      },
+      refetchOnWindowFocus: false
     }
   );
 

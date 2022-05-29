@@ -53,7 +53,7 @@ export const Auth: FC<AuthProps> = (props) => {
 
         navigate('/');
       },
-      refetchOnWindowFocus: shouldRetryOnFocus(location.pathname)
+      refetchOnWindowFocus: false
     }
   );
 
