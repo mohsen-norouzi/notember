@@ -93,7 +93,7 @@ export const LoginPage = () => {
               </Typography>
             </div>
 
-            <div className='bg-white flex flex-col justify-center items-center'>
+            <div className='flex flex-col justify-center items-center'>
               <Controller
                 name='username'
                 control={control}

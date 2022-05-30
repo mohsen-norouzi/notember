@@ -52,14 +52,14 @@ export const Layout: FC<LayoutProps> = (props) => {
       <Box
         component='div'
         sx={{ bgcolor: 'background.default' }}
-        className='w-screen min-h-screen pb-20'
+        className='w-screen min-h-screen flex flex-col justify-items-stretch'
       >
         <SnackbarProvider
           maxSnack={3}
           anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
           preventDuplicate
         >
-          {authenticated && <AppbarLayout username={username} email={email} />}
+          <AppbarLayout username={username} email={email} authenticated={authenticated} />
 
           {props.children}
 
