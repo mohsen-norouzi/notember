@@ -1,6 +1,6 @@
 import { Drawer, PaletteMode } from '@mui/material';
 import { LabelList } from 'components/label';
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { AppbarLayout } from './AppbarLayout';
 import { labelActions } from 'redux/slices/label-slice';
