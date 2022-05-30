@@ -133,7 +133,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         placeholder='Title'
         value={title}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
-        className={clsx('bg-white w-full', {
+        className={clsx('w-full', {
           'rounded-t-2xl': !image?.url
         })}
         InputProps={{ className: 'p-2' }}
@@ -149,7 +149,6 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         variant='outlined'
         size='small'
         placeholder='Description'
-        className='bg-white w-full'
         value={description}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           setDescription(event.target.value)
@@ -169,7 +168,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
       )}
 
       {labels.length > 0 && (
-        <div className='p-5 flex flex-wrap w-full gap-1 bg-white'>
+        <div className='p-5 flex flex-wrap w-full gap-1'>
           {labels.map((label) => (
             <NoteLabel
               title={label.attributes!.title}
@@ -180,7 +179,7 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
         </div>
       )}
 
-      <div className='flex flex-auto justify-between items-center bg-white rounded-b-2xl p-2 px-3'>
+      <div className='flex flex-auto justify-between items-center rounded-b-2xl p-2 px-3'>
         <div className='flex items-center justify-around gap-x-2'>
           <Tooltip title='Add checklist' placement='bottom'>
             <IconButton onClick={toggleChecklistHandler} size='small'>
