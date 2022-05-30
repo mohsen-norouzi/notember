@@ -10,9 +10,10 @@ import clsx from 'clsx';
 
 type NoteFormProps = {
   note?: NoteEntity;
-  onCreate: (note: NoteInput) => void;
+  onSubmit: (note: NoteInput, close?: boolean) => void;
   onDelete?: (id: string) => void;
-  onDeleteImage?: (id: string) => void;
+  onDeleteImage: (id: string) => void;
+  onStoreImage: (imageId: string) => void;
 };
 
 type NoteImage = {
@@ -51,11 +52,11 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
       newNote.labels = labelIDs;
     }
 
-    if (image && image.id) {
+    if (!props.note && image && image.id) {
       newNote.image = image.id;
     }
 
-    props.onCreate(newNote);
+    props.onSubmit(newNote);
 
     // reset
     setTitle('');
@@ -90,15 +91,27 @@ export const NoteForm: FC<NoteFormProps> = (props) => {
     setLabels(newLabels);
   };
 
-  const handleImagePick = (imageID: string, imageUrl: string) => {
-    setImage({
-      id: imageID,
-      url: imageUrl
-    });
+  const handleImagePick = (id: string, url: string) => {
+    if (image) {
+      // delete previous image from db
+      props.onDeleteImage(image.id);
+    }
+
+    setImage({ id, url });
+
+    props.onStoreImage(id);
+
+    if (props.note && id) {
+      const newNote: NoteInput = {
+        image: id
+      };
+
+      props.onSubmit(newNote, false);
+    }
   };
 
   const handleDeleteImage = () => {
-    if (image && image.id && props.onDeleteImage) {
+    if (image && image.id) {
       props.onDeleteImage(image.id);
       setImage(null);
     }

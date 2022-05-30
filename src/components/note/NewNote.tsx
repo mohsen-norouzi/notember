@@ -25,15 +25,6 @@ export const NewNote = () => {
     }
   );
 
-  const deleteFileMutation = useDeleteUploadFileMutation<DeleteUploadFileMutation, Error>(
-    getGraphQLRequestClient(),
-    {}
-  );
-
-  const handleDeleteImage = (imageID: string) => {
-    deleteFileMutation.mutate({ id: imageID });
-  };
-
   const handleCreate = (note: NoteInput) => {
     const newNote = note;
     newNote.users = [userId];
@@ -46,14 +37,12 @@ export const NewNote = () => {
           handleFormClose();
         },
         onError: () => {
-          if (newNote.image) {
-            handleDeleteImage(newNote.image);
-          }
+          // if (newNote.image) {
+          //   handleDeleteImage(newNote.image);
+          // }
         }
       }
     );
-
-    // dispatch(createNote(note));
   };
 
   const handleFormClose = () => {
@@ -72,13 +61,7 @@ export const NewNote = () => {
         </Fab>
       </Box>
 
-      {showNoteForm && (
-        <NoteDialog
-          onSubmit={handleCreate}
-          onDeleteImage={handleDeleteImage}
-          onClose={handleFormClose}
-        />
-      )}
+      {showNoteForm && <NoteDialog onSubmit={handleCreate} onClose={handleFormClose} />}
     </>
   );
 };
