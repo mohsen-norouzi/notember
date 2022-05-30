@@ -56,7 +56,11 @@ export const UsernameInput: FC<UsernameInputProps> = (props) => {
 
   useEffect(() => {
     queryClient.cancelQueries(['GetUsername']);
-    props.onValidateStart();
+    props.onValidateFinish(false);
+
+    if (props.value.length > 2) {
+      props.onValidateStart();
+    }
   }, [props.value]);
 
   let status = <></>;
@@ -77,9 +81,9 @@ export const UsernameInput: FC<UsernameInputProps> = (props) => {
     <FormControl
       variant='outlined'
       className='w-full !mb-3'
-      error={usernameState.error !== undefined}
+      error={!usernameState.isDirty && usernameState.error !== undefined}
       color={
-        usernameState.isDirty && !props.isValidating && usernameState.error === undefined
+        !usernameState.isDirty || (!props.isValidating && usernameState.error === undefined)
           ? 'primary'
           : 'error'
       }
@@ -94,13 +98,13 @@ export const UsernameInput: FC<UsernameInputProps> = (props) => {
             label='Username'
             autoFocus
             className='w-full'
-            // error={props.error !== undefined}
-            // helperText={props.error && (props.error.message || 'This field is required')}
             endAdornment={<InputAdornment position='end'>{status}</InputAdornment>}
           />
         )}
       />
-      <FormHelperText>{usernameState.error?.message}</FormHelperText>
+      <FormHelperText error={usernameState.error !== undefined}>
+        {usernameState.error?.message}
+      </FormHelperText>
     </FormControl>
   );
 };

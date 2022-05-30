@@ -28,7 +28,7 @@ export const NoteCheckList: FC<CheckListProps> = (props) => {
   };
 
   return (
-    <List className='p-0 bg-white' dense>
+    <List className='p-0' dense>
       {props.checklist.map((item, i) => (
         <CheckListItem
           key={i}

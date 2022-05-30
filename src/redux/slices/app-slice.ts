@@ -5,8 +5,10 @@ interface appState {
   mode: PaletteMode;
 }
 
+const stored_mode = localStorage.getItem('mode') as PaletteMode;
+
 const initialState: appState = {
-  mode: 'light'
+  mode: stored_mode ? stored_mode : 'light'
 };
 
 export const appSlice = createSlice({
@@ -15,6 +17,7 @@ export const appSlice = createSlice({
   reducers: {
     toggleMode: (state) => {
       state.mode = state.mode === 'light' ? 'dark' : 'light';
+      localStorage.setItem('mode', state.mode);
     }
   }
 });
