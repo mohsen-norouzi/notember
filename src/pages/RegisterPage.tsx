@@ -17,6 +17,7 @@ import { ClientError } from 'graphql-request';
 import { LoadingButton } from '@mui/lab';
 import { UsernameInput } from './UsernameInput';
 import { useState } from 'react';
+import { appActions } from 'redux/slices/app-slice';
 
 const schema = yup
   .object({
@@ -106,7 +107,7 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className='h-full w-full flex flex-col flex-auto items-center justify-center animated fadeIn'>
+    <div className='w-full flex flex-col flex-auto items-center justify-center animated fadeIn'>
       <form onSubmit={handleSubmit(onSubmit)} className='w-full px-5 sm:w-96 sm:px-0 mx-auto'>
         <Card className='shadow-xl p-5 !rounded-lg w-full'>
           <CardContent className='!pb-0'>
@@ -120,7 +121,7 @@ export const RegisterPage = () => {
               </Typography>
             </div>
 
-            <div className='bg-white flex flex-col justify-center items-center'>
+            <div className='flex flex-col justify-center items-center'>
               <UsernameInput
                 control={control}
                 value={getValues('username')}

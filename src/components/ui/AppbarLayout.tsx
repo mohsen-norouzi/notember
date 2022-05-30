@@ -15,6 +15,7 @@ import { appActions } from 'redux/slices/app-slice';
 type AppbarLayoutProps = {
   username: string;
   email?: string;
+  authenticated: boolean;
 };
 
 export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
@@ -94,14 +95,16 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
         sx={{ boxShadow: 'none' }}
       >
         <Toolbar className='!pl-2'>
-          <IconButton
-            size='medium'
-            className='!ml-1'
-            sx={{ display: { xs: '', sm: 'none' } }}
-            onClick={handleToggleLabels}
-          >
-            <Icon>menu</Icon>
-          </IconButton>
+          {props.authenticated && (
+            <IconButton
+              size='medium'
+              className='!ml-1'
+              sx={{ display: { xs: '', sm: 'none' } }}
+              onClick={handleToggleLabels}
+            >
+              <Icon>menu</Icon>
+            </IconButton>
+          )}
           <Typography
             variant='h5'
             className='text-center w-60 mx-2 fixed'
@@ -118,9 +121,11 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
             <IconButton size='medium' onClick={handleToggleMode}>
               {mode === 'light' ? <Icon>light_mode</Icon> : <Icon>dark_mode</Icon>}
             </IconButton>
-            <IconButton onClick={handleProfileMenuOpen} size='medium'>
-              <Icon>person</Icon>
-            </IconButton>
+            {props.authenticated && (
+              <IconButton onClick={handleProfileMenuOpen} size='medium'>
+                <Icon>person</Icon>
+              </IconButton>
+            )}
           </Box>
         </Toolbar>
       </AppBar>

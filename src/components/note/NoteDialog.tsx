@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import { TransitionProps } from '@mui/material/transitions';
 import Dialog from '@mui/material/Dialog';
@@ -7,10 +7,13 @@ import Slide from '@mui/material/Slide';
 import { NoteForm } from './noteform';
 import {
   DeleteNoteMutation,
+  DeleteUploadFileMutation,
+  Maybe,
   NoteEntity,
   NoteInput,
   UpdateNoteMutation,
   useDeleteNoteMutation,
+  useDeleteUploadFileMutation,
   useUpdateNoteMutation
 } from 'graphql/generated/graphql-types';
 import { useQueryClient } from 'react-query';
@@ -34,32 +37,57 @@ type NoteDialogProps = {
 
 export const NoteDialog: FC<NoteDialogProps> = (props) => {
   const queryClient = useQueryClient();
+  const [pendingImageId, setPendingImageId] = useState<Maybe<string>>(null);
 
   const updateMutation = useUpdateNoteMutation<UpdateNoteMutation, Error>(
-    getGraphQLRequestClient(),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['GetNotes']);
-        props.onClose();
-      }
-    }
+    getGraphQLRequestClient()
   );
 
   const deleteMutation = useDeleteNoteMutation<DeleteNoteMutation, Error>(
     getGraphQLRequestClient(),
     {
       onSuccess: () => {
+        handleDeleteImage();
         queryClient.invalidateQueries(['GetNotes']);
         props.onClose();
       }
     }
   );
 
-  const handleCreate = (note: NoteInput) => {
+  const deleteFileMutation = useDeleteUploadFileMutation<DeleteUploadFileMutation, Error>(
+    getGraphQLRequestClient(),
+    {
+      onSuccess: () => queryClient.invalidateQueries(['GetNotes'])
+    }
+  );
+
+  const handleDeleteImage = (id?: string) => {
+    const imageID = id || props.note?.attributes?.image?.data?.id;
+
+    if (imageID) {
+      deleteFileMutation.mutate({ id: imageID });
+    }
+  };
+
+  const handleSubmit = (note: NoteInput, close: boolean = true) => {
+    // update
     if (props.note) {
-      return updateMutation.mutate({ data: note, id: props.note.id! });
+      return updateMutation.mutate(
+        { data: note, id: props.note.id! },
+        {
+          onSuccess: () => {
+            if (close) {
+              props.onClose();
+            }
+
+            queryClient.invalidateQueries(['GetNotes']);
+            setPendingImageId(null);
+          }
+        }
+      );
     }
 
+    // new note
     if (props.onSubmit) {
       return props.onSubmit(note);
     }
@@ -69,11 +97,17 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
     deleteMutation.mutate({ id });
   };
 
-  const handleDeleteImage = () => {
-    debugger;
-    if (props.onDeleteImage && props.note && props.note.attributes?.image) {
-      props.onDeleteImage(props.note.attributes?.image.data?.id!);
+  const handleClose = () => {
+    if (pendingImageId) {
+      handleDeleteImage(pendingImageId);
+      setPendingImageId(null);
     }
+
+    props.onClose();
+  };
+
+  const handleImageStore = (imageId: string) => {
+    setPendingImageId(imageId);
   };
 
   return (
@@ -82,14 +116,15 @@ export const NoteDialog: FC<NoteDialogProps> = (props) => {
         paper: 'w-full m-24'
       }}
       TransitionComponent={Transition}
-      onClose={props.onClose}
+      onClose={handleClose}
       open={props.note !== null}
     >
       <NoteForm
-        onCreate={handleCreate}
+        onSubmit={handleSubmit}
         note={props.note}
         onDelete={handleDelete}
         onDeleteImage={handleDeleteImage}
+        onStoreImage={handleImageStore}
       />
     </Dialog>
   );

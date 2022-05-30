@@ -1,6 +1,6 @@
 import { Drawer, PaletteMode } from '@mui/material';
 import { LabelList } from 'components/label';
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { AppbarLayout } from './AppbarLayout';
 import { labelActions } from 'redux/slices/label-slice';
@@ -52,14 +52,14 @@ export const Layout: FC<LayoutProps> = (props) => {
       <Box
         component='div'
         sx={{ bgcolor: 'background.default' }}
-        className='w-screen min-h-screen pb-20'
+        className='w-screen min-h-screen flex flex-col justify-items-stretch'
       >
         <SnackbarProvider
           maxSnack={3}
           anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
           preventDuplicate
         >
-          {authenticated && <AppbarLayout username={username} email={email} />}
+          <AppbarLayout username={username} email={email} authenticated={authenticated} />
 
           {props.children}
 

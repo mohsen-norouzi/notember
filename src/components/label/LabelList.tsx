@@ -36,7 +36,8 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
 
         return false;
       },
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      refetchInterval: 15 * 1000
     }
   );
 

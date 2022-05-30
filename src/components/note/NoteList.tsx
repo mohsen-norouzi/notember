@@ -13,13 +13,16 @@ import { NoteDialog } from './NoteDialog';
 import { Icon, Skeleton, Stack, Typography } from '@mui/material';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
-import { appActions } from 'redux/slices/app-slice';
 import { useSnackbar } from 'notistack';
+import { noteActions } from 'redux/slices/note-slice';
 
 type NoteListProps = {};
 
 export const NoteList: FC<NoteListProps> = (props) => {
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useAppDispatch();
+
+  const notes = useAppSelector((state) => state.note.notes);
   const userId = useAppSelector((state) => state.user.userId);
   const filter = useAppSelector((state) => state.label.filter);
 
@@ -32,13 +35,15 @@ export const NoteList: FC<NoteListProps> = (props) => {
     setFilters(filterData);
   }, [filter]);
 
-  const { data, error, isLoading } = useGetNotesQuery<GetNotesQuery, Error>(
+  const { isLoading, error } = useGetNotesQuery<GetNotesQuery, Error>(
     getGraphQLRequestClient(),
     {
       filters: { ...filters, users: { id: { eq: userId } } }
     },
     {
-      onSuccess: () => {},
+      onSuccess: (data) => {
+        dispatch(noteActions.setNotes(data.notes?.data || []));
+      },
       onError: () => {
         enqueueSnackbar('Failed to load notes.', { variant: 'error' });
       },
@@ -50,7 +55,8 @@ export const NoteList: FC<NoteListProps> = (props) => {
 
         return false;
       },
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      refetchInterval: 15 * 1000
     }
   );
 
@@ -68,7 +74,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
     );
   }
 
-  if (data && data.notes && data.notes.data.length === 0) {
+  if (!isLoading && notes.length === 0) {
     return (
       <div className='flex  items-center justify-center w-full h-auto mt-5'>
         <Typography color='textSecondary' variant='h5'>
@@ -78,7 +84,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
     );
   }
 
-  if (isLoading || !data || !data.notes || !data.notes.data) {
+  if (isLoading) {
     return (
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} sx={{ alignContent: 'flex-start' }}>
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
@@ -93,7 +99,7 @@ export const NoteList: FC<NoteListProps> = (props) => {
   return (
     <>
       <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4 }} sx={{ alignContent: 'flex-start' }}>
-        {data.notes.data.map((note) => (
+        {notes.map((note) => (
           <NoteItem key={note.id} note={note} onClick={(note) => setSelectedNote(note)} />
         ))}
       </Masonry>
