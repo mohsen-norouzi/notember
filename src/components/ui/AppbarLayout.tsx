@@ -4,12 +4,11 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { Avatar, Button, CssBaseline, Icon, Popover, useScrollTrigger } from '@mui/material';
+import { Avatar, Button, Icon, Menu, MenuItem, Popover } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 import { userActions } from 'redux/slices/user-slice';
-import { useNavigate } from 'react-router-dom';
-import Badge from '@mui/material/Badge';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { appActions } from 'redux/slices/app-slice';
 
 type AppbarLayoutProps = {
@@ -77,11 +76,29 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
           </div>
         </div>
 
-        <div className='flex  w-full py-1'>
+        <Box component='menu' className='flex flex-col w-full py-1'>
+          <MenuItem>
+            <Link className='text-center  w-full' to='/'>
+              My Notes
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link className='text-center  w-full' to='/profile'>
+              Profile
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link className='text-center  w-full' to='/about'>
+              About
+            </Link>
+          </MenuItem>
+
           <Button className='w-full' color='warning' onClick={handleLogout} size='medium'>
             Logout
           </Button>
-        </div>
+        </Box>
       </div>
     </Popover>
   );

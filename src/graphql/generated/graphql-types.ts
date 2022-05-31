@@ -1072,6 +1072,14 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', id: string, email?: string | null, confirmed?: boolean | null, blocked?: boolean | null, username: string, role?: { __typename?: 'UsersPermissionsMeRole', id: string, name: string, description?: string | null } | null } } };
 
+export type UpdateMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: UsersPermissionsUserInput;
+}>;
+
+
+export type UpdateMutation = { __typename?: 'Mutation', updateUsersPermissionsUser: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } };
+
 
 export const DeleteUploadFileDocument = `
     mutation deleteUploadFile($id: ID!) {
@@ -1480,5 +1488,30 @@ export const useRegisterMutation = <
     useMutation<RegisterMutation, TError, RegisterMutationVariables, TContext>(
       ['register'],
       (variables?: RegisterMutationVariables) => fetcher<RegisterMutation, RegisterMutationVariables>(client, RegisterDocument, variables, headers)(),
+      options
+    );
+export const UpdateDocument = `
+    mutation update($id: ID!, $data: UsersPermissionsUserInput!) {
+  updateUsersPermissionsUser(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        username
+      }
+    }
+  }
+}
+    `;
+export const useUpdateMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateMutation, TError, UpdateMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateMutation, TError, UpdateMutationVariables, TContext>(
+      ['update'],
+      (variables?: UpdateMutationVariables) => fetcher<UpdateMutation, UpdateMutationVariables>(client, UpdateDocument, variables, headers)(),
       options
     );
