@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Card, Divider, LinearProgress } from '@mui/material';
+import { Box, Card, Divider, LinearProgress, Typography } from '@mui/material';
 import { GetLabelsQuery, useGetLabelsQuery } from 'graphql/generated/graphql-types';
 import { LabelItem } from './LabelItem';
 import { LabelsDialog } from './LabelsDialog';
@@ -52,7 +52,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   return (
     <Box className='block w-60 relative' component='div'>
       <Card
-        className='z-20 shadow px-2 py-4 w-60 fixed overflow-auto'
+        className='z-20 shadow py-4 w-60 fixed overflow-auto'
         sx={{
           height: { xs: '100%', sm: 'min-content' },
           maxHeight: { xs: '100vh', sm: 'calc(100vh - 75px)' },
@@ -74,14 +74,16 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
         />
 
         {isLoading ? (
-          <LinearProgress color='primary' className='mt-2' />
+          <LinearProgress className='mt-2' />
         ) : (
-          <Divider style={{ margin: '0.75rem 0 0 0' }} />
+          <Divider  className='my-2' />
         )}
 
-        <p className='flex-2 p-2 text-gray-600 text-sm'>Labels</p>
-
-        {error && <p className='flex-2 px-2 mb-3 text-rose-400 text-sm'>failed to load labels!</p>}
+        {error && (
+          <Typography className='flex-2 px-2 mb-3 text-sm' color='error'>
+            failed to load labels!
+          </Typography>
+        )}
 
         {labels.map(({ id, attributes }) => (
           <LabelItem

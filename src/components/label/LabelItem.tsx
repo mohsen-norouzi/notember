@@ -19,7 +19,7 @@ export const LabelItem: FC<LabelItemProps> = (props) => {
 
   return (
     <Box
-      className={clsx('flex items-center cursor-pointer rounded-md transition-all mb-1', {
+      className={clsx('flex items-center cursor-pointer rounded-md transition-all mb-1 mx-2', {
         active: !!props.active
       })}
       onClick={onClickHandler}
