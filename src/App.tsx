@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
 import { store } from 'redux/store';
 
-import { LoginPage, NotePage, ProfilePage, RegisterPage } from 'pages';
+import { AboutPage, LoginPage, NotePage, ProfilePage, RegisterPage } from 'pages';
 import { Layout } from 'components';
 import { Auth } from 'components/auth';
 
@@ -30,6 +30,7 @@ const App = () => {
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/profile' element={<ProfilePage />} />
+              <Route path='/about' element={<AboutPage />} />
             </Routes>
           </Layout>
           <ReactQueryDevtools />

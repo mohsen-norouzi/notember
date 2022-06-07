@@ -8,8 +8,9 @@ import { Avatar, Button, Icon, Menu, MenuItem, Popover } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 import { userActions } from 'redux/slices/user-slice';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { appActions } from 'redux/slices/app-slice';
+import clsx from 'clsx';
 
 type AppbarLayoutProps = {
   username: string;
@@ -19,6 +20,7 @@ type AppbarLayoutProps = {
 
 export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const mode = useAppSelector((state) => state.app.mode);
 
@@ -124,7 +126,9 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
           )}
           <Typography
             variant='h5'
-            className='text-center w-60 mx-2 fixed'
+            className={clsx('text-center w-60 mx-2', {
+              fixed: location.pathname === 'about'
+            })}
             component='div'
             color='text.primary'
             sx={{ display: { xs: 'none', sm: 'block' } }}
