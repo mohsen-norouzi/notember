@@ -80,7 +80,7 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
 
         <Box component='menu' className='flex flex-col w-full py-1'>
           <MenuItem>
-            <Link className='text-center  w-full' to='/'>
+            <Link className='text-center  w-full' to='/notes'>
               My Notes
             </Link>
           </MenuItem>
@@ -92,7 +92,7 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
           </MenuItem>
 
           <MenuItem>
-            <Link className='text-center  w-full' to='/about'>
+            <Link className='text-center  w-full' to='/'>
               About
             </Link>
           </MenuItem>
@@ -124,17 +124,19 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
               <Icon>menu</Icon>
             </IconButton>
           )}
-          <Typography
-            variant='h5'
-            className={clsx('text-center w-60 mx-2', {
-              fixed: location.pathname === 'about'
-            })}
-            component='div'
-            color='text.primary'
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            N▢tember
-          </Typography>
+          <Link to='/notes'>
+            <Typography
+              variant='h5'
+              className={clsx('text-center w-60 mx-2', {
+                fixed: location.pathname === 'about'
+              })}
+              component='div'
+              color='text.primary'
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              N▢tember
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1 }} />
 

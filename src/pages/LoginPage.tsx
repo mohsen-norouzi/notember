@@ -42,7 +42,7 @@ export const LoginPage = () => {
         if (user && jwt) {
           dispatch(userActions.login(jwt));
           dispatch(userActions.setUserData(user));
-          navigate('/');
+          navigate('/notes');
         }
       },
       onError: (err) => {

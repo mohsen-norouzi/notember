@@ -26,11 +26,11 @@ const App = () => {
         <Auth>
           <Layout>
             <Routes>
-              <Route path='/' element={<NotePage />} />
+              <Route path='/' element={<AboutPage />} />
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/profile' element={<ProfilePage />} />
-              <Route path='/about' element={<AboutPage />} />
+              <Route path='/notes' element={<NotePage />} />
             </Routes>
           </Layout>
           <ReactQueryDevtools />

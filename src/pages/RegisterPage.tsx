@@ -54,7 +54,7 @@ export const RegisterPage = () => {
         if (user && jwt) {
           dispatch(userActions.login(jwt));
           dispatch(userActions.setUserData(user));
-          navigate('/');
+          navigate('/notes');
         }
       },
       onError: () => {
