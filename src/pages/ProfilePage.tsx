@@ -2,9 +2,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { Card, CardActions, CardContent, Icon, TextField, Typography } from '@mui/material';
 import {
-  UpdateMutation,
+  UpdateUserMutation,
   UsersPermissionsUserInput,
-  useUpdateMutation
+  useUpdateUserMutation
 } from 'graphql/generated/graphql-types';
 import { getGraphQLRequestClient } from 'lib/clients/GraphqlRequestClient';
 import { useSnackbar } from 'notistack';
@@ -28,7 +28,7 @@ export const ProfilePage = () => {
   const { userId, username } = useAppSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
 
-  const { error, isLoading, mutate } = useUpdateMutation<UpdateMutation, Error>(
+  const { error, isLoading, mutate } = useUpdateUserMutation<UpdateUserMutation, Error>(
     getGraphQLRequestClient(),
     {
       onSuccess: () => {
