@@ -4,13 +4,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { Avatar, Button, CssBaseline, Icon, Popover, useScrollTrigger } from '@mui/material';
+import { Avatar, Button, Icon, Menu, MenuItem, Popover } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { labelActions } from 'redux/slices/label-slice';
 import { userActions } from 'redux/slices/user-slice';
-import { useNavigate } from 'react-router-dom';
-import Badge from '@mui/material/Badge';
+import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { appActions } from 'redux/slices/app-slice';
+import clsx from 'clsx';
 
 type AppbarLayoutProps = {
   username: string;
@@ -20,6 +20,7 @@ type AppbarLayoutProps = {
 
 export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const mode = useAppSelector((state) => state.app.mode);
 
@@ -77,11 +78,29 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
           </div>
         </div>
 
-        <div className='flex  w-full py-1'>
+        <Box component='menu' className='flex flex-col w-full py-1'>
+          <MenuItem>
+            <Link className='text-center  w-full' to='/notes'>
+              My Notes
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link className='text-center  w-full' to='/profile'>
+              Profile
+            </Link>
+          </MenuItem>
+
+          <MenuItem>
+            <Link className='text-center  w-full' to='/'>
+              About
+            </Link>
+          </MenuItem>
+
           <Button className='w-full' color='warning' onClick={handleLogout} size='medium'>
             Logout
           </Button>
-        </div>
+        </Box>
       </div>
     </Popover>
   );
@@ -105,15 +124,19 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
               <Icon>menu</Icon>
             </IconButton>
           )}
-          <Typography
-            variant='h5'
-            className='text-center w-60 mx-2 fixed'
-            component='div'
-            color='text.primary'
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            N▢tember
-          </Typography>
+          <Link to='/notes'>
+            <Typography
+              variant='h5'
+              className={clsx('text-center w-60 mx-2', {
+                fixed: location.pathname === 'about'
+              })}
+              component='div'
+              color='text.primary'
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+            >
+              N▢tember
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1 }} />
 

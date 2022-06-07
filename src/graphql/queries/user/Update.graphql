@@ -1,0 +1,10 @@
+mutation updateUser($id: ID!, $data: UsersPermissionsUserInput!) {
+  updateUsersPermissionsUser(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        username
+      }
+    }
+  }
+}

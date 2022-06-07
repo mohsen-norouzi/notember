@@ -20,6 +20,15 @@ const shouldRetryOnFocus = (pathName: string) => {
   return false;
 };
 
+const publicRoutes = ['/'];
+const shouldLogin = (pathName: string) => {
+  if (publicRoutes.indexOf(pathName) === -1) {
+    return true;
+  }
+
+  return false;
+};
+
 export const Auth: FC<AuthProps> = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +48,7 @@ export const Auth: FC<AuthProps> = (props) => {
         if (errorObject.response.error && errorObject.response.error.status === 401) {
           dispatch(userActions.logout());
 
-          if (shouldRetryOnFocus(location.pathname)) {
+          if (shouldRetryOnFocus(location.pathname) && shouldLogin(location.pathname)) {
             navigate('/login');
           }
         }
@@ -51,14 +60,16 @@ export const Auth: FC<AuthProps> = (props) => {
           dispatch(userActions.setUserData(data.me));
         }
 
-        navigate('/');
+        if (shouldLogin(location.pathname)) {
+          navigate('/notes');
+        }
       },
       refetchOnWindowFocus: false
     }
   );
 
   useEffect(() => {
-    if (token === '' && shouldRetryOnFocus(location.pathname)) {
+    if (token === '' && shouldRetryOnFocus(location.pathname) && shouldLogin(location.pathname)) {
       navigate('/login');
     }
   }, [token]);
