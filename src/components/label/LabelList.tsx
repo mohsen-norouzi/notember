@@ -50,12 +50,10 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
   };
 
   return (
-    <Box className='block w-60 relative' component='div'>
+    <Box className='block w-60 relative mb-5' component='div'>
       <Card
-        className='z-20 shadow py-4 w-60 fixed overflow-auto'
+        className='z-20 shadow-none py-4 w-60 md:shadow'
         sx={{
-          height: { xs: '100%', sm: 'min-content' },
-          maxHeight: { xs: '100vh', sm: 'calc(100vh - 75px)' },
           borderRadius: { xs: '0', sm: '1rem' }
         }}
       >
@@ -73,11 +71,7 @@ export const LabelList: React.FC<LabelListProps> = (props) => {
           onClick={() => onLabelClickHandler()}
         />
 
-        {isLoading ? (
-          <LinearProgress className='mt-2' />
-        ) : (
-          <Divider  className='my-2' />
-        )}
+        {isLoading ? <LinearProgress className='mt-2' /> : <Divider className='my-2' />}
 
         {error && (
           <Typography className='flex-2 px-2 mb-3 text-sm' color='error'>
