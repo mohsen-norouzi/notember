@@ -2,8 +2,9 @@
 @import '_base.css';
 
 /* Fading entrances  */
-@import 'fading_entrances/fadeIn.css';
-@import 'fading_entrances/fadeInDown.css';
-@import 'fading_entrances/fadeInLeft.css';
-@import 'fading_entrances/fadeInRight.css';
-@import 'fading_entrances/fadeInUp.css';
+@import 'keyframes/fadeIn.css';
+@import 'keyframes/fadeInDown.css';
+@import 'keyframes/fadeInLeft.css';
+@import 'keyframes/fadeInRight.css';
+@import 'keyframes/fadeInUp.css';
+@import 'keyframes/pulse.css';

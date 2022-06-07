@@ -1072,6 +1072,14 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UsersPermissionsLoginPayload', jwt?: string | null, user: { __typename?: 'UsersPermissionsMe', id: string, email?: string | null, confirmed?: boolean | null, blocked?: boolean | null, username: string, role?: { __typename?: 'UsersPermissionsMeRole', id: string, name: string, description?: string | null } | null } } };
 
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: UsersPermissionsUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUsersPermissionsUser: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', id?: string | null, attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } };
+
 
 export const DeleteUploadFileDocument = `
     mutation deleteUploadFile($id: ID!) {
@@ -1172,7 +1180,7 @@ export const useDeleteLabelMutation = <
     );
 export const GetLabelsDocument = `
     query GetLabels($filters: LabelFiltersInput) {
-  labels(filters: $filters) {
+  labels(filters: $filters, pagination: {limit: -1}) {
     data {
       id
       attributes {
@@ -1275,7 +1283,7 @@ export const useDeleteNoteMutation = <
     );
 export const GetNotesDocument = `
     query GetNotes($filters: NoteFiltersInput) {
-  notes(filters: $filters) {
+  notes(filters: $filters, pagination: {limit: -1}) {
     data {
       id
       attributes {
@@ -1480,5 +1488,30 @@ export const useRegisterMutation = <
     useMutation<RegisterMutation, TError, RegisterMutationVariables, TContext>(
       ['register'],
       (variables?: RegisterMutationVariables) => fetcher<RegisterMutation, RegisterMutationVariables>(client, RegisterDocument, variables, headers)(),
+      options
+    );
+export const UpdateUserDocument = `
+    mutation updateUser($id: ID!, $data: UsersPermissionsUserInput!) {
+  updateUsersPermissionsUser(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        username
+      }
+    }
+  }
+}
+    `;
+export const useUpdateUserMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateUserMutation, TError, UpdateUserMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateUserMutation, TError, UpdateUserMutationVariables, TContext>(
+      ['updateUser'],
+      (variables?: UpdateUserMutationVariables) => fetcher<UpdateUserMutation, UpdateUserMutationVariables>(client, UpdateUserDocument, variables, headers)(),
       options
     );

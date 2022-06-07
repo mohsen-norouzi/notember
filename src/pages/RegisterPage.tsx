@@ -15,7 +15,7 @@ import { useAppDispatch } from 'redux/hooks';
 import { useSnackbar } from 'notistack';
 import { ClientError } from 'graphql-request';
 import { LoadingButton } from '@mui/lab';
-import { UsernameInput } from './UsernameInput';
+import { UsernameInput } from '../components/auth/UsernameInput';
 import { useState } from 'react';
 import { appActions } from 'redux/slices/app-slice';
 
@@ -54,7 +54,7 @@ export const RegisterPage = () => {
         if (user && jwt) {
           dispatch(userActions.login(jwt));
           dispatch(userActions.setUserData(user));
-          navigate('/');
+          navigate('/notes');
         }
       },
       onError: () => {

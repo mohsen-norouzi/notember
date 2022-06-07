@@ -1,5 +1,5 @@
 query GetNotes($filters: NoteFiltersInput) {
-  notes(filters: $filters) {
+  notes(filters: $filters, pagination: { limit: -1 }) {
     data {
       id
       attributes {

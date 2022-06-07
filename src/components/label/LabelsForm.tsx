@@ -25,14 +25,14 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
         queryClient.invalidateQueries(['GetLabels']);
         setTitle('');
         setIcon('label');
-        setColor('#2e2e2e');
+        setColor('#AAAAAA');
       }
     }
   );
 
   const [title, setTitle] = useState('');
   const [icon, setIcon] = useState<string>('label');
-  const [color, setColor] = useState<string>('#2E2E2E');
+  const [color, setColor] = useState<string>('#AAAAAA');
 
   const isValid = () => {
     if (title.trim() === '') {
@@ -77,7 +77,7 @@ export const LabelsForm: FC<LabelsFormProps> = () => {
       <FormControl variant='standard'>
         <Input
           className='border p-2'
-          sx={{ fontSize: '14px' }}
+          sx={{ fontSize: '14px', borderColor: 'divider' }}
           disableUnderline
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value)}
           value={title}
