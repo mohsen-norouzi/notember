@@ -7,20 +7,19 @@ type FactProps = {
   mode: PaletteMode;
 };
 
-type FactType = {
-  id: string;
-  title: string;
-  link: string;
-  action: string;
-  count: string;
-  icon: string;
-};
-
 const facts = [
+  {
+    id: 'notes',
+    icon: 'note',
+    count: '10k',
+    title: 'Notes',
+    action: 'wow!',
+    link: ''
+  },
   {
     id: 'fav',
     icon: 'favorite_outline',
-    count: '1025',
+    count: '63',
     title: 'Likes',
     action: 'Like',
     link: ''
@@ -28,7 +27,7 @@ const facts = [
   {
     id: 'us',
     icon: 'groups',
-    count: '270',
+    count: '96',
     title: 'users',
     action: 'Join us!',
     link: '/register'
@@ -36,7 +35,7 @@ const facts = [
   {
     id: 'cup',
     icon: 'coffee',
-    count: '89',
+    count: '12',
     title: 'coffees',
     action: 'Buy me a coffee',
     link: 'https://www.buymeacoffee.com/itsmohsen'
@@ -56,7 +55,6 @@ export const Fact: FC<FactProps> = (props) => {
     }
 
     if (id === 'fav') {
-      
     }
   };
 
