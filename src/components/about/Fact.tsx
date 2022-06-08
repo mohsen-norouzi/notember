@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { PaletteMode, Typography, Card, Icon, Button } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
 
 type FactProps = {
   mode: PaletteMode;
@@ -21,7 +22,7 @@ const facts = [
     icon: 'favorite_outline',
     count: '63',
     title: 'Likes',
-    action: 'Like',
+    action: 'Like!',
     link: ''
   },
   {
@@ -37,7 +38,7 @@ const facts = [
     icon: 'coffee',
     count: '12',
     title: 'coffees',
-    action: 'Buy me a coffee',
+    action: 'Buy me a coffee!',
     link: 'https://www.buymeacoffee.com/itsmohsen'
   }
 ];
@@ -75,14 +76,26 @@ export const Fact: FC<FactProps> = (props) => {
           <Card className='!shadow-none p-10 min-w-[20rem] !rounded-3xl' key={f.icon}>
             <div className='flex flex-col md:flex-row md:items-center md:justify-center h-full'>
               <div className='flex flex-col gap-2 items-center justify-center'>
-                <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
+                <Icon
+                  fontSize='large'
+                  className={clsx('!text-6xl mb-2', {
+                    '!text-indigo-500': props.mode === 'light'
+                  })}
+                  color='action'
+                >
                   {f.icon}
                 </Icon>
-                <Typography variant='h3' className='!text-indigo-500'>
+                <Typography
+                  variant='h3'
+                  className={clsx({ '!text-indigo-500': props.mode === 'light' })}
+                  color='text.primary'
+                >
                   {f.count}
                 </Typography>
                 <Typography
-                  className='text-center !font-light flex-wrap max-w-lg !text-indigo-500'
+                  className={clsx('text-center !font-light flex-wrap max-w-lg', {
+                    '!text-indigo-500': props.mode === 'light'
+                  })}
                   variant='h6'
                   color='text.secondary'
                 >
