@@ -124,7 +124,7 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
               <Icon>menu</Icon>
             </IconButton>
           )}
-          <Link to='/notes'>
+          <Link to='/'>
             <Typography
               variant='h5'
               className={clsx('text-center w-60 mx-2', {
