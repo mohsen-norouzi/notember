@@ -23,8 +23,8 @@ export const Features = () => {
       </div>
 
       <div className='flex flex-col items-center justify-items-stretch mt-20 mb-20'>
-        <div className='flex items-center justify-center h-full'>
-          <div className='flex flex-col gap-2 items-center justify-center p-28 border-r border-b'>
+        <div className='flex flex-col md:flex-row md:items-center md:justify-center h-full'>
+          <div className='flex flex-col gap-2 items-center justify-center p-28 border-b'>
             <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
               speed
             </Icon>
@@ -40,7 +40,7 @@ export const Features = () => {
             </Typography>
           </div>
 
-          <div className='flex flex-col gap-2 items-center justify-center p-28 border-l border-b'>
+          <div className='flex flex-col gap-2 items-center justify-center p-28 border-0 md:border-l border-b'>
             <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
               cake
             </Icon>
@@ -57,8 +57,8 @@ export const Features = () => {
           </div>
         </div>
 
-        <div className='flex items-center justify-center h-full'>
-          <div className='flex flex-col gap-2 items-center justify-center p-28 border-r border-t'>
+        <div className='flex flex-col md:flex-row md:items-center md:justify-center h-full '>
+          <div className='flex flex-col gap-2 items-center justify-center p-28  border-b md:border-b-0 md:border-r'>
             <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
               local_offer
             </Icon>
@@ -75,7 +75,7 @@ export const Features = () => {
             </Typography>
           </div>
 
-          <div className='flex flex-col gap-2 items-center justify-center p-28 border-l border-t'>
+          <div className='flex flex-col gap-2 items-center justify-center p-28'>
             <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
               palette
             </Icon>
