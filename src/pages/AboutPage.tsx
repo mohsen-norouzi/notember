@@ -1,4 +1,4 @@
-import { Features, SectionA, Contact, Footer } from 'components/about';
+import { Features, SectionA, Contact, Footer, Fact } from 'components/about';
 import { useAppSelector } from 'redux/hooks';
 
 export const AboutPage = () => {
@@ -8,9 +8,10 @@ export const AboutPage = () => {
     <div>
       <SectionA mode={mode} />
       <Features />
+      <Fact mode={mode} />
       <Contact />
 
-      <Footer mode={mode}/>
+      <Footer mode={mode} />
     </div>
   );
 };
