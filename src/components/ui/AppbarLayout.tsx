@@ -134,7 +134,7 @@ export const AppbarLayout: React.FC<AppbarLayoutProps> = (props) => {
               color='text.primary'
               sx={{ display: { xs: 'none', sm: 'block' } }}
             >
-              N▢tember
+              N❖tember
             </Typography>
           </Link>
 
