@@ -85,7 +85,7 @@ export const LoginPage = () => {
           <CardContent>
             <div className='flex flex-col items-center justify-center w-full mb-6'>
               <Typography variant='h1' noWrap component='div' color='text-secondary'>
-                ▢
+                ❖
               </Typography>
 
               <Typography variant='h4' fontWeight='500' color='text.primary'>
