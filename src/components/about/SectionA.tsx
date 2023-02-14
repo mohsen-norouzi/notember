@@ -26,11 +26,11 @@ export const SectionA: FC<SectionAProps> = (props) => {
     <Box
       component='div'
       className='flex flex-col-reverse justify-center items-center p-5 md:flex-row md:items-center md:justify-around gap-5 py-20 mb-5 bg-indigo-100 mt-24'
-      sx={{ bgcolor: props.mode === 'light' ? '' : 'indigo' }}
+      sx={{ bgcolor: props.mode === 'light' ? '' : '#1A202C' }}
     >
       <Box component='div' className='flex flex-col max-w-32 flex-wrap'>
         <Typography variant='h3' className='flex-wrap' color='text.primary'>
-          Note <br />
+          Note! <br />
           When The <span className='text-indigo-500'>Idea</span> Flows!
         </Typography>
 

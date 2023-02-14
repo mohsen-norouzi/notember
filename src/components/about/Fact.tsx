@@ -63,7 +63,7 @@ export const Fact: FC<FactProps> = (props) => {
     <Box
       component='div'
       className='flex flex-col justify-center items-center py-10 mb-5 bg-indigo-100 mt-24'
-      sx={{ bgcolor: props.mode === 'light' ? '' : 'indigo' }}
+      sx={{ bgcolor: props.mode === 'light' ? '' : '#1A202C' }}
     >
       <div className='flex flex-col items-center mb-10'>
         <Typography variant='h3' className='!mt-5' color='text.primary'>
@@ -73,7 +73,7 @@ export const Fact: FC<FactProps> = (props) => {
 
       <Box component='div' className='flex flex-col md:flex-row gap-3 max-w-32 flex-wrap mb-10'>
         {facts.map((f) => (
-          <Card className='!shadow-none p-10 min-w-[20rem] !rounded-3xl' key={f.icon}>
+          <Card className='!shadow-none p-10 min-w-[20rem] !rounded-3xl' key={f.icon} style={{backgroundColor: props.mode === 'dark' ? '#1A202C' : ''}}>
             <div className='flex flex-col md:flex-row md:items-center md:justify-center h-full'>
               <div className='flex flex-col gap-2 items-center justify-center'>
                 <Icon
