@@ -1,0 +1,12 @@
+mutation updateLabel($id: ID!, $data: LabelInput!) {
+  updateLabel(id: $id, data: $data) {
+    data {
+      id
+      attributes {
+        title
+        color
+        icon
+      }
+    }
+  }
+}

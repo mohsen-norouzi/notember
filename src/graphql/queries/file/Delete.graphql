@@ -1,0 +1,7 @@
+mutation deleteUploadFile($id: ID!) {
+  deleteUploadFile(id: $id) {
+    data {
+      id
+    }
+  }
+}

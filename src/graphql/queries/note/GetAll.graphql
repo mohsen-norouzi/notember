@@ -1,0 +1,47 @@
+query GetNotes($filters: NoteFiltersInput) {
+  notes(filters: $filters, pagination: { limit: -1 }) {
+    data {
+      id
+      attributes {
+        title
+        description
+        updatedAt
+        image {
+          data {
+            id
+            attributes {
+              name
+              url
+              hash
+              mime
+              provider
+              size
+              height
+              width
+            }
+          }
+        }
+        labels {
+          data {
+            id
+            attributes {
+              title
+              color
+              icon
+            }
+          }
+        }
+        checklist
+        users {
+          data {
+            id
+            attributes {
+              username
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+}

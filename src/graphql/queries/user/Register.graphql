@@ -1,0 +1,17 @@
+mutation register($input: UsersPermissionsRegisterInput!) {
+  register(input: $input) {
+    jwt
+    user {
+      id
+      email
+      confirmed
+      blocked
+      username
+      role {
+        id
+        name
+        description
+      }
+    }
+  }
+}

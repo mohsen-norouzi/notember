@@ -1,0 +1,12 @@
+query GetLabels($filters: LabelFiltersInput) {
+  labels(filters: $filters, pagination: { limit: -1 }) {
+    data {
+      id
+      attributes {
+        title
+        color
+        icon
+      }
+    }
+  }
+}
