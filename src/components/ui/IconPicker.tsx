@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Icon, IconButton, TextField, Typography } from '@mui/material';
+import { Icon, IconButton, Input, Typography } from '@mui/material';
 import { GetIcons, MaterialIcons } from './Icons';
 
 type IconPickerProps = {
@@ -36,11 +36,11 @@ export const IconPicker: FC<IconPickerProps> = (props) => {
   return (
     <div>
       <div className='flex items-center border-b border-b-gray-200 p-3'>
-        <TextField
+        <Input
           placeholder='Search icons...'
-          className='border rounded-md w-full'
-          variant='outlined'
-          size='small'
+          className='border py-2 px-3 rounded-md w-full '
+          sx={{ fontSize: '14px', borderColor: 'divider' }}
+          disableUnderline
           value={filter}
           onChange={onChangeHandler}
         />
