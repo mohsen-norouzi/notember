@@ -30,8 +30,7 @@ export const SectionA: FC<SectionAProps> = (props) => {
     >
       <Box component='div' className='flex flex-col max-w-32 flex-wrap'>
         <Typography variant='h3' className='flex-wrap' color='text.primary'>
-          Note! <br />
-          When The <span className='text-indigo-500'>Idea</span> Flows!
+          Note when the <span className='text-sky-500'>ideas</span> flow!
         </Typography>
 
         <Typography className='!mt-5 font-roboto !font-light' variant='h6' color='text.secondary'>
@@ -40,7 +39,7 @@ export const SectionA: FC<SectionAProps> = (props) => {
         </Typography>
 
         <Box component='div' className='flex flex-col justify-start items-start gap-2 mt-10'>
-          <Button variant='outlined' size='large' onClick={handleGoToNotes}>
+          <Button variant='outlined' size='large' onClick={handleGoToNotes} color='info'>
             Start taking notes
           </Button>
         </Box>
