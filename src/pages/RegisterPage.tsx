@@ -117,7 +117,7 @@ export const RegisterPage = () => {
               </Typography>
 
               <Typography variant='h4' fontWeight='500' color='text.primary'>
-                Join us!
+                Join us
               </Typography>
             </div>
 
