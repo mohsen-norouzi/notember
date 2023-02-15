@@ -38,7 +38,7 @@ export const IconPicker: FC<IconPickerProps> = (props) => {
       <div className='flex items-center border-b border-b-gray-200 p-3'>
         <TextField
           placeholder='Search icons...'
-          className='border rounded-md w-full bg-gray-100'
+          className='border rounded-md w-full'
           variant='outlined'
           size='small'
           value={filter}
