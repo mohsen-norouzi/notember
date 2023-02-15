@@ -10,7 +10,7 @@ export const Footer: FC<FooterProps> = (props) => {
   return (
     <Box
       component='div'
-      className='flex items-center justify-around gap-5 py-20 bg-indigo-100 mt-5'
+      className='flex items-center justify-around gap-5 py-20 bg-sky-100 mt-5'
       sx={{ bgcolor: props.mode === 'light' ? '' : '#1A202C' }}
     ></Box>
   );

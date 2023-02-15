@@ -5,12 +5,12 @@ export const Features = () => {
   return (
     <Box component='div' className='mt-24'>
       <div className='flex flex-col items-center'>
-        <Typography variant='h5' className='text-indigo-400 !font-mono'>
+        <Typography variant='h5' className='text-sky-400 !font-mono'>
           - why so special? -
         </Typography>
 
         <Typography variant='h3' className='!mt-5' color='text.primary'>
-          Exclusive <span className='text-indigo-500'>Features</span>
+          Exclusive <span className='text-sky-500'>Features</span>
         </Typography>
 
         <Typography
@@ -25,7 +25,7 @@ export const Features = () => {
       <div className='flex flex-col items-center justify-items-stretch mt-20 mb-20'>
         <div className='flex flex-col md:flex-row md:items-center md:justify-center h-full'>
           <div className='flex flex-col gap-2 items-center justify-center p-28 border-b'>
-            <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
+            <Icon fontSize='large' className='text-sky-500 !text-6xl mb-2'>
               speed
             </Icon>
             <Typography variant='h5' color='text.primary'>
@@ -41,7 +41,7 @@ export const Features = () => {
           </div>
 
           <div className='flex flex-col gap-2 items-center justify-center p-28 border-0 md:border-l border-b'>
-            <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
+            <Icon fontSize='large' className='text-sky-500 !text-6xl mb-2'>
               cake
             </Icon>
             <Typography variant='h5' color='text.primary'>
@@ -59,7 +59,7 @@ export const Features = () => {
 
         <div className='flex flex-col md:flex-row md:items-center md:justify-center h-full '>
           <div className='flex flex-col gap-2 items-center justify-center p-28  border-b md:border-b-0 md:border-r'>
-            <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
+            <Icon fontSize='large' className='text-sky-500 !text-6xl mb-2'>
               local_offer
             </Icon>
             <Typography variant='h5' color='text.primary'>
@@ -76,7 +76,7 @@ export const Features = () => {
           </div>
 
           <div className='flex flex-col gap-2 items-center justify-center p-28'>
-            <Icon fontSize='large' className='text-indigo-500 !text-6xl mb-2'>
+            <Icon fontSize='large' className='text-sky-500 !text-6xl mb-2'>
               palette
             </Icon>
             <Typography variant='h5' color='text.primary'>

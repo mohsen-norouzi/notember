@@ -10,7 +10,7 @@ export const Contact = () => {
     <Box component='div' className='mt-24'>
       <div className='flex flex-col items-center'>
         <Typography variant='h3' className='!mt-5' color='text.primary'>
-          Get <span className='text-indigo-500'>in</span> touch
+          Get in touch
         </Typography>
 
         <div className='flex flex-col items-center justify-items-stretch  relative'>
@@ -23,7 +23,7 @@ export const Contact = () => {
               />
 
               <Typography variant='h5' color='text.primary'>
-                Hey there, I'm <span className='text-indigo-500'>Mohsen</span>.
+                Hey there, I'm <span className='text-sky-500'>Mohsen</span>.
               </Typography>
               <Typography
                 className='!mt-5 text-gray-600 font-roboto !font-light text-center flex-wrap'

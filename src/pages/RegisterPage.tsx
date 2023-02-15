@@ -113,11 +113,11 @@ export const RegisterPage = () => {
           <CardContent className='!pb-0'>
             <div className='flex flex-col items-center justify-center w-full mb-10'>
               <Typography variant='h1' noWrap component='div' color='text-secondary'>
-                ▢
+                ❖
               </Typography>
 
               <Typography variant='h4' fontWeight='500' color='text.primary'>
-                Join us!
+                Join us
               </Typography>
             </div>
 
