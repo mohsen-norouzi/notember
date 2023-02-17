@@ -19,7 +19,7 @@ export const SectionA: FC<SectionAProps> = (props) => {
       return navigate('/notes');
     }
 
-    return navigate('/register');
+    return navigate('/login');
   };
 
   return (
